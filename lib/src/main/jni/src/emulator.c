@@ -254,12 +254,12 @@ Java_com_mrpoid_core_Emulator_native_1startMrp(JNIEnv * env, jobject self, jstri
 
         dsm_init();
 
-
 #ifdef DSM_FULL
 		mr_start_dsm(runMrpPath);
 #else
 		mr_start_dsmC("cfunction.ext", runMrpPath);
 #endif
+		LOGI("运行结束，返回");
 		return 1;
 	}
 

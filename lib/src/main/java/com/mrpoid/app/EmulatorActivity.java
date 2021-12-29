@@ -225,7 +225,7 @@ public class EmulatorActivity extends BaseActivity implements Handler.Callback, 
 
         emulatorView = new EmuView(this);
         emulatorView.setBackgroundColor(Color.TRANSPARENT);
-        continer = (ViewGroup) findViewById(R.id.contener);
+        continer = findViewById(R.id.contener);
         continer.addView(emulatorView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
         registerForContextMenu(emulatorView);
 
@@ -323,7 +323,7 @@ public class EmulatorActivity extends BaseActivity implements Handler.Callback, 
 
     @Override
     protected void onStart() {
-        emulator.hello();
+//        emulator.hello();
         EmuLog.i(TAG, "onStart");
         super.onStart();
     }

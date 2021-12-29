@@ -130,7 +130,7 @@ public class Emulator implements Callback {
 
     @Override
     public boolean handleMessage(Message msg) {
-		Log.i(TAG, "handleMessage: " + msg);
+		Log.i(TAG, String.format("%X handleMessage: %s", msg.what, msg));
         switch (msg.what) {
 			case MSG_HEART: {
 				log.w("thrad alive----------- " + alive++);
@@ -363,6 +363,7 @@ public class Emulator implements Callback {
 
         running = true;
 
+        // JNI启动MRP程序
         native_startMrp(path);
     }
 	
