@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/mrpoid2020-github-2.4.iml" filepath="$PROJECT_DIR$/.idea/modules/mrpoid2020-github-2.4.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/mrpoid2020-github-2.4.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/mrpoid2020-github-2.4.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/lib/mrpoid2020-github-2.4.lib.iml" filepath="$PROJECT_DIR$/.idea/modules/lib/mrpoid2020-github-2.4.lib.iml" />
+    </modules>
+  </component>
+</project>
