@@ -1,8 +1,13 @@
 package com.mrpoid.mrplist.app;
 
 import android.os.Bundle;
+import android.view.View;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.mrpoid.mrpliset.R;
 import com.mrpoid.mrplist.view.ExplorerFragment;
 
 /**
@@ -13,13 +18,21 @@ public class FileManagerActivity extends BaseActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		setTheme(R.style.AppTheme);
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.file_browser);
 		
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-		ft.replace(android.R.id.content, new ExplorerFragment(), "main").commit();
+		ft.replace(R.id.file_list, new ExplorerFragment(), "main").commit();
 
-		if(getSupportActionBar() != null)
-			getSupportActionBar().setElevation(0);
+		Toolbar toolbar = findViewById(R.id.toolbar);
+		setSupportActionBar(toolbar);
+		ActionBar supportActionBar = getSupportActionBar();
+		if(supportActionBar != null) {
+			supportActionBar.setElevation(0);
+			supportActionBar.setHomeButtonEnabled(true);
+			supportActionBar.setDisplayHomeAsUpEnabled(true);
+		}
 		
 //		getActionBar()
 //		getWindow().setBackgroundDrawableResource(R.drawable.wp5);

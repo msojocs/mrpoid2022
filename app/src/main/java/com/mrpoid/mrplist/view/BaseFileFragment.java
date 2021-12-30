@@ -58,13 +58,13 @@ public abstract class BaseFileFragment extends MyListFragment implements OnItemL
 	ListView lv;
 	MpListAdapter mAdapter;
 	int mLongPressIndex;
-	int mFocuseIndex;
+	int mFocusIndex;
 	String curPath;
 	int curP, curY;
 	boolean isRootPath;
 	ArrayList<MpFile> cacheList;
 
-	private final Stack<String> mPathStack = new Stack<String>();
+	private final Stack<String> mPathStack = new Stack<>();
 
 	
 	protected ActionBar getSupportActionBar() {
@@ -143,7 +143,8 @@ public abstract class BaseFileFragment extends MyListFragment implements OnItemL
 	
 	public void reload() {
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(!isRootDir());
-        getSupportActionBar().setSubtitle(curPath);
+		if( getSupportActionBar() != null)
+        	getSupportActionBar().setSubtitle(curPath);
 
         load();
 	}
@@ -201,6 +202,7 @@ public abstract class BaseFileFragment extends MyListFragment implements OnItemL
 
 		initPathStack();
 		mAdapter = new MpListAdapter(getActivity());
+
 		initRootPath();
 	}
 	

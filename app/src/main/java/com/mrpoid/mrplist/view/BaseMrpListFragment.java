@@ -62,7 +62,8 @@ public abstract class BaseMrpListFragment extends BaseFileFragment {
 
 		return false;
 	}
-	
+
+//	删除文件
 	private void delete(int position) {
 		MpFile file = mAdapter.getItem(position);
 		
