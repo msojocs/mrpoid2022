@@ -9,9 +9,9 @@
         android:id="@+id/imageView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="10dip"
+        android:layout_marginEnd="10dip"
         android:contentDescription="@null"
         android:src="@drawable/ic_file" />
 
@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginBottom="3dip"
-        android:layout_toRightOf="@+id/imageView1"
+        android:layout_toEndOf="@+id/imageView1"
         android:singleLine="true"
         android:text="@string/app_name"
         android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -30,14 +30,14 @@
 		android:id="@+id/lll"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView1"
+        android:layout_alignStart="@+id/textView1"
         android:layout_below="@+id/textView1" >
 
         <TextView
             android:id="@+id/textView2"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
-            android:layout_marginRight="3dip"
+            android:layout_marginEnd="3dip"
             android:layout_weight="1"
             android:ellipsize="start"
             android:singleLine="true"
@@ -48,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:singleLine="true"
-            android:alpha="0x80"
+            android:alpha="0.128"
             android:textAppearance="?android:attr/textAppearanceSmall" />
     </LinearLayout>
 
@@ -56,7 +56,7 @@
 		android:id="@+id/viewDiv"
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:layout_alignLeft="@+id/textView1"
+        android:layout_alignStart="@+id/textView1"
         android:layout_below="@+id/lll"
         android:layout_marginTop="6dp"
         android:background="#80e0e0e0" />

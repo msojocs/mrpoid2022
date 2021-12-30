@@ -2,10 +2,13 @@ package com.mrpoid.mrplist.app;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.util.Log;
 import android.view.MenuItem;
 
 public class BaseActivity extends AppCompatActivity {
 
+	private static String TAG = BaseActivity.class.getSimpleName();
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -23,11 +26,12 @@ public class BaseActivity extends AppCompatActivity {
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		Log.i(TAG, "onOptionsItemSelected");
 		if(item.getItemId() == android.R.id.home) {
 			finish();
 			return true;
 		}
-		
+
 		return super.onOptionsItemSelected(item);
 	}
 

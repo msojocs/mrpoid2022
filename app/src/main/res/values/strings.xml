@@ -47,6 +47,8 @@
     <string name="drawer_title">Navigation</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
+    <string name="user_photo_desc">TODO</string>
+    <string name="welcome_img_desc">TODO</string>
 
     <string-array name="bg_imgs">
         <item>无</item>

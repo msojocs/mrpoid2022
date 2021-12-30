@@ -21,7 +21,9 @@
             android:id="@+id/editText1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10" >
+            android:ems="10"
+            android:autofillHints=""
+            android:inputType="text">
 
             <requestFocus />
         </EditText>

@@ -23,8 +23,10 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.res.Configuration;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -74,7 +76,7 @@ public class HomeActivity extends AppCompatActivity implements OnClickListener,
     public static final String TAG = "HomeActivity";
 
     public static final String SHARE_URL =
-            "http://mrpej.com/wapindex.aspx?siteid=1000&classid=36&sid=[sid]";
+            "http://mrp.jysafe.cn";
 
     private static final int DEFAULT_BACKGROUND_INDEX = 5;
     private static final int[] BACKGROUND_IMGS = {
@@ -111,14 +113,15 @@ public class HomeActivity extends AppCompatActivity implements OnClickListener,
 
         setContentView(R.layout.activity_home);
 
-//		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//		if(toolbar != null)
-//			setSupportActionBar(toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+
 
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setElevation(0);
+//        getSupportActionBar().setElevation(0);
 //		getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0x80222222));
 
 //		PAGE_TITLES = getResources().getStringArray(R.array.page_titles);
@@ -165,6 +168,7 @@ public class HomeActivity extends AppCompatActivity implements OnClickListener,
         mDrawerLayout.addDrawerListener(new DemoDrawerListener());
 
         mStartDrawer = findViewById(R.id.start_drawer);
+
         ListView mMenuListView = findViewById(R.id.listView1);
         mMenuListView.setAdapter(new ArrayAdapter<>(this,
                 R.layout.drawer_list_item, R.id.title,
@@ -417,6 +421,7 @@ public class HomeActivity extends AppCompatActivity implements OnClickListener,
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Log.i(TAG, "onOptionsItemSelected");
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
@@ -487,6 +492,7 @@ public class HomeActivity extends AppCompatActivity implements OnClickListener,
         public void init() {
             mActionBar.setDisplayHomeAsUpEnabled(true);
             mActionBar.setHomeButtonEnabled(true);
+
             mTitle = mDrawerTitle = getActivity().getTitle();
         }
 

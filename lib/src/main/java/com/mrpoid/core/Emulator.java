@@ -41,6 +41,7 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.edroid.common.utils.UIUtils;
 import com.mrpoid.R;
 import com.mrpoid.app.EmulatorActivity;
 import com.edroid.common.utils.FileUtils;

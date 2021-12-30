@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="164dp"
+    android:layout_height="200dp"
     android:background="@drawable/ic_user_background"
     android:orientation="vertical" >
 
@@ -9,14 +9,13 @@
         android:id="@+id/userPhoto"
         android:layout_width="@dimen/userPhoto_layout_width"
         android:layout_height="@dimen/userPhoto_layout_height"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_gravity="center_horizontal"
-        android:layout_marginLeft="@dimen/userPhoto_layout_marginLeft"
         android:layout_marginStart="@dimen/userPhoto_layout_marginLeft"
         android:layout_marginTop="@dimen/userPhoto_layout_marginTop"
-        android:src="@drawable/logggg" />
+        android:src="@drawable/logggg"
+        android:contentDescription="@string/user_photo_desc" />
 
 
     <LinearLayout
@@ -25,8 +24,6 @@
         android:layout_height="@dimen/userData_layout_height"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
         android:layout_alignParentStart="true"
         android:layout_marginBottom="@dimen/userData_layout_marginBottom"
         android:gravity="center_vertical"
@@ -36,7 +33,6 @@
             android:id="@+id/userName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/userName_layout_marginLeft"
             android:layout_marginStart="@dimen/userName_layout_marginLeft"
             android:text="@string/app_name_en"
             android:textColor="#FFFFFF"
@@ -46,7 +42,6 @@
             android:id="@+id/tvVersion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/userEmail_layout_marginLeft"
             android:layout_marginStart="@dimen/userEmail_layout_marginLeft"
             android:text="@string/app_name"
             android:textColor="#FFFFFF"
