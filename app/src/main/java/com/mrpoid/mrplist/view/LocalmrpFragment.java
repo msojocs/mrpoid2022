@@ -8,7 +8,7 @@ import java.util.TreeSet;
 
 import com.mrpoid.MrpoidMain;
 import com.mrpoid.core.Emulator;
-import com.mrpoid.mrpliset.R;
+import com.mrpoid.mrplist.R;
 import com.mrpoid.mrplist.app.HomeActivity;
 import com.mrpoid.mrplist.moduls.MpFile;
 import com.mrpoid.mrplist.moduls.MpListAdapter;

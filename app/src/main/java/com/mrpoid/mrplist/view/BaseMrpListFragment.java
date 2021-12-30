@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FileFilter;
 
 import com.mrpoid.MrpoidMain;
-import com.mrpoid.mrpliset.R;
+import com.mrpoid.mrplist.R;
 import com.mrpoid.mrplist.app.HomeActivity;
 import com.mrpoid.mrplist.moduls.FileType;
 import com.mrpoid.mrplist.moduls.MpFile;

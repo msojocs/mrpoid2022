@@ -33,7 +33,7 @@ import android.widget.ListView;
 
 import com.edroid.common.utils.TextUtils;
 import com.edroid.common.utils.WorkThread;
-import com.mrpoid.mrpliset.R;
+import com.mrpoid.mrplist.R;
 import com.mrpoid.mrplist.moduls.MpFile;
 import com.mrpoid.mrplist.moduls.MpListAdapter;
 

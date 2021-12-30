@@ -209,19 +209,19 @@ public class Emulator implements Callback {
 	        return;
 
 	    try {
-			System.loadLibrary("mrpoid");
+//			System.loadLibrary("mrpoid");
+			cfg = EmuConfig.getInstance();
+			if(!bSoLoaded) {
+				MrpoidSettings.useFullDsm = MrpoidSettings.getBooleanS(mContext, MrpoidSettings.kUseFullDsm, false);
+				System.loadLibrary(MrpoidSettings.useFullDsm? "mrpoid2" : "mrpoid");
+				bSoLoaded = true;
+			}
 		}catch (Throwable e){
-	    	e.printStackTrace();
-	    	Log.e(TAG, "库加载失败");
-	    	UIUtils.toastMessage(getContext(), "库加载失败！");
-	    	return;
+			e.printStackTrace();
+			Log.e(TAG, "库加载失败");
+			UIUtils.toastMessage(getContext(), "库加载失败！");
+			return;
 		}
-        cfg = EmuConfig.getInstance();
-//		if(!bSoLoaded) {
-//			MrpoidSettings.useFullDsm = MrpoidSettings.getBooleanS(mContext, MrpoidSettings.kUseFullDsm, false);
-//			System.loadLibrary(MrpoidSettings.useFullDsm? "mrpoid2" : "mrpoid");
-//			bSoLoaded = true;
-//		}
 		
         screen = new EmuScreen(this);
         audio = new EmuAudio(this);

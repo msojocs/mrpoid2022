@@ -7,7 +7,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.mrpoid.mrpliset.R;
+import com.mrpoid.mrplist.R;
 import com.mrpoid.mrplist.view.ExplorerFragment;
 
 /**

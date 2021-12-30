@@ -56,7 +56,7 @@ import com.edroid.common.utils.UmengUtils;
 import com.mrpoid.MrpoidMain;
 import com.mrpoid.app.HelpActivity;
 import com.mrpoid.app.MrpoidSettingsActivity;
-import com.mrpoid.mrpliset.R;
+import com.mrpoid.mrplist.R;
 import com.mrpoid.mrplist.moduls.MrpInfo;
 import com.mrpoid.mrplist.moduls.MyFavoriteManager;
 import com.mrpoid.mrplist.moduls.PreferencesProvider;

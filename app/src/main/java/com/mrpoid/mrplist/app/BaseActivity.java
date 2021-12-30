@@ -7,7 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 
-import com.mrpoid.mrpliset.R;
+import com.mrpoid.mrplist.R;
 
 public class BaseActivity extends AppCompatActivity {
 

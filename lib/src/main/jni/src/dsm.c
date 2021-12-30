@@ -80,6 +80,10 @@ char 					dsmFactory[8] = DSM_TYPE;
 static MRAPP_IMAGE_SIZE_T dsmImageSize;
 
 
+static int mr_strlen(const char *s) {
+	return strlen(s);
+}
+
 void dsm_init()
 {
 	DsmPathInit();

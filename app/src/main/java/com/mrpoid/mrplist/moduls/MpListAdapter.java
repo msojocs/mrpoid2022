@@ -27,7 +27,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.mrpoid.mrpliset.R;
+import com.mrpoid.mrplist.R;
 
 
 /**

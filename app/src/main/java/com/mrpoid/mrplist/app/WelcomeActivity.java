@@ -1,6 +1,6 @@
 package com.mrpoid.mrplist.app;
 
-import com.mrpoid.mrpliset.R;
+import com.mrpoid.mrplist.R;
 import com.edroid.common.utils.UmengUtils;
 
 import android.Manifest;

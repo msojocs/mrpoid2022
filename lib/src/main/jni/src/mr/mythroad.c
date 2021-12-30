@@ -9499,7 +9499,7 @@ int32 _mr_getMetaMemLimit()
 
          pos = pos + 4;
 
-         if((this_packname[0] == '$')){
+         if(this_packname[0] == '$'){
             m0file_len = mr_ram_file_len;
          }else{
             MEMCPY(&_v[0], &mr_m0_file[pos], 4);

@@ -57,7 +57,7 @@ import com.edroid.common.utils.Md5Utils;
 import com.edroid.common.utils.TimeUtils;
 import com.edroid.common.utils.UIUtils;
 import com.mrpoid.MrpoidMain;
-import com.mrpoid.mrpliset.R;
+import com.mrpoid.mrplist.R;
 import com.mrpoid.mrplist.moduls.MyFavoriteManager;
 
 import java.io.File;

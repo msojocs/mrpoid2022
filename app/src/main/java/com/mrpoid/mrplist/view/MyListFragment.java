@@ -7,7 +7,7 @@ import androidx.fragment.app.ListFragment;
 import android.view.View;
 import android.widget.ListView;
 
-import com.mrpoid.mrpliset.R;
+import com.mrpoid.mrplist.R;
 
 public class MyListFragment extends ListFragment {
 

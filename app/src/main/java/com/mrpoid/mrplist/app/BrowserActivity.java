@@ -9,7 +9,7 @@ import android.view.SubMenu;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.mrpoid.mrpliset.R;
+import com.mrpoid.mrplist.R;
 import com.mrpoid.mrplist.view.BrowserFragment;
 
 public class BrowserActivity extends BaseActivity {

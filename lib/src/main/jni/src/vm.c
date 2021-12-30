@@ -18,8 +18,51 @@
 static char 		runMrpPath[DSM_MAX_FILE_LEN + 1];
 static QUEUE 		mQueue;
 static int 			b_timer_started = 0;
+static int 			b_thread_running = 0;
 
+//----------- native thread -------------------------------
+#define MSG_DEL(pmsg) \
+	if(pmsg->expand) free(pmsg->expand); free(pmsg);
 
+#define MSG_NEW \
+	(PT_MSG)malloc(sizeof(T_MSG))
+
+inline static void delMsg(ELEMENT *e)
+{
+    PT_MSG msg = (PT_MSG)e;
+    MSG_DEL(msg)
+}
+
+inline void vm_sendMsgDelay(int what, int arg0, int arg1, int arg2, void *expand, long ms)
+{
+    if(!b_thread_running)
+        return;
+
+    PT_MSG msg = MSG_NEW;
+
+    msg->what = what;
+    msg->arg0 = arg0;
+    msg->arg1 = arg1;
+    msg->arg2 = arg2;
+    msg->expand = expand;
+
+    enqueue(mQueue, (ELEMENT) msg, uptimems() + ms);
+}
+
+inline void vm_sendMsg(int what, int arg0, int arg1, int arg2, void *expand)
+{
+    vm_sendMsgDelay(what, arg0, arg1, arg2, expand, 0);
+}
+
+inline void vm_sendEmptyMsgDelay(int what, long ms)
+{
+    vm_sendMsgDelay(what, 0, 0, 0, NULL, ms);
+}
+
+inline void vm_sendEmptyMsg(int what)
+{
+    vm_sendMsgDelay(what, 0, 0, 0, NULL, 0);
+}
 
 //加载 MRP
 jint vm_loadMrp(JNIEnv * env, jobject self, jstring path)

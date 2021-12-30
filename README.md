@@ -1,9 +1,9 @@
-#Mrpoid OpenSource Project
+# Mrpoid OpenSource Project
 
 Mrpoid is create by yichou angle at about 2013, All the MRP emulators on the market are based on this projtct, If you like mrp just "git clone https://github.com/Yichou/mrpoid2018.git" come on and code it! 
 
-##Here is the changelog
-##交流群:209533157
+## Here is the changelog
+## 交流群:209533157
 
 ### 2018
 项目转移到 AndroidStudio 
