@@ -23,7 +23,6 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.res.Configuration;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.Toolbar;
@@ -97,7 +96,7 @@ public class HomeActivity extends AppCompatActivity implements OnClickListener,
     private boolean needRefresh = false;
     private View mStartDrawer;
     private DrawerLayout mDrawerLayout;
-    private ActionBarHelper mActionBar;
+    private ActionBarHelper mActionBarHelper;
     private ActionBarDrawerToggle mDrawerToggle;
 
 
@@ -116,11 +115,10 @@ public class HomeActivity extends AppCompatActivity implements OnClickListener,
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-
-        if (getSupportActionBar() != null)
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayUseLogoEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 //        getSupportActionBar().setElevation(0);
 //		getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0x80222222));
 
@@ -128,7 +126,6 @@ public class HomeActivity extends AppCompatActivity implements OnClickListener,
 
         ViewPager mPager = (ViewPager) findViewById(R.id.pager);
         mPager.setAdapter(new MyFragmentPagerAdapter(getSupportFragmentManager()));
-
 
         SlidingTabLayout slidingTabLayout = findViewById(R.id.sliding_tabs);
         slidingTabLayout.setCustomTabView(R.layout.tab_indicator, android.R.id.text1);
@@ -174,8 +171,8 @@ public class HomeActivity extends AppCompatActivity implements OnClickListener,
                 R.layout.drawer_list_item, R.id.title,
                 getResources().getStringArray(R.array.main_menu_items)));
         mMenuListView.setOnItemClickListener(new DrawerItemClickListener());
-        mActionBar = createActionBarHelper();
-        mActionBar.init();
+        mActionBarHelper = createActionBarHelper();
+        mActionBarHelper.init();
         mDrawerToggle = new ActionBarDrawerToggle(getActivity(), mDrawerLayout, R.string.drawer_open, R.string.drawer_close);
         mDrawerToggle.syncState();
 
@@ -460,13 +457,13 @@ public class HomeActivity extends AppCompatActivity implements OnClickListener,
         @Override
         public void onDrawerOpened(View drawerView) {
             mDrawerToggle.onDrawerOpened(drawerView);
-            mActionBar.onDrawerOpened();
+            mActionBarHelper.onDrawerOpened();
         }
 
         @Override
         public void onDrawerClosed(View drawerView) {
             mDrawerToggle.onDrawerClosed(drawerView);
-            mActionBar.onDrawerClosed();
+            mActionBarHelper.onDrawerClosed();
         }
 
         @Override

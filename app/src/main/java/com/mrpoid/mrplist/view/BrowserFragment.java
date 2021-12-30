@@ -12,6 +12,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -36,8 +41,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebView.HitTestResult;
 import android.webkit.WebViewClient;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
@@ -59,6 +62,7 @@ import com.mrpoid.mrplist.moduls.MyFavoriteManager;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -80,25 +84,23 @@ public class BrowserFragment extends Fragment implements DownloadListener, OnCli
 	ProgressBar mBar;
 	PopupWindow markWindow;
 	ListView markListView;
-	final List<String> markList = new ArrayList<String>();
+	final List<String> markList = new ArrayList<>();
 	static final String[] MARK_MENU = new String[]{"+收藏该页", "+新建书签"};
 	
 	static final String START_PAGE_URL = 
-			"http://edroid.cn/app/";
+			"https://mrp.jysafe.cn/Store/App/list/slug/MRPAPP";
 	static final String HOME_PAGE_URL = 
-			"http://edroid.cn/app/";
+			"https://mrp.jysafe.cn/";
 	
 	 private ValueCallback<Uri> mUploadMessage;
 	 private final static int FILECHOOSER_RESULTCODE = 1;
-	
-	
+	 Toolbar toolbar;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
 		initMarkMenu();
-		
+
 		checkCache();
 	}
 	
@@ -113,7 +115,6 @@ public class BrowserFragment extends Fragment implements DownloadListener, OnCli
 	 * 
 	 * 同时运行 多个mrp 逻辑
 	 */
-	
 	public void loadUrl(String url) {
 		mWebView.loadUrl(url);
 	}
@@ -123,7 +124,7 @@ public class BrowserFragment extends Fragment implements DownloadListener, OnCli
 		View markView = inflater.inflate(R.layout.popu_mark, null);
 		
 		float base = getResources().getDimension(R.dimen.dp1);
-		float h = getResources().getDimensionPixelSize(R.dimen.toobar_height);
+		float h = getResources().getDimensionPixelSize(R.dimen.toolbar_height);
 		
 		DisplayMetrics dm = getResources().getDisplayMetrics();
 		
@@ -148,34 +149,28 @@ public class BrowserFragment extends Fragment implements DownloadListener, OnCli
 			}
 		});
 		
-		markListView.setOnItemClickListener(new OnItemClickListener() {
+		markListView.setOnItemClickListener((parent, view, position, id) -> {
+			SharedPreferences sp = getActivity().getSharedPreferences("bookmarks", 0);
 
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				SharedPreferences sp = getActivity().getSharedPreferences("bookmarks", 0);
-				
-				if(position == 0) {
-					editMarket(mWebView.getTitle(), mWebView.getUrl());
-				} else if (position == 1) {
-					editMarket(null, null);
-				} else {
-					mWebView.loadUrl(sp.getString(markList.get(position), null));
-				}
-				
-				markWindow.dismiss();
+			if(position == 0) {
+				editMarket(mWebView.getTitle(), mWebView.getUrl());
+			} else if (position == 1) {
+				editMarket(null, null);
+			} else {
+				mWebView.loadUrl(sp.getString(markList.get(position), null));
 			}
+
+			markWindow.dismiss();
 		});
 	}
-	
+
 	private void showMarkMenu() {
 		SharedPreferences sp = getActivity().getSharedPreferences("bookmarks", 0);
 		
 		Map<String, ?> map = sp.getAll();
 		
 		markList.clear();
-		for(String s : MARK_MENU) {
-			markList.add(s);
-		}
+		Collections.addAll(markList, MARK_MENU);
 		for(Entry<String, ?> entry : map.entrySet()) {
 			markList.add(entry.getKey());
 		}
@@ -186,7 +181,7 @@ public class BrowserFragment extends Fragment implements DownloadListener, OnCli
 		
 		markWindow.showAtLocation(mWebView, Gravity.RIGHT|Gravity.BOTTOM, 
 				Math.round(5 * base), 
-				Math.round(5 * base) + 2*getResources().getDimensionPixelSize(R.dimen.toobar_height));
+				Math.round(5 * base) + 2*getResources().getDimensionPixelSize(R.dimen.toolbar_height));
 	}
 	
 	@Override
@@ -196,45 +191,54 @@ public class BrowserFragment extends Fragment implements DownloadListener, OnCli
 		onViewCreate(root);
 		return root;
 	}
-	
+
+	@Override
+	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+		toolbar = (Toolbar)view.findViewById(R.id.toolbar_a);
+		((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+		toolbar.setTitle("浏览器");
+
+		ActionBar supportActionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+		supportActionBar.setDisplayHomeAsUpEnabled(true);
+		supportActionBar.setDisplayShowHomeEnabled(true);
+		supportActionBar.setHomeButtonEnabled(true);
+	}
+
 	/**
 	 * webview 链接长按操作
 	 */
-	final MenuItem.OnMenuItemClickListener webMenuItemClickListener = new MenuItem.OnMenuItemClickListener() {
+	final MenuItem.OnMenuItemClickListener webMenuItemClickListener = item -> {
+		switch (item.getItemId()) {
+		case ID_SHARE:
+			Log.i("you click", "分享");
+			break;
+		case ID_DOWNLOAD:
+			Log.i("you click", "下载");
+			break;
+		case ID_COPY:
+			Log.i("you click", "复制");
+			break;
 
-		@Override
-		public boolean onMenuItemClick(MenuItem item) {
-			switch (item.getItemId()) {
-			case ID_SHARE:
-				Log.i("you click", "分享");
-				break;
-			case ID_DOWNLOAD:
-				Log.i("you click", "下载");
-				break;
-			case ID_COPY:
-				Log.i("you click", "复制");
-				break;
-				
-			case ID_MARK:
-				editMarket(null, item.getIntent().getDataString());
-				break;
-			}
-			
-			return true;
+		case ID_MARK:
+			editMarket(null, item.getIntent().getDataString());
+			break;
 		}
+
+		return true;
 	};
 	
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == FILECHOOSER_RESULTCODE) {
-			if (null == mUploadMessage)
-				return;
-			
-			Uri result = (data == null || resultCode != Activity.RESULT_OK)? null : data.getData();
-			mUploadMessage.onReceiveValue(result);
-			mUploadMessage = null;
-		}
-	}
+//	@Override
+//	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//		if (requestCode == FILECHOOSER_RESULTCODE) {
+//			if (null == mUploadMessage)
+//				return;
+//
+//			Uri result = (data == null || resultCode != Activity.RESULT_OK)? null : data.getData();
+//			mUploadMessage.onReceiveValue(result);
+//			mUploadMessage = null;
+//		}
+//	}
 	
 	private void initWebView() {
 		mWebView.setWebChromeClient(new WebChromeClient() {
@@ -251,8 +255,9 @@ public class BrowserFragment extends Fragment implements DownloadListener, OnCli
 			public void onReceivedTitle(WebView view, String title) {
 				super.onReceivedTitle(view, title);
 				
-				if(getActivity() != null) //有空指针异常
-					((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(title);
+				if(toolbar != null) { //有空指针异常
+					toolbar.setTitle(title);
+				}
 			}
 
 			@Override
@@ -365,13 +370,8 @@ public class BrowserFragment extends Fragment implements DownloadListener, OnCli
 			getActivity().deleteDatabase("webview.db");  
 			getActivity().deleteDatabase("webviewCache.db");
 			
-			sp.edit().putInt("day", curDay).commit();
+			sp.edit().putInt("day", curDay).apply();
 		}
-	}
-	
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
 	}
 	
 	protected void onViewCreate(View root) {

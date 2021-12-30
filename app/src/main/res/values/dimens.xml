@@ -6,7 +6,7 @@
 
     <!-- The default row height -->
     <dimen name="default_row_height">48dp</dimen>
-    <dimen name="toobar_height">48dp</dimen>
+    <dimen name="toolbar_height">48dp</dimen>
 
     <!-- The default buttom width -->
     <dimen name="default_buttom_width">56dp</dimen>

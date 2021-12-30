@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
@@ -10,6 +11,15 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <androidx.appcompat.widget.Toolbar xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/toolbar_a"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
         <WebView
             android:id="@+id/webView1"
             android:layout_width="match_parent"
@@ -17,17 +27,18 @@
             android:layout_weight="1" />
 
         <LinearLayout
-            android:id="@+id/toolbar"
+            android:id="@+id/toolbar_b"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/toobar_height"
+            android:background="?attr/colorPrimary"
+            android:layout_height="@dimen/toolbar_height"
             android:orientation="vertical"
-            android:visibility="gone">
+            >
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:background="@color/statusbar_div"
-                android:visibility="gone" />
+                 />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -43,7 +54,8 @@
                     android:background="@drawable/holo_button_selector"
                     android:contentDescription="@null"
                     android:scaleType="center"
-                    android:src="@drawable/ic_back" />
+                    android:src="@drawable/ic_back"
+                    tools:ignore="NestedWeights" />
 
                 <ImageView
                     android:id="@+id/iv_btn2"
