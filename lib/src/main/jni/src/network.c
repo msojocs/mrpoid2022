@@ -664,7 +664,7 @@ int32 mr_send(int32 s, const char *buf, int len)
 int32 mr_recvfrom(int32 s, char *buf, int len, int32 *ip, uint16 *port)
 {
 	if(gEmuEnv.showNet)
-		LOGI("mr_recvfrom %d ip=%s:%d", s, ip, *port);
+		LOGI("mr_recvfrom %d ip=%s:%d", s, (char *)ip, *port);
 
 	if(socStat[s].socStat == DSM_SOC_ERR)
 		return MR_FAILED;

@@ -45,7 +45,7 @@ include $(BUILD_SHARED_LIBRARY)
 #	network.c \
 #	utils.c \
 #	vm.c \
-#	msgqueue.c \
+#	lib/msgqueue.c \
 #	register_natives.c \
 #	encode.c \
 #	lib/TimeUtils.c \

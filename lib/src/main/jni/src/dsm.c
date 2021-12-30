@@ -136,10 +136,11 @@ int32 mr_getUserInfo1(mr_userinfo* info)
 	if(showApiLog) LOGI("mr_getUserInfo1");
 
 	memset(info, 0, sizeof(mr_userinfo));
-	strncpy(info->IMEI, (uint8 *)dsmIMEI, 15);
-	strncpy(info->IMSI, (uint8 *)dsmIMSI, 15);
+//	char* strncpy(char* __dst, const char* __src, size_t __n);
+	strncpy((char *)info->IMEI, dsmIMEI, 15);
+	strncpy((char *)info->IMSI, dsmIMSI, 15);
 	strncpy(info->manufactory, "mrpoid", 8);
-	strncpy(info->spare, (char *)"yichouangle", 12);
+	strncpy((char *)info->spare, (char *)"yichouangle", 12);
 	strncpy(info->type, "android ", 8);
 
 	info->ver = MAKE_PLAT_VERSION(gEmuEnv.platform, 8, 0, 18, 0);
@@ -589,7 +590,7 @@ void SetDsmSDPath(const char * path)
 	LOGI("new sdpath %s", SDPath);
 
 	char gbBuf[DSM_MAX_FILE_LEN + 1];
-	UTF8ToGBString(SDPath, gbBuf, DSM_MAX_FILE_LEN);
+	UTF8ToGBString((uint8 *)SDPath, (uint8 *)gbBuf, DSM_MAX_FILE_LEN);
 
 	strncpy(SDPath, gbBuf, sizeof(SDPath)-1);
 }
@@ -611,7 +612,7 @@ void SetDsmPath(const char *path)
 	LOGI("new dsmpath %s", dsmPath);
 
 	char gbBuf[DSM_MAX_FILE_LEN + 1];
-	UTF8ToGBString(dsmPath, gbBuf, DSM_MAX_FILE_LEN);
+	UTF8ToGBString((uint8 *)dsmPath, (uint8 *)gbBuf, DSM_MAX_FILE_LEN);
 
 	strncpy(dsmPath, gbBuf, sizeof(dsmPath)-1);
 	strcpy(dsmWorkPath, dsmPath);
@@ -776,7 +777,7 @@ char* get_filename(char * outputbuf, const char *filename)
 	snprintf(dsmFullPath, sizeof(dsmFullPath),
 			"%s%s%s", SDPath, dsmWorkPath, filename);
 	FormatPathString(dsmFullPath, '/');
-	GBToUTF8String(dsmFullPath, outputbuf, DSM_MAX_FILE_LEN);
+	GBToUTF8String((uint8 *)dsmFullPath, (uint8 *)outputbuf, DSM_MAX_FILE_LEN);
 	
 #if 0
 	//监控某些文件
@@ -1119,7 +1120,7 @@ MR_FILE_HANDLE mr_findStart(const char* name, char* buffer, uint32 len)
 	memset(buffer, 0, len);
 	if((pDir = opendir(get_filename(fullpathname, name))) != NULL) {
 		if((pDt = readdir(pDir)) != NULL) {
-			UTF8ToGBString(pDt->d_name, buffer, len);
+			UTF8ToGBString((uint8 *)pDt->d_name, (uint8 *)buffer, len);
 		} else {
 			LOGW("mr_findStart: readdir FAIL!");
 		}
@@ -1156,7 +1157,7 @@ int32 mr_findGetNext(MR_FILE_HANDLE search_handle, char* buffer, uint32 len)
 		if(gEmuEnv.showFile)
 			LOGI("mr_findGetNext %s", pDt->d_name);
 
-		UTF8ToGBString(pDt->d_name, buffer, len);
+		UTF8ToGBString((uint8 *)pDt->d_name, (uint8 *) buffer, len);
 		return MR_SUCCESS;
 	} else {
 		//查找完毕
