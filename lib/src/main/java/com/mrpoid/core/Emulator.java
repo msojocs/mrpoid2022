@@ -208,7 +208,14 @@ public class Emulator implements Callback {
 	    if(bInited)
 	        return;
 
-        System.loadLibrary("mrpoid");
+	    try {
+			System.loadLibrary("mrpoid");
+		}catch (Throwable e){
+	    	e.printStackTrace();
+	    	Log.e(TAG, "库加载失败");
+	    	UIUtils.toastMessage(getContext(), "库加载失败！");
+	    	return;
+		}
         cfg = EmuConfig.getInstance();
 //		if(!bSoLoaded) {
 //			MrpoidSettings.useFullDsm = MrpoidSettings.getBooleanS(mContext, MrpoidSettings.kUseFullDsm, false);

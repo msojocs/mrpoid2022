@@ -22,6 +22,11 @@ typedef enum {
 }E_VMMSG_ID;
 
 
+void vm_sendMsgDelay(int what, int arg0, int arg1, int arg2, void *expand, long ms);
+void vm_sendMsg(int what, int arg0, int arg1, int arg2, void *expand);
+void vm_sendEmptyMsgDelay(int what, long ms);
+void vm_sendEmptyMsg(int what);
+
 void vm_timerStart(long ms);
 void vm_timerStop();
 

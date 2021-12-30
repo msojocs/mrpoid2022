@@ -9427,7 +9427,7 @@ int FF_Divide( int dividend, int divisor )
 
 //extern char *strncpy(char * s1, const char * s2, int n);
 
-char *mr_strncpy(char * s1, const char * s2, int n)
+char *mr_strncpy(char * s1, const char * s2, uint32 n)
 {
   if (s1&&s2&&n){
     return strncpy(s1,s2,n);

@@ -20,11 +20,14 @@ public class FileManagerActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		setTheme(R.style.AppTheme);
 		super.onCreate(savedInstanceState);
+		// 设置显示用的布局
 		setContentView(R.layout.file_browser);
 		
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+		// 替换file_list 为 ExplorerFragment
 		ft.replace(R.id.file_list, new ExplorerFragment(), "main").commit();
 
+		// 设置顶部栏
 		Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 		ActionBar supportActionBar = getSupportActionBar();

@@ -68,6 +68,7 @@ typedef struct _EmuEnv {
 	char* exMem;			//拓展内存地址
 	uint16 *cacheScreenBuffer;	//缓冲屏幕地址
 	uint16 *screenBuffer;	//缓冲屏幕地址
+	uint32 b_nativeThread;
 }T_EMUENV;
 
 

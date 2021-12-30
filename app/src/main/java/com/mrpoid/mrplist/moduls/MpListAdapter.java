@@ -17,7 +17,6 @@ package com.mrpoid.mrplist.moduls;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import android.app.Activity;
 import android.content.Context;
@@ -99,7 +98,7 @@ public final class MpListAdapter extends BaseAdapter {
 		MpFile file = mList.get(position);
 
 		if (convertView == null) {
-			convertView = mInflater.inflate(R.layout.list_item, null);
+			convertView = mInflater.inflate(R.layout.file_list_item, null);
 			hoder = new ViewHoder();
 
 			hoder.icon = (ImageView) convertView.findViewById(R.id.imageView1);
