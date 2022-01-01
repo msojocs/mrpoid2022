@@ -46,28 +46,28 @@ typedef enum {
 
 
 typedef struct _EmuEnv {
-	int showInputLog; //系统事件输入logo
-	int showFile; //文件 I/O
-	int showMrPlat; //mr_plat/mr_platEx
-	int showNet; //网络
-	int showTimerLog; //定时器监视
-	int showFW; //显示框架消息
-	int showMrPrintf; //mr_printf
-	int androidDrawChar;	//使用 android 绘制字符
-	int useSysScreenbuf;	//使用系统屏幕缓冲区
-	int enableExram;		//拓展内存
-	int platform;			//平台号
-	int memSize;			//内存大小（单位 M）
-	int b_tsfInited;		//tsf 加载结果
-	int b_vm_running;		//vm正在运行标志
-	int font_sky_status;    //sky字体加载结果(风的影子)
-	struct timeval dsmStartTime; //虚拟机初始化时间，用来计算系统运行时间
-	char* vm_mem_base;		//虚拟机内存地址
-	int32 vm_mem_len;		//虚拟机内存大小
-	char* vm_mem_end;		//虚拟机内存地址
-	char* exMem;			//拓展内存地址
-	uint16 *cacheScreenBuffer;	//缓冲屏幕地址
-	uint16 *screenBuffer;	//缓冲屏幕地址
+	int showInputLog; 				// 系统事件输入logo
+	int showFile; 					// 文件 I/O
+	int showMrPlat; 				// mr_plat/mr_platEx
+	int showNet; 					// 网络
+	int showTimerLog; 				// 定时器监视
+	int showFW; 					// 显示框架消息
+	int showMrPrintf; 				// mr_printf
+	int androidDrawChar;			// 使用 android 绘制字符
+	int useSysScreenbuf;			// 使用系统屏幕缓冲区
+	int enableExram;				// 拓展内存
+	int platform;					// 平台号
+	int memSize;					// 内存大小（单位 M）
+	int b_tsfInited;				// tsf 加载结果
+	int b_vm_running;				// vm正在运行标志
+	int font_sky_status;    		// sky字体加载结果(风的影子)
+	struct timeval dsmStartTime; 	// 虚拟机初始化时间，用来计算系统运行时间
+	char* vm_mem_base;				// 虚拟机内存地址
+	int32 vm_mem_len;				// 虚拟机内存大小
+	char* vm_mem_end;				// 虚拟机内存地址
+	char* exMem;					// 拓展内存地址
+	uint16 *cacheScreenBuffer;		// 缓冲屏幕地址
+	uint16 *screenBuffer;			// 缓冲屏幕地址
 	uint32 b_nativeThread;
 }T_EMUENV;
 
@@ -171,27 +171,27 @@ extern T_PROCINFO			g_procInfo;
 
 
 ///////// 注册方法 J->N /////////////////////////////////////////
-void j2n_create(JNIEnv *env, jobject self, jobject mrpScreen, jobject emuAudio);
-int j2n_startMrp(JNIEnv * env, jobject self, jstring path);
-void j2n_pause(JNIEnv *env, jobject self);
-void j2n_resume(JNIEnv *env, jobject self);
-void j2n_stop(JNIEnv *env, jobject self);
-void j2n_event(JNIEnv *env, jobject self, jint code, jint p0, jint p1);
-int j2n_smsRecv(JNIEnv *env, jobject self, jstring content, jstring num);
-
-void j2n_destroy(JNIEnv * env, jobject self);
-int j2n_handleMessage(JNIEnv * env, jobject self, jint what, jint p0, jint p1);
-
-void j2n_setIntOptions(JNIEnv * env, jobject self, jstring key, jint value);
-jstring j2n_getStringOptions(JNIEnv * env, jobject self, jstring key);
-void j2n_setStringOptions(JNIEnv * env, jobject self, jstring key, jstring value);
-void j2n_callback(JNIEnv * env, jobject self, int what, int param);
-jstring j2n_getAppName(JNIEnv * env, jobject self, jstring path);
-void j2n_getMemoryInfo(JNIEnv * env, jobject self);
-
-void j2n_screenReset(JNIEnv * env, jobject self, jobject cacheBitmap, jobject realBitmap, jint width, jint height);
-void j2n_lockBitmap(JNIEnv * env, jobject self);
-void j2n_unLockBitmap(JNIEnv * env, jobject self);
+//void j2n_create(JNIEnv *env, jobject self, jobject mrpScreen, jobject emuAudio);
+//int j2n_startMrp(JNIEnv * env, jobject self, jstring path);
+//void j2n_pause(JNIEnv *env, jobject self);
+//void j2n_resume(JNIEnv *env, jobject self);
+//void j2n_stop(JNIEnv *env, jobject self);
+//void j2n_event(JNIEnv *env, jobject self, jint code, jint p0, jint p1);
+//int j2n_smsRecv(JNIEnv *env, jobject self, jstring content, jstring num);
+//
+//void j2n_destroy(JNIEnv * env, jobject self);
+//int j2n_handleMessage(JNIEnv * env, jobject self, jint what, jint p0, jint p1);
+//
+//void j2n_setIntOptions(JNIEnv * env, jobject self, jstring key, jint value);
+//jstring j2n_getStringOptions(JNIEnv * env, jobject self, jstring key);
+//void j2n_setStringOptions(JNIEnv * env, jobject self, jstring key, jstring value);
+//void j2n_callback(JNIEnv * env, jobject self, int what, int param);
+//jstring j2n_getAppName(JNIEnv * env, jobject self, jstring path);
+//void j2n_getMemoryInfo(JNIEnv * env, jobject self);
+//
+//void j2n_screenReset(JNIEnv * env, jobject self, jobject cacheBitmap, jobject realBitmap, jint width, jint height);
+//void j2n_lockBitmap(JNIEnv * env, jobject self);
+//void j2n_unLockBitmap(JNIEnv * env, jobject self);
 
 extern void mr_getMemoryInfo(uint32 *total, uint32 *free, uint32 *top);
 

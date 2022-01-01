@@ -11,7 +11,7 @@ extern char dsmFactory[8];
 #define DSM_CHWORD_H	16
 #define DSM_CHWORD_W	16
 
-#define DSM_SUPPROT_SOC_NUM                        (5)
+#define DSM_SUPPORT_SOC_NUM                        (5)
 
 /**
  * 协议：SDCARD 作为跟目录 以 /结尾

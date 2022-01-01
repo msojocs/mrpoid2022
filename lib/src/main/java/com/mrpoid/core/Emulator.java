@@ -205,6 +205,7 @@ public class Emulator implements Callback {
     }
 
     void init_i() {
+		Log.i(TAG, "加载os库");
 	    if(bInited)
 	        return;
 
@@ -372,7 +373,7 @@ public class Emulator implements Callback {
         running = true;
 
         // JNI启动MRP程序
-        native_startMrp(path);
+                                            native_startMrp(path);
     }
 	
 	/**

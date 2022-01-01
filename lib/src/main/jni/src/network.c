@@ -24,7 +24,7 @@
 
 
 
-T_DSM_SOC_STAT socStat[DSM_SUPPROT_SOC_NUM];
+T_DSM_SOC_STAT socStat[DSM_SUPPORT_SOC_NUM];
 mr_socket_struct mr_soc;
 
 static pthread_t thread_id = 0;
@@ -40,7 +40,7 @@ void DsmSocketInit()
 {
 	int i =0;
 
-	for(i = 0;i<DSM_SUPPROT_SOC_NUM;i++)
+	for(i = 0; i < DSM_SUPPORT_SOC_NUM; i++)
 		socStat[i].socketId = MR_FAILED;
 }
 
@@ -48,7 +48,7 @@ void DsmSocketClose()
 {
 	int i =0;
 
-	for(i = 0;i<DSM_SUPPROT_SOC_NUM;i++){
+	for(i = 0; i < DSM_SUPPORT_SOC_NUM; i++){
 		if(socStat[i].socketId != MR_FAILED)
 			close(socStat[i].socketId);
 
@@ -233,7 +233,7 @@ static int32 dsmGetSocketFreeIndex(void)
 {
 	int i = 0;
 
-	for(i =0;i<DSM_SUPPROT_SOC_NUM;i++)
+	for(i =0; i < DSM_SUPPORT_SOC_NUM; i++)
 	{
 		if(socStat[i].socketId == MR_FAILED)
 			return i;

@@ -15,6 +15,8 @@
  */
 package com.mrpoid.core;
 
+import static android.content.Context.TELEPHONY_SERVICE;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -44,6 +46,7 @@ import android.util.Log;
  *
  */
 public class EmuUtils {
+	private static String TAG = EmuUtils.class.getSimpleName();
 	public static int getNetworkType(Context context) {
 		ConnectivityManager connectivity = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
 		
@@ -55,15 +58,15 @@ public class EmuUtils {
 				// 判断当前网络是否已经连接
 				if (info.getState() == NetworkInfo.State.CONNECTED) {
 					if(info.getType() == ConnectivityManager.TYPE_WIFI){
-						Log.d("", "getNetworkType is WIFI.");
+						Log.d(TAG, "getNetworkType is WIFI.");
 						return MrDefines.NETTYPE_WIFI;
 					}else if(info.getType() == ConnectivityManager.TYPE_MOBILE){
 						String extInfo = info.getExtraInfo();
 						if(extInfo != null && extInfo.toLowerCase().contains("wap")){
-							Log.d("", "getNetworkType is WAP."); 
+							Log.d(TAG, "getNetworkType is WAP.");
 							return MrDefines.NETTYPE_CMWAP;
 						}else {
-							Log.d("", "getNetworkType is NET.");
+							Log.d(TAG, "getNetworkType is NET.");
 							return MrDefines.NETTYPE_CMNET;
 						}
 					}
@@ -75,7 +78,7 @@ public class EmuUtils {
 	}
 	
 	public static int getNetworkID(Context context) {
-		String str = ((TelephonyManager) context.getSystemService("phone"))
+		String str = ((TelephonyManager) context.getSystemService(TELEPHONY_SERVICE))
 				.getSubscriberId();
 
 		if (str == null)
@@ -145,7 +148,7 @@ public class EmuUtils {
 	}
 	
 	public static String getDateTimeNow() {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/mm/dd HH:mm:ss", Locale.CHINA);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.CHINA);
 		return sdf.format(new Date());
 	}
 	
