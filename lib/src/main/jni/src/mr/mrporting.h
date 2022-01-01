@@ -304,7 +304,7 @@ extern int32 mr_pauseApp(void);
 extern int32 mr_resumeApp(void);
 
 /*当手机收到短消息时调用该函数*/
-extern int32 mr_smsIndiaction(uint8 *pContent, int32 nLen, uint8 *pNum, int32 type);
+extern int32 mr_smsIndication(uint8 *pContent, int32 nLen, uint8 *pNum, int32 type);
 
 /*对下载内容（保存在内存区中的一个下载的文件）进行判断，
 若下载文件是DSM菜单，由DSM引擎对下载文件进行保存。使用
@@ -481,8 +481,14 @@ extern const char* mr_editGetText(int32 edit);
 extern int32 mr_winCreate(void);
 extern int32 mr_winRelease(int32 win);
 
-extern int32 mr_getScreenInfo(mr_screeninfo * screeninfo);
-
+/**
+* 获取屏幕信息
+* 屏幕宽，屏幕高
+* 比特
+* @param s 存取信息结构体
+* @return MR_SUCCESS
+*/
+extern int32 mr_getScreenInfo(mr_screeninfo * screenInfo);
 
 /*Socket接口*/
 extern int32 mr_initNetwork(MR_INIT_NETWORK_CB cb, const char *mode);

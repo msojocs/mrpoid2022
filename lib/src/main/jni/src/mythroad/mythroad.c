@@ -477,7 +477,7 @@ static int32 _mr_TestCom1(int32 L, int input0, char* input1, int32 len)
         ret = mr_newSIMInd(((len << 16) >> 16), input1);
         break;
     case 701:
-        ret = mr_smsIndiaction(input1, len, input1 + 1, *(input1 + 2));
+        ret = mr_smsIndication(input1, len, input1 + 1, *(input1 + 2));
         break;
     case 900:
         ret = mr_platEx(200001, (uint8*)&_mr_c_port_table, 0x10, NULL, NULL, NULL);
@@ -1250,16 +1250,16 @@ int32 mr_timer(void){
 }
 
 /*当手机收到短消息时调用该函数*/
-int32 mr_smsIndiaction(uint8 *pContent, int32 nLen, uint8 *pNum, int32 type){
+int32 mr_smsIndication(uint8 *pContent, int32 nLen, uint8 *pNum, int32 type){
     int32 ret;
 
 #ifdef LOG_EVENT
-	LOGI("mr_smsIndiaction(content=%#p, len=%d, num=%s, type=%d)", pContent, nLen, pNum, type);
+	LOGI("mr_smsIndication(content=%#p, len=%d, num=%s, type=%d)", pContent, nLen, pNum, type);
 #endif
 
     mr_sms_return_flag = 0;
 
-    // 这段代码来自_mr_smsIndiaction
+    // 这段代码来自_mr_smsIndication
     if (mr_state == 1 || (mr_timer_run_without_pause && mr_state == 2))
     {
         c_event_st.code = 7;
@@ -1271,7 +1271,7 @@ int32 mr_smsIndiaction(uint8 *pContent, int32 nLen, uint8 *pNum, int32 type){
     }
     /*-----------------------------------*/
 
-    ret = _mr_smsIndiaction(pContent, nLen, pNum, type);
+    ret = _mr_smsIndication(pContent, nLen, pNum, type);
 
     if (mr_sms_return_flag == 1)
         ret = mr_sms_return_val;

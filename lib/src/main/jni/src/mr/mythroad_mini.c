@@ -635,9 +635,14 @@ static int32 _mr_mod(int32 a, int32 b)
 	return a%b;
 }
 
-
+/**
+* 内存申请与地址初始化
+* @param ram 内存大小
+* @return MR_FAILED | MR_SUCCESS
+*/
 static int32 _mr_mem_init_ex(int32 ram)
 {
+//	内存申请
 #if 1
 	if (mr_mem_get(&Origin_LG_mem_base, &Origin_LG_mem_len) != MR_SUCCESS)
 #else
@@ -646,6 +651,11 @@ static int32 _mr_mem_init_ex(int32 ram)
 	{
 		return MR_FAILED;
 	}
+	/**
+	* 确保地址低两位为0
+	* 为了避免地址向地位溢出，+3
+	* (~3)   28个1 1100
+	*/
 	LG_mem_base = (char*)((uint32)(Origin_LG_mem_base + 3) & (~3));
 	LG_mem_len = (Origin_LG_mem_len - (LG_mem_base - Origin_LG_mem_base)) & (~3);
 	LG_mem_end = LG_mem_base + LG_mem_len;
@@ -762,7 +772,6 @@ void mr_free(void* p, uint32 len)
 		return;                     
 	}
 #endif
-
 
 	free = &LG_mem_free;                      
 	n = (LG_mem_free_t *) (LG_mem_base + free->next);
@@ -4799,11 +4808,11 @@ static int _mr_TestCom1(mrp_State* L, int input0, char* input1, int32 len)
 #if 0
 			uint8* pNum = ((uint8*)  mrp_tostring(L,3));
 			int32 type = ((int32)  mr_L_optnumber(L, 4, MR_ENCODE_ASCII));
-			ret = mr_smsIndiaction((uint8*)input1, len, pNum, type);
+			ret = mr_smsIndication((uint8*)input1, len, pNum, type);
 #else
 			uint8* pNum = ((uint8*)  (input1+1));
 			int32 type = *((int32*)  (input1+2));
-			ret = mr_smsIndiaction((uint8*)input1, len, pNum, type);
+			ret = mr_smsIndication((uint8*)input1, len, pNum, type);
 #endif
 			break;
 		}
@@ -5323,7 +5332,12 @@ int32 mr_doExt(char* extName)
 	return MR_SUCCESS;
 }
 
-
+/**
+* 运行MRP文件·真
+* @param appExName 启动文件
+* @param entry MRP文件
+* @return
+*/
 static int32 _mr_intra_start(char* appExName, const char* entry)
 {
 	int i,ret;
@@ -5332,9 +5346,8 @@ static int32 _mr_intra_start(char* appExName, const char* entry)
 	mr_flagReadFileForPlat = FALSE;
 #endif
 
-	//MRDBGPRINTF("restart timer15");
-	//mr_sleep(50);
-
+	// MRDBGPRINTF("restart timer15");
+	// mr_sleep(50);
 
 #if defined(MR_BREW_OTA_MOD)
 	{
@@ -5346,7 +5359,6 @@ static int32 _mr_intra_start(char* appExName, const char* entry)
 
 	getAppInfo();
 	//ret = mr_plat(1250, mrc_appInfo_st.ram);
-
 
 	Origin_LG_mem_len = _mr_getMetaMemLimit();
 
@@ -5433,6 +5445,7 @@ static int32 _mr_intra_start(char* appExName, const char* entry)
 
 
 	//ret = mrp_dofile(vm_state, appExName);
+	// 尝试加载自定义的 启动入口
 	ret = mr_doExt(appExName);
 	if (0 != ret)
 		ret = mr_doExt("logo.ext"); //尝试加载 logo.ext
@@ -6411,7 +6424,7 @@ static const char *_mr_memfind_c (const char *s1, size_t l1,
 
 
 
-static int32 _mr_smsIndiaction(uint8 *pContent, int32 nLen, uint8 *pNum, int32 type)//nLen 变为 int32，方便以后扩展
+static int32 _mr_smsIndication(uint8 *pContent, int32 nLen, uint8 *pNum, int32 type)//nLen 变为 int32，方便以后扩展
 {
 	uint8   outbuf[160];
 	int32   memlen;
@@ -6511,7 +6524,7 @@ static int32 _mr_smsIndiaction(uint8 *pContent, int32 nLen, uint8 *pNum, int32 t
 		return MR_IGNORE;
 	}
 
-	MRDBGPRINTF("mr_smsIndiaction check ok!");
+	MRDBGPRINTF("mr_smsIndication check ok!");
 	{
 		int32 f;
 		f = _mr_load_sms_cfg();
@@ -6546,7 +6559,7 @@ static int32 _mr_smsIndiaction(uint8 *pContent, int32 nLen, uint8 *pNum, int32 t
 					break;
 				case 5:
 					tempret = _mr_smsSetBytes(CFG_USE_UNICODE_OFFSET, (char*)(chunk+1), 1);
-					//MRDBGPRINTF("mr_smsIndiaction UNICODE!");
+					//MRDBGPRINTF("mr_smsIndication UNICODE!");
 					break;
 				case 6:
 					tempret = _mr_smsSetBytes( ( (*(chunk+1)) * 256 )+ (*(chunk+2) ) , (char*)(chunk+4), *(chunk+3));
@@ -6576,7 +6589,7 @@ static int32 _mr_smsIndiaction(uint8 *pContent, int32 nLen, uint8 *pNum, int32 t
 }
 
 /**********************************************
-*name:        mr_smsIndiaction
+*name:        mr_smsIndication
 *description: get a new sms coming, check it whether was send by cmd server
 *input:
 *                  pNum---pointer to the Num address
@@ -6588,11 +6601,11 @@ static int32 _mr_smsIndiaction(uint8 *pContent, int32 nLen, uint8 *pNum, int32 t
 *            MR_IGNORE--- normal sms , do not do mr treating.
 *Note: 
 ***********************************************/
-int32 mr_smsIndiaction(uint8 *pContent, int32 nLen, uint8 *pNum, int32 type)//nLen 变为 int32，方便以后扩展
+int32 mr_smsIndication(uint8 *pContent, int32 nLen, uint8 *pNum, int32 type)//nLen 变为 int32，方便以后扩展
 {
 	int32 ret;
 	mr_sms_return_flag=0;
-	ret = _mr_smsIndiaction(pContent, nLen, pNum, type);
+	ret = _mr_smsIndication(pContent, nLen, pNum, type);
 	if (mr_sms_return_flag==1)
 		ret =  mr_sms_return_val;
 	return ret;

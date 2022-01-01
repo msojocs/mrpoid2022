@@ -136,7 +136,7 @@ extern JNIEnv		*gVmJniEnv;
 
 extern T_EMUENV			gEmuEnv; //API LOG 控制
 
-extern int					showApiLog;
+extern int					showApiLog;			// 显示日志
 extern uint16				*cacheScreenBuffer;	//缓冲屏幕地址
 extern mr_socket_struct 	mr_soc;
 extern T_DSM_MEDIA_PLAY 	dsmMediaPlay; //音乐播放接口回调

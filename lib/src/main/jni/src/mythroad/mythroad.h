@@ -89,7 +89,7 @@ p是启动定时器时传入的Mythroad定时器数据*/
 int32 mr_timer(void);
 
 /*当手机收到短消息时调用该函数*/
-int32 mr_smsIndiaction(uint8 *pContent, int32 nLen, uint8 *pNum, int32 type);
+int32 mr_smsIndication(uint8 *pContent, int32 nLen, uint8 *pNum, int32 type);
 
 /*对下载内容（保存在内存区中的一个下载的文件）进行判断，
 若下载文件是DSM菜单，由DSM引擎对下载文件进行保存。使用

@@ -24,6 +24,7 @@ import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.graphics.Point;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 /**
  * 配置管理
@@ -57,7 +58,7 @@ public class MrpoidSettings implements OnSharedPreferenceChangeListener {
 	
 	public static boolean enableKeyVirb = true;
 	public static boolean fullScnEditor = false;
-	public static boolean catchVolumekey = false;
+	public static boolean catchVolumeKey = false;
 	public static boolean dpadAtLeft = false;
 	public static boolean autoUpdate = false;
 	public static boolean notHintAdvSet = false;
@@ -73,7 +74,7 @@ public class MrpoidSettings implements OnSharedPreferenceChangeListener {
 	public static boolean limitInputLength = true;
 	public static boolean usePrivateDir = false;
 	public static boolean useFullDsm = false;
-	public static String mythoadPath = "";
+	public static String mythroadPath = "";
 	public static String sdPath = "";
 	public static String privateDir;
 	
@@ -103,7 +104,7 @@ public class MrpoidSettings implements OnSharedPreferenceChangeListener {
 	
 	private Context context;
 	public SharedPreferences sp;
-	private boolean bInited; //初始化标志
+	private boolean bInitialized; //初始化标志
 	
 	private static MrpoidSettings instance;
 	
@@ -128,7 +129,7 @@ public class MrpoidSettings implements OnSharedPreferenceChangeListener {
 		e.putBoolean(kFullScreenEdit, fullScnEditor);
 		e.putBoolean(kLimitInputLength, limitInputLength);
 		
-		e.commit();
+		e.apply();
 	}
 	
 	public void tempRead() {
@@ -156,7 +157,7 @@ public class MrpoidSettings implements OnSharedPreferenceChangeListener {
 		
 //		e.putBoolean(KEY_SHOW_STATUSBAR, showStatusBar);
 		
-		e.commit();
+		e.apply();
 	}
 	
 	// apilog 选项
@@ -200,7 +201,7 @@ public class MrpoidSettings implements OnSharedPreferenceChangeListener {
 		noKey = sp.getBoolean("noKey", false);
 		enableAntiAtial = sp.getBoolean(kEnableAntiAtial, true);
 		fullScnEditor = sp.getBoolean("fullScnEditor", false);
-		catchVolumekey = sp.getBoolean("catchVolumekey", B_DEF_CATCH_VOLUME_KEY);
+		catchVolumeKey = sp.getBoolean("catchVolumeKey", B_DEF_CATCH_VOLUME_KEY);
 		volume = sp.getInt("volume", 100);
 		enableSound = sp.getBoolean("enableSound", true);
 		showMemInfo = sp.getBoolean("showMemInfo", false);
@@ -210,7 +211,7 @@ public class MrpoidSettings implements OnSharedPreferenceChangeListener {
 		enableKeyVirb = sp.getBoolean(kEnableKeyVirb, true);
 		usePrivateDir = sp.getBoolean(kUsePrivateDir, false);
 		sdPath = sp.getString(kSdcardPath, Emulator.SDCARD_ROOT);
-		mythoadPath = sp.getString(kMythroadPath, Emulator.DEF_WORK_PATH);
+		mythroadPath = sp.getString(kMythroadPath, Emulator.DEF_WORK_PATH);
 		privateDir = context.getFilesDir().getAbsolutePath() + "/"; //以 / 结尾
 		useFullDsm = sp.getBoolean(kUseFullDsm, false);
 		
@@ -281,8 +282,8 @@ public class MrpoidSettings implements OnSharedPreferenceChangeListener {
 			sdPath = sp.getString(kSdcardPath, Emulator.SDCARD_ROOT);
 			Emulator.getInstance().setVmRootPath(sdPath);
 		} else if (key.equals(kMythroadPath)) {
-			mythoadPath = sp.getString(kMythroadPath, Emulator.DEF_WORK_PATH);
-			Emulator.getInstance().setVmWorkPath(mythoadPath);
+			mythroadPath = sp.getString(kMythroadPath, Emulator.DEF_WORK_PATH);
+			Emulator.getInstance().setVmWorkPath(mythroadPath);
 		} else if (key.equals(kScreenSize)) {
 
 			if (differentPath) {
@@ -290,7 +291,7 @@ public class MrpoidSettings implements OnSharedPreferenceChangeListener {
 		} else if (key.equals("showFloatButton")) {
 			showFloatButton = sp.getBoolean(key, false);
 		} else if (key.equals("catchVolumekey")) {
-			catchVolumekey = sp.getBoolean("catchVolumekey", B_DEF_CATCH_VOLUME_KEY);
+			catchVolumeKey = sp.getBoolean("catchVolumekey", B_DEF_CATCH_VOLUME_KEY);
 		} else if (key.equals("platform")) {
 //			emulator.setIntOptions(key, Integer.valueOf(sp.getString(key, "12")));
 		} else if (key.equals(kVmMem)) {
@@ -298,7 +299,7 @@ public class MrpoidSettings implements OnSharedPreferenceChangeListener {
 		} else if (key.equals(kMultiPath)) {
 			differentPath = sp.getBoolean(key, B_DEF_MULTI_PATH);
 			
-			System.out.println("mutil = " + differentPath);
+			Log.i(TAG, "multi = " + differentPath);
 			
 			Emulator.getInstance().initPath();
 		} else if (key.equals(kLimitInputLength)) {
@@ -312,7 +313,7 @@ public class MrpoidSettings implements OnSharedPreferenceChangeListener {
 		} else if (key.equals(kUsePrivateDir)) {
 			usePrivateDir = sp.getBoolean(kUsePrivateDir, false);
 			
-			System.out.println("private = " + usePrivateDir);
+			Log.i(TAG, "private = " + usePrivateDir);
 			
 			Emulator.getInstance().initPath(); //重新初始化
 		} else if (key.equals(kUseFullDsm)) {

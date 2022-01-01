@@ -234,16 +234,21 @@ Java_com_mrpoid_core_Emulator_native_1init(JNIEnv *env, jobject self, jobject mr
          self, mrpScreen,emuAudio, obj_emulator, obj_mrpScreen, obj_emuAudio);
 }
 
+// 启动MRP
 JNIEXPORT jint JNICALL
 Java_com_mrpoid_core_Emulator_native_1startMrp(JNIEnv * env, jobject self, jstring path)
 {
+	// jni的访问string方式
 	const char *str = (*env)->GetStringUTFChars(env, path, JNI_FALSE);
 	if(str)
 	{
 		LOGD("vm_loadMrp entry:%s", str);
+		// MRP路径UTF8转GBK，存到runMrpPath
 		UTF8ToGBString((uint8 *)str, (uint8 *)runMrpPath, sizeof(runMrpPath));
 
+		// 释放MRP路径所用内存
         (*env)->ReleaseStringUTFChars(env, path, str);
+        // 清理异常
         (*env)->ExceptionClear(env);
 
 //		if(!gEmuEnv.b_tsfInited)
@@ -255,8 +260,10 @@ Java_com_mrpoid_core_Emulator_native_1startMrp(JNIEnv * env, jobject self, jstri
         dsm_init();
 
 #ifdef DSM_FULL
+        // 完整版虚拟机
 		mr_start_dsm(runMrpPath);
 #else
+		// 精简版虚拟机，使用cfunction.ext启动
 		mr_start_dsmC("cfunction.ext", runMrpPath);
 #endif
 		LOGI("运行结束，返回");
@@ -342,7 +349,7 @@ Java_com_mrpoid_core_Emulator_native_1smsRecv(JNIEnv *env, jobject self, jstring
 
 			UTF8ToGBString((uint8 *)contentStr, (uint8 *)buf2, sizeof(buf2));
 
-			ret = mr_smsIndiaction((uint8 *)buf2, strlen(buf2), (uint8 *)buf, MR_ENCODE_ASCII);
+			ret = mr_smsIndication((uint8 *) buf2, strlen(buf2), (uint8 *) buf, MR_ENCODE_ASCII);
 
 			(*env)->ReleaseStringUTFChars(env, content, contentStr);
 		}

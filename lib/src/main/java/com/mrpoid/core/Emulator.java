@@ -60,10 +60,10 @@ public class Emulator implements Callback {
 	
 	public static final String SDCARD_ROOT = Environment.getExternalStorageDirectory().getPath() + "/";
 	public static final String DEF_WORK_PATH = "mythroad/";
-	public static final String PUBLIC_STROAGE_PATH = SDCARD_ROOT + "Mrpoid/";
+	public static final String PUBLIC_STORAGE_PATH = SDCARD_ROOT + "Mrpoid/";
 
 	/*SD卡最低可用容量*/
-	public static final int DEF_MIN_SDCARD_SACE_MB = 8;
+	public static final int DEF_MIN_SDCARD_SPACE_MB = 8;
 
 	
 	private static final int MSG_TIMER_OUT = 0x01,
@@ -134,7 +134,7 @@ public class Emulator implements Callback {
 		Log.i(TAG, String.format("%X handleMessage: %s", msg.what, msg));
         switch (msg.what) {
 			case MSG_HEART: {
-				log.w("thrad alive----------- " + alive++);
+				log.w("thread alive----------- " + alive++);
 				handler.sendEmptyMessageDelayed(MSG_HEART, 30000);
 				break;
 			}
@@ -164,7 +164,7 @@ public class Emulator implements Callback {
                 stop_i();
                 break;
             case MSG_MRP_EVENT:
-                native_event((Integer) msg.obj, msg.arg1, msg.arg2); //获取不到，暂时返回都是0
+                native_event((Integer) msg.obj, msg.arg1, msg.arg2); // 获取不到，暂时返回都是0
                 break;
             case MSG_INIT:
                 init_i();
@@ -188,9 +188,9 @@ public class Emulator implements Callback {
 	}
 
 	/**
-	 * memory recyle when exit
+	 * memory recycle when exit
 	 */
-	public void recyle() {
+	public void recycle() {
 		native_destroy();
 		audio.recyle();
 		screen.recyle();
@@ -272,12 +272,12 @@ public class Emulator implements Callback {
 	}
 	
 	void initFont() {
-		String fontfile = getVmFullPath() + "system/gb16_mrpoid.uc2";
-		Log.i(TAG, "font path=" + fontfile);
-		FileUtils.assetToFileIfNotExist(mContext, "fonts/gb16_mrpoid.uc2", new File(fontfile));
+		String fontFile = getVmFullPath() + "system/gb16_mrpoid.uc2";
+		Log.i(TAG, "font path=" + fontFile);
+		FileUtils.assetToFileIfNotExist(mContext, "fonts/gb16_mrpoid.uc2", new File(fontFile));
 	}
 	
-	public boolean isInited() {
+	public boolean isInitialized() {
 		return bInited;
 	}
 	
@@ -784,7 +784,7 @@ public class Emulator implements Callback {
 	//-----------------------------------------------------------
 
 	public void initPath() {
-		if(!FileUtils.isSDAvailable(DEF_MIN_SDCARD_SACE_MB)) {
+		if(!FileUtils.isSDAvailable(DEF_MIN_SDCARD_SPACE_MB)) {
 //			MrpoidSettings.usePrivateDir = true;
 //			Toast.makeText(context, "没有SD卡！", Toast.LENGTH_SHORT).show();
 		}
@@ -842,9 +842,9 @@ public class Emulator implements Callback {
 	 * @return
 	 */
 	public static File getPublicFilePath(String name){
-		File file = new File(PUBLIC_STROAGE_PATH);
+		File file = new File(PUBLIC_STORAGE_PATH);
 		FileUtils.createDir(file);
-		return new File(PUBLIC_STROAGE_PATH, name);
+		return new File(PUBLIC_STORAGE_PATH, name);
 	}
 	
 	/**

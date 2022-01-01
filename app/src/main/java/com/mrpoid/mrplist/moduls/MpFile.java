@@ -13,11 +13,11 @@ import com.edroid.common.utils.TimeUtils;
  */
 public class MpFile implements Comparable<MpFile> {
 	private String path;
-	private String name;
+	private final String name;
 	
 	private FileType type;
 	private long length;
-	private boolean isDir;
+	private final boolean isDir;
 	private boolean isParent;
 	String lastTimeS;
 	

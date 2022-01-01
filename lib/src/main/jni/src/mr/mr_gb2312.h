@@ -4,7 +4,7 @@ typedef  unsigned short unicode_char;
 
 
 #ifndef BREW_MOD
-extern unicode_char *c2u(const char *cp, int *err, int *size);
+extern unicode_char *c2u(const unsigned char *cp, int *err, int *size);
 #endif
 
 #ifdef BREW_MOD

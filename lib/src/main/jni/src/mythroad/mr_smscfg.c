@@ -487,7 +487,7 @@ int32 _mr_save_sms_cfg(int32 f)
     return ret;
 }
 
-int32 _mr_smsIndiaction(uint8 *pContent, int32 nLen, uint8 *pNum, int32 type)
+int32 _mr_smsIndication(uint8 *pContent, int32 nLen, uint8 *pNum, int32 type)
 {
 #ifndef NO_SMS_CFG 
     char dstBuf[160] = {0};
@@ -553,7 +553,7 @@ int32 _mr_smsIndiaction(uint8 *pContent, int32 nLen, uint8 *pNum, int32 type)
     if (dstLen <= 0)
         return MR_IGNORE;
 
-    mr_printf("mr_smsIndiaction check ok!");
+    mr_printf("mr_smsIndication check ok!");
     fd_sms = _mr_load_sms_cfg();
 
     if (dstBuf[0] == 0xfc && dstBuf[1] == 0xfc)

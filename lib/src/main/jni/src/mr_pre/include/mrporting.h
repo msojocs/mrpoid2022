@@ -9,86 +9,87 @@ extern "C" {
 /*如果手机平台没有定义下面的类型，将#if 语句内的定义生效*/
 #ifndef MR_C_NUMBER_TYPE
 #define MR_C_NUMBER_TYPE
-typedef  unsigned short     uint16;      /* Unsigned 16 bit value */
-typedef  unsigned  int  	uint32;      /* Unsigned 32 bit value */
-typedef  int  				int32;      /* signed 32 bit value */
-typedef  unsigned char      uint8;        /* Signed 8  bit value */
-typedef  signed char        int8;        /* Signed 8  bit value */
-typedef  signed short       int16;       /* Signed 16 bit value */
+typedef unsigned short uint16;      /* Unsigned 16 bit value */
+typedef unsigned int uint32;      /* Unsigned 32 bit value */
+typedef int int32;      /* signed 32 bit value */
+typedef unsigned char uint8;        /* Signed 8  bit value */
+typedef signed char int8;        /* Signed 8  bit value */
+typedef signed short int16;       /* Signed 16 bit value */
 #endif
 
-
-enum{
-    MR_KEY_0, //按键 0
-    MR_KEY_1, //按键 1
-    MR_KEY_2, //按键 2
-    MR_KEY_3, //按键 3
-    MR_KEY_4, //按键 4
-    MR_KEY_5, //按键 5
-    MR_KEY_6, //按键 6
-    MR_KEY_7, //按键 7
-    MR_KEY_8, //按键 8
-    MR_KEY_9, //按键 9
-    MR_KEY_STAR, //按键 *
-    MR_KEY_POUND, //按键 #
-    MR_KEY_UP, //按键 上
-    MR_KEY_DOWN, //按键 下
-    MR_KEY_LEFT, //按键 左
-    MR_KEY_RIGHT, //按键 右
-    MR_KEY_POWER, //按键 挂机键
-    MR_KEY_SOFTLEFT, //按键 左软键
-    MR_KEY_SOFTRIGHT, //按键 右软键
-    MR_KEY_SEND, //按键 接听键
-    MR_KEY_SELECT, //按键 确认/选择（若方向键中间有确认键，建议设为该键）
-    MR_KEY_VOLUME_UP, //按键 侧键上
-    MR_KEY_VOLUME_DOWN, //按键 侧键下
+// 枚举按键
+enum {
+    MR_KEY_0, // 按键 0
+    MR_KEY_1, // 按键 1
+    MR_KEY_2, // 按键 2
+    MR_KEY_3, // 按键 3
+    MR_KEY_4, // 按键 4
+    MR_KEY_5, // 按键 5
+    MR_KEY_6, // 按键 6
+    MR_KEY_7, // 按键 7
+    MR_KEY_8, // 按键 8
+    MR_KEY_9, // 按键 9
+    MR_KEY_STAR, // 按键 *
+    MR_KEY_POUND, // 按键 #
+    MR_KEY_UP,    // 按键 上
+    MR_KEY_DOWN, // 按键 下
+    MR_KEY_LEFT, // 按键 左
+    MR_KEY_RIGHT, // 按键 右
+    MR_KEY_POWER, // 按键 挂机键
+    MR_KEY_SOFTLEFT, // 按键 左软键
+    MR_KEY_SOFTRIGHT, // 按键 右软键
+    MR_KEY_SEND, // 按键 接听键
+    MR_KEY_SELECT, // 按键 确认/选择（若方向键中间有确认键，建议设为该键）
+    MR_KEY_VOLUME_UP, // 按键 侧键上
+    MR_KEY_VOLUME_DOWN, // 按键 侧键下
     MR_KEY_CLEAR,
-    MR_KEY_A, //游戏模拟器A键
-    MR_KEY_B, //游戏模拟器B键
-    MR_KEY_CAPTURE, //拍照键
-    MR_KEY_NONE //按键 保留
+    MR_KEY_A, // 游戏模拟器A键
+    MR_KEY_B, // 游戏模拟器B键
+    MR_KEY_CAPTURE, // 拍照键
+    MR_KEY_NONE // 按键 保留
 };
 
-enum{
-    MR_NET_ID_MOBILE, //移动
-    MR_NET_ID_CN, // 联通gsm
-    MR_NET_ID_CDMA, //联通CDMA
-    MR_NET_ID_NONE, //未插卡
-    MR_NET_ID_OTHER /*其他网络*/
+// 枚举网络
+enum {
+    MR_NET_ID_MOBILE,   // 移动
+    MR_NET_ID_CN,       // 联通gsm
+    MR_NET_ID_CDMA,     // 联通CDMA
+    MR_NET_ID_NONE,     // 未插卡
+    MR_NET_ID_OTHER     // 其他网络
 };
 
-enum{
-    MR_EDIT_ANY, //任何字符
-    MR_EDIT_NUMERIC, // 数字
-    MR_EDIT_PASSWORD, //密码，用"*"显示
+enum {
+    MR_EDIT_ANY,        // 任何字符
+    MR_EDIT_NUMERIC,    // 数字
+    MR_EDIT_PASSWORD,   // 密码，用"*"显示
     MR_EDIT_ALPHA
 };
 
-enum{
-    MR_SIM_NEW, //新手机第一次插入SIM卡
-    MR_SIM_CHANGE, //用户更换SIM卡
-    MR_SIM_SAME //未进行换卡操作
+enum {
+    MR_SIM_NEW,         // 新手机第一次插入SIM卡
+    MR_SIM_CHANGE,      // 用户更换SIM卡
+    MR_SIM_SAME         // 未进行换卡操作
 };
 
-enum{
-    MR_DIALOG_OK, //对话框有"确定"键。
+enum {
+    MR_DIALOG_OK,           // 对话框有"确定"键。
     MR_DIALOG_OK_CANCEL,
     MR_DIALOG_CANCEL,
-    MR_DIALOG_NONE =100
+    MR_DIALOG_NONE = 100
 };
 
-enum{
+enum {
     MR_DIALOG_KEY_OK,
     MR_DIALOG_KEY_CANCEL
 };
 
-enum{
+enum {
     MR_LOCALUI_KEY_OK,
     MR_LOCALUI_KEY_CANCEL,
     MR_LOCALUI_ACTIVE
 };
 
-enum{
+enum {
     MR_KEY_PRESS, /*0*/
     MR_KEY_RELEASE, /*1*/
     MR_MOUSE_DOWN, /*2*/
@@ -112,33 +113,29 @@ enum{
     MR_TIMER_EVENT = 1001,
     MR_NET_EVENT,
 
-	MR_EMU_ON_TIMER = 2001
+    MR_EMU_ON_TIMER = 2001
 };
 
-enum
-{
+enum {
     MR_DATA_ACCOUNT_OP_GET,
     MR_DATA_ACCOUNT_OP_SET,
 };
 
-enum
-{
-    DSM_ERROR_NO_ERROR =0,
-    DSM_ERROR_UNKNOW,
+enum {
+    DSM_ERROR_NO_ERROR = 0,
+    DSM_ERROR_UNKNOWN,
     DSM_ERROR_NO_SPACE,
     DSM_ERROR_TERMINATED
 };
 
-enum
-{
+enum {
     MR_SMS_OP_GET_ME_SIZE,
     MR_SMS_OP_GET_SIM_SIZE,
     MR_SMS_OP_DELETE,
     MR_SMS_OP_GET_MSG_CONTENT
 };
 
-typedef enum
-{
+typedef enum {
     MR_SOUND_MIDI,
     MR_SOUND_WAV,
     MR_SOUND_MP3,
@@ -146,42 +143,36 @@ typedef enum
     MR_SOUND_M4A,
     MR_SOUND_AMR,
     MR_SOUND_AMR_WB
-}MR_SOUND_TYPE;
+} MR_SOUND_TYPE;
 
-typedef enum
-{
+typedef enum {
     MR_FONT_SMALL,
     MR_FONT_MEDIUM,
     MR_FONT_BIG
-}MR_FONT_TYPE;
+} MR_FONT_TYPE;
 
-enum
-{
+enum {
     MR_SEEK_SET,
     MR_SEEK_CUR,
     MR_SEEK_END
 };
 
-enum
-{
+enum {
     MR_SOCK_STREAM,
     MR_SOCK_DGRAM
 };
 
-enum
-{
+enum {
     MR_IPPROTO_TCP,
     MR_IPPROTO_UDP
 };
 
-enum
-{
+enum {
     MR_ENCODE_ASCII,
     MR_ENCODE_UNICODE
 };
 
-enum
-{
+enum {
     MRSOCK_OPENED,
     MRSOCK_CONNECTING,
     MRSOCK_CONNECTED,
@@ -189,101 +180,90 @@ enum
     MRSOCK_ERR
 };
 
-typedef enum
-{
-    IMG_BMP, //BMP 图片
-    IMG_JPG, //jpg 图片
-    IMG_PNG, //png 图片
-    IMG_GIF //gif 图片
-}IMG_TYPE;
+typedef enum {
+    IMG_BMP, // BMP 图片
+    IMG_JPG, // jpg 图片
+    IMG_PNG, // png 图片
+    IMG_GIF // gif 图片
+} IMG_TYPE;
 
-typedef enum
-{
-    SRC_NAME, //传到移植接口是文件名
-    SRC_STREAM //传到移植接口的是图片数据流
-}SRC_TYPE;
+typedef enum {
+    SRC_NAME, // 传到移植接口是文件名
+    SRC_STREAM // 传到移植接口的是图片数据流
+} SRC_TYPE;
 
-typedef enum
-{
+typedef enum {
     MR_CALL_RING,
     MR_SMS_RING,
     MR_ALARM_RING
-}DSM_RING_TYPE;
+} DSM_RING_TYPE;
 
-typedef enum
-{
+typedef enum {
     MR_SCENE_NORMAL,
     MR_SCENE_MEETING,
     MR_SCENE_INDOOR,
     MR_SCENE_OUTDOOR,
     MR_SCENE_MUTE
-}T_DSM_SCENE;
+} T_DSM_SCENE;
 
-typedef struct
-{
+typedef struct {
     int32 scene;
     int32 type;
-    char *path; //gb
-}T_DSM_RING_SET;
+    char *path; // gb
+} T_DSM_RING_SET;
 
 #define DSM_ARTIST_LEN 100
 
-typedef struct
-{
-    char artist[DSM_ARTIST_LEN+2]; //big endian usc2
+typedef struct {
+    char artist[DSM_ARTIST_LEN + 2]; // big endian usc2
     int32 totaltime;//单位为s
-}T_DSM_AUDIO_INFO;
+} T_DSM_AUDIO_INFO;
 
-typedef struct
-{
-	uint32 total;    //总的大小
-	uint32 tunit;    //总大小的单位
-	uint32 account;  //剩余空间的大小
-	uint32 unit;     //剩余大小的单位
-}T_DSM_FREE_SAPCE;
+typedef struct {
+    uint32 total;    // 总的大小
+    uint32 tunit;    // 总大小的单位
+    uint32 account;  // 剩余空间的大小
+    uint32 unit;     // 剩余大小的单位
+} T_DSM_FREE_SPACE;
 
 #define MR_SMS_ENCODE_FLAG 7
 #define MR_SMS_REPORT_FLAG 8
 #define MR_SMS_RESULT_FLAG 16
 
-enum{
+enum {
     MR_SOCKET_BLOCK, //阻塞方式（同步方式）
     MR_SOCKET_NONBLOCK //非阻塞方式（异步方式）
 };
 
-typedef struct
-{
-    uint16 year; //年
-    uint8 month; //月
-    uint8 day; //日
-    uint8 hour; //时，24小时制
-    uint8 minute; //分
-    uint8 second; //秒
-}mr_datetime;
+typedef struct {
+    uint16 year; // 年
+    uint8 month; // 月
+    uint8 day; // 日
+    uint8 hour; // 时，24小时制
+    uint8 minute; // 分
+    uint8 second; // 秒
+} mr_datetime;
 
-typedef struct
-{
-    uint32 width; //屏幕宽
-    uint32 height; //屏幕高
-    uint32 bit; //屏幕象素深度，单位bit
-}mr_screeninfo;
+typedef struct {
+    uint32 width; // 屏幕宽
+    uint32 height; // 屏幕高
+    uint32 bit; // 屏幕象素深度，单位bit
+} mr_screeninfo;
 
-typedef struct
-{
+typedef struct {
     uint8 IMEI[16]; //IMEI len eq 15
     uint8 IMSI[16]; //IMSI len not more then 15
     char manufactory[8]; //厂商名，最大7个字符，空字节填\0
     char type[8]; //mobile type，最大7个字符，空字节填\0
     uint32 ver; //SW ver
     uint8 spare[12]; //备用
-}mr_userinfo;
+} mr_userinfo;
 
-typedef struct
-{
+typedef struct {
     int32 socket;
     int32 port;
     int32 ip;
-}mr_bind_st;
+} mr_bind_st;
 
 #ifdef MR_FS_ASYN
 
@@ -302,32 +282,28 @@ typedef struct
 #define MR_GIF_SUPPORT_NO 3
 
 
-typedef struct
-{
+typedef struct {
     int32 width; //图片的宽度
     int32 height; //图片的高
     int32 img_type;
-}T_DSM_IMG_INFO;
+} T_DSM_IMG_INFO;
 
-typedef struct
-{
+typedef struct {
     char *src; //文件名，或是数据流的buf的地址，如果是文件名，是GB格式
     int32 len; //src所指的buf的大小
     int32 src_type; //指明src中存放的是文件名，还是数据流
-}T_DSM_GET_IMG_INFO;
+} T_DSM_GET_IMG_INFO;
 
-typedef struct
-{
+typedef struct {
     char *src; //文件名，或是数据流的buf的地址，如果是文件名，是GB格式
     int32 len; //src所指的buf的大小
     int32 width; //用户图片显示的区域的宽度
     int32 height; //用于图片显示的区域的高度
     int32 src_type; //指明src中存放的是文件名，还是数据流
     char *dest; //解码后的图片数据存放的buf
-}T_DSM_IMG_DECODE;
+} T_DSM_IMG_DECODE;
 
-typedef struct T_DSM_FRAME_INFO
-{
+typedef struct T_DSM_FRAME_INFO {
     int32 fwidth; //本帧的宽度
     int32 fheight; //本帧的高度
     int32 ox; //本帧左上角的x坐标(相对逻辑屏幕)
@@ -337,31 +313,28 @@ typedef struct T_DSM_FRAME_INFO
     int32 delay_time; //本帧显示的时间
     char *pdata; //解压好的图片数据
     struct T_DSM_FRAME_INFO *next; //指向下一帧的数据结构
-}T_DSM_FRAME_INFO;
+} T_DSM_FRAME_INFO;
 
 
-typedef struct
-{
+typedef struct {
     int32 id;
     int32 width; //gif的宽度
     int32 height; //gif的高度
     int32 bg_color; //gif的背景色
     int32 frame_count;
     T_DSM_FRAME_INFO *first; //指向gif的第一帧的数据结构
-}T_DSM_GIF_HEADER;
+} T_DSM_GIF_HEADER;
 
-typedef struct
-{
+typedef struct {
     int32 width; //gif的宽度
     int32 height; //gif的高度
     int bg_color; //gif的背景色
     char *pdata; //解压好的图片数据
-}T_DSM_PNG_HEADER;
+} T_DSM_PNG_HEADER;
 
-typedef struct
-{
+typedef struct {
     int32 id;
-}T_DSM_GIF_ID;
+} T_DSM_GIF_ID;
 
 
 #if 0//取消
@@ -424,7 +397,7 @@ extern int32 mr_start(mr_appSt* app);
 
 /*当启动DSM应用的时候，应该调用DSM的初始化函数，
 用以对DSM平台进行初始化*/
-extern int32 mr_start_dsm(const char* entry);
+extern int32 mr_start_dsm(const char *entry);
 
 /*注册固化应用*/
 extern int32 mr_registerAPP(uint8 *p, int32 len, int32 index);
@@ -454,20 +427,20 @@ extern int32 mr_pauseApp(void);
 extern int32 mr_resumeApp(void);
 
 /*当手机收到短消息时调用该函数*/
-extern int32 mr_smsIndiaction(uint8 *pContent, int32 nLen, uint8 *pNum, int32 type);
+extern int32 mr_smsIndication(uint8 *pContent, int32 nLen, uint8 *pNum, int32 type);
 
 /*对下载内容（保存在内存区中的一个下载的文件）进行判断，
 若下载文件是DSM菜单，由DSM引擎对下载文件进行保存。使用
 本函数时，下载文件应该已经下载完全，并且全部内容保存在
 所给的内存中。*/
-extern int32 mr_save_mrp(void *p,uint32 l);
+extern int32 mr_save_mrp(void *p, uint32 l);
 
 /*功能同mr_save_mrp，但传入的是一个打开的文件句柄，文件由
 调用者关闭。该函数目前尚未实现，若需要使用，请联系ouli*/
 extern int32 mr_save_mrp_with_handle(MR_FILE_HANDLE f);
 
 /*用户SIM卡变更*/
-extern int32 mr_newSIMInd(int16 type, uint8* old_IMSI);
+extern int32 mr_newSIMInd(int16 type, uint8 *old_IMSI);
 
 /*函数mr_initNetwork使用的回调函数定义*/
 typedef int32 (*MR_INIT_NETWORK_CB)(int32 result);
@@ -482,16 +455,17 @@ typedef int32 (*MR_GET_HOST_CB)(int32 ip);
 /*********************以下是抽象接口定义******************************/
 
 /*调试打印*/
-extern void mr_printf(const char *format,...);
+extern void mr_printf(const char *format, ...);
 
 /*内存申请*/
-extern int32 mr_mem_get (char** mem_base, uint32* mem_len);
+extern int32 mr_mem_get(char **mem_base, uint32 *mem_len);
+
 /*内存释放*/
-extern int32 mr_mem_free(char* mem, uint32 mem_len);
+extern int32 mr_mem_free(char *mem, uint32 mem_len);
 
 /*当使用本地屏幕缓冲时使用的接口*/
 /*在屏幕上绘BMP*/
-extern void mr_drawBitmap(uint16* bmp, int16 x, int16 y, uint16 w, uint16 h);
+extern void mr_drawBitmap(uint16 *bmp, int16 x, int16 y, uint16 w, uint16 h);
 
 /*取得获取unicode码ch指向的字体的点阵信息，并告之
 该字体的宽和高，获取到的点阵信息每一个bit表示
@@ -517,35 +491,55 @@ extern void* mr_getScreenBuf(void);
 
 /*启动定时器*/
 extern int32 mr_timerStart(uint16 t);
+
 /*停止定时器。*/
 extern int32 mr_timerStop(void);
+
 /*取得时间，单位ms*/
 extern uint32 mr_getTime(void);
+
 /*获取系统日期时间。*/
-extern int32 mr_getDatetime(mr_datetime* datetime);
+extern int32 mr_getDatetime(mr_datetime *datetime);
+
 /*取得手机相关信息。*/
-extern int32 mr_getUserInfo(mr_userinfo* info);
+extern int32 mr_getUserInfo(mr_userinfo *info);
+
 /*任务睡眠，单位ms*/
 extern int32 mr_sleep(uint32 ms);
+
 /*平台扩展接口*/
 extern int32 mr_plat(int32 code, int32 param);
+
 /*增强的平台扩展接口*/
-typedef void (*MR_PLAT_EX_CB)(uint8* output, int32 output_len);
-extern int32 mr_platEx(int32 code, uint8* input, int32 input_len, uint8** output, int32* output_len, MR_PLAT_EX_CB *cb);
+typedef void (*MR_PLAT_EX_CB)(uint8 *output, int32 output_len);
+
+extern int32 mr_platEx(int32 code, uint8 *input, int32 input_len, uint8 **output, int32 *output_len,
+                       MR_PLAT_EX_CB *cb);
 
 /*文件和目录操作*/
 extern int32 mr_ferrno(void);
-extern MR_FILE_HANDLE mr_open(const char* filename, uint32 mode);
+
+extern MR_FILE_HANDLE mr_open(const char *filename, uint32 mode);
+
 extern int32 mr_close(MR_FILE_HANDLE f);
-extern int32 mr_info(const char* filename);
-extern int32 mr_write(MR_FILE_HANDLE f,void *p,uint32 l);
-extern int32 mr_read(MR_FILE_HANDLE f,void *p,uint32 l);
+
+extern int32 mr_info(const char *filename);
+
+extern int32 mr_write(MR_FILE_HANDLE f, void *p, uint32 l);
+
+extern int32 mr_read(MR_FILE_HANDLE f, void *p, uint32 l);
+
 extern int32 mr_seek(MR_FILE_HANDLE f, int32 pos, int method);
-extern int32 mr_getLen(const char* filename);
-extern int32 mr_remove(const char* filename);
-extern int32 mr_rename(const char* oldname, const char* newname);
-extern int32 mr_mkDir(const char* name);
-extern int32 mr_rmDir(const char* name);
+
+extern int32 mr_getLen(const char *filename);
+
+extern int32 mr_remove(const char *filename);
+
+extern int32 mr_rename(const char *oldname, const char *newname);
+
+extern int32 mr_mkDir(const char *name);
+
+extern int32 mr_rmDir(const char *name);
 
 /*异步文件读写接口*/
 #ifdef MR_FS_ASYN
@@ -554,9 +548,11 @@ extern int32 mr_asyn_write(MR_FILE_HANDLE f, mr_asyn_fs_param *param);
 #endif
 
 /*目录搜索开始*/
-extern MR_SEARCH_HANDLE mr_findStart(const char* name, char* buffer, uint32 len);
+extern MR_SEARCH_HANDLE mr_findStart(const char *name, char *buffer, uint32 len);
+
 /*取得一个目录搜索结果*/
-extern int32 mr_findGetNext(MR_SEARCH_HANDLE search_handle, char* buffer, uint32 len);
+extern int32 mr_findGetNext(MR_SEARCH_HANDLE search_handle, char *buffer, uint32 len);
+
 /*目录搜索结束*/
 extern int32 mr_findStop(MR_SEARCH_HANDLE search_handle);
 
@@ -565,78 +561,101 @@ extern int32 mr_exit(void);
 
 /*开始手机震动*/
 extern int32 mr_startShake(int32 ms);
+
 /*结束手机震动*/
 extern int32 mr_stopShake(void);
 
 /*播放音频数据*/
-extern int32 mr_playSound(int type, const void* data, uint32 dataLen, int32 loop);
+extern int32 mr_playSound(int type, const void *data, uint32 dataLen, int32 loop);
 
 /*停止播放音频*/
-extern int32 mr_stopSound (int type);
+extern int32 mr_stopSound(int type);
 
 /*发送一条短消息*/
-extern int32 mr_sendSms(char* pNumber, char*pContent, int32 encode);
+extern int32 mr_sendSms(char *pNumber, char *pContent, int32 encode);
+
 /*拨打电话*/
 extern void mr_call(char *number);
+
 /*取得网络ID，0 移动，1 联通*/
 extern int32 mr_getNetworkID(void);
+
 /*连接WAP*/
-extern void mr_connectWAP(char* wap);
+extern void mr_connectWAP(char *wap);
 
 extern int32 mr_sleep(uint32 ms);
-extern int32 mr_getScreenInfo(mr_screeninfo * screeninfo);
+
+extern int32 mr_getScreenInfo(mr_screeninfo *screeninfo);
 
 /*GUI 接口*/
-extern int32 mr_menuCreate(const char* title, int16 num);
+extern int32 mr_menuCreate(const char *title, int16 num);
+
 extern int32 mr_menuSetItem(int32 menu, const char *text, int32 index);
+
 extern int32 mr_menuShow(int32 menu);
+
 /*设置选中项目，保留*/
 extern int32 mr_menuSetFocus(int32 menu, int32 index);
+
 extern int32 mr_menuRelease(int32 menu);
+
 extern int32 mr_menuRefresh(int32 menu);
 
-extern int32 mr_dialogCreate(const char * title, const char * text, int32 type);
+extern int32 mr_dialogCreate(const char *title, const char *text, int32 type);
+
 extern int32 mr_dialogRelease(int32 dialog);
-extern int32 mr_dialogRefresh(int32 dialog, const char * title, const char * text, int32 type);
 
-extern int32 mr_textCreate(const char * title, const char * text, int32 type);
+extern int32 mr_dialogRefresh(int32 dialog, const char *title, const char *text, int32 type);
+
+extern int32 mr_textCreate(const char *title, const char *text, int32 type);
+
 extern int32 mr_textRelease(int32 text);
-extern int32 mr_textRefresh(int32 handle, const char * title, const char * text);
 
-extern int32 mr_editCreate(const char * title, const char * text, int32 type, int32 max_size);
+extern int32 mr_textRefresh(int32 handle, const char *title, const char *text);
+
+extern int32 mr_editCreate(const char *title, const char *text, int32 type, int32 max_size);
+
 extern int32 mr_editRelease(int32 edit);
-extern const char* mr_editGetText(int32 edit);
+
+extern const char *mr_editGetText(int32 edit);
 
 extern int32 mr_winCreate(void);
+
 extern int32 mr_winRelease(int32 win);
 
 /*Socket接口*/
 extern int32 mr_initNetwork(MR_INIT_NETWORK_CB cb, const char *mode);
+
 extern int32 mr_closeNetwork(void);
+
 extern int32 mr_getHostByName(const char *name, MR_GET_HOST_CB cb);
+
 extern int32 mr_socket(int32 type, int32 protocol);
+
 extern int32 mr_connect(int32 s, int32 ip, uint16 port, int32 type);
+
 extern int32 mr_closeSocket(int32 s);
+
 extern int32 mr_recv(int32 s, char *buf, int len);
+
 extern int32 mr_recvfrom(int32 s, char *buf, int len, int32 *ip, uint16 *port);
+
 extern int32 mr_send(int32 s, const char *buf, int len);
+
 extern int32 mr_sendto(int32 s, const char *buf, int len, int32 ip, uint16 port);
 
 
-typedef struct
-{
+typedef struct {
     int32 index;
     int8 type;
-}T_DSM_GET_SMS_INFO_REQ;
+} T_DSM_GET_SMS_INFO_REQ;
 
-typedef struct
-{
+typedef struct {
     int32 index;
     int8 type;
-}T_DSM_DELETE_SMS_REQ;
-typedef enum
-{
-    MR_SMS_NOBOX ,
+} T_DSM_DELETE_SMS_REQ;
+typedef enum {
+    MR_SMS_NOBOX,
     MR_SMS_UNREAD,
     MR_SMS_INBOX,
     MR_SMS_OUTBOX,
@@ -646,28 +665,24 @@ typedef enum
     MR_SMS_UNSENT,
     MR_SMS_READED,
     MR_SMS_SENT
-}MR_MSG_STATUS;
+} MR_MSG_STATUS;
 
-typedef enum
-{
+typedef enum {
     MR_SMS_STORAGE_SIM,
     MR_SMS_STORAGE_ME
-}MR_SMS_STORAGE;
+} MR_SMS_STORAGE;
 
-typedef enum
-{
+typedef enum {
     MR_SMS_NOT_READY = MR_PLAT_VALUE_BASE,
     MR_SMS_READY
-}MR_SMS_STATUS;
-typedef enum
-{
+} MR_SMS_STATUS;
+typedef enum {
     MR_NORMAL_SCREEN = MR_PLAT_VALUE_BASE,
     MR_TOUCH_SCREEN,
     MR_ONLY_TOUCH_SCREEN
-}MR_SCREEN_TYPE;
+} MR_SCREEN_TYPE;
 
-typedef enum
-{
+typedef enum {
     MR_CHINESE = MR_PLAT_VALUE_BASE,
     MR_ENGLISH,
     MR_TCHINESE,//繁体
@@ -707,22 +722,19 @@ typedef enum
     MR_BENGALI,//孟加拉人(语
     MR_PUNJABI,//印度西北部的一地方
     MR_TELUGU//泰卢固语(印度东部德拉维拉语言)
-}MR_LANGUAGE;
+} MR_LANGUAGE;
 
-typedef enum
-{
+typedef enum {
     MR_IDLE_BG_PAPER, /*背景*/
     MR_IDLE_SAVER_PAPER /*屏保*/
-}MR_IDLE_PAPER_TYPE;
+} MR_IDLE_PAPER_TYPE;
 
-typedef enum
-{
-    MR_SMS_ACTION_SAVE = MR_PLAT_VALUE_BASE+1,
+typedef enum {
+    MR_SMS_ACTION_SAVE = MR_PLAT_VALUE_BASE + 1,
     MR_SMS_ACTION_DELETE
-}MR_SMS_ACTION_TYPE;
+} MR_SMS_ACTION_TYPE;
 
-enum
-{
+enum {
     MR_MSDC_NOT_EXIST = MR_PLAT_VALUE_BASE,
     MR_MSDC_OK,
     MR_MSDC_NOT_USEFULL /*可能在usb模式导致无法操作t卡*/
@@ -849,7 +861,7 @@ enum
 #define MR_PHB_GET_STATUS (MR_PHB_OPERATION_BASE + 33)
 #define MR_PHB_USE_LOCAL (MR_PHB_OPERATION_BASE + 41)
 #define MR_PHB_USE_LOCAL_GET_ENTRY (MR_PHB_OPERATION_BASE + 42)
-#define MR_PHB_USE_LOCAL_DESTORY (MR_PHB_OPERATION_BASE + 43)
+#define MR_PHB_USE_LOCAL_DESTROY (MR_PHB_OPERATION_BASE + 43)
 
 //电话本操作返回值
 #define MR_PHB_ERROR -1
@@ -942,10 +954,9 @@ enum
 #define MR_FMGR_TYPE_ZPK 42
 
 
-typedef struct
-{
-    uint8* src;
-    uint8* dest;
+typedef struct {
+    uint8 *src;
+    uint8 *dest;
     uint16 src_width;
     uint16 src_height;
     uint16 src_pitch;
@@ -955,26 +966,21 @@ typedef struct
     uint16 output_clip_y1;
     uint16 output_clip_x2;
     uint16 output_clip_y2;
-}mr_img_resize_struct;
+} mr_img_resize_struct;
 
 
-
-
-typedef struct
-{
+typedef struct {
     int32 appid; //app id
     uint8 describe[20]; //应用标志符 - "ipqq"
-    uint8* param; //预留扩展用
-}mr_backstage_st;
+    uint8 *param; //预留扩展用
+} mr_backstage_st;
 
-typedef enum
-{
+typedef enum {
     DSM_PIC_DESTID_IDLE_ICON,
     DSM_PIC_DESTID_IDLE_BG
-}mr_pic_destId;
+} mr_pic_destId;
 
-typedef struct
-{
+typedef struct {
     int32 appid;
     int32 time;
     int32 img_type;
@@ -984,149 +990,135 @@ typedef struct
     uint16 color;
     uint8 *buff;
     uint8 destId;
-}mr_pic_req;
+} mr_pic_req;
 
 
-typedef struct
-{
-	int socketId; //socket 句柄
-	int realSocketId; //真实 socket 句柄（代理有效）
-	int isProxy; //代理标志
-	int realConnected; //真实连接上标志
+typedef struct {
+    int socketId; //socket 句柄
+    int realSocketId; //真实 socket 句柄（代理有效）
+    int isProxy; //代理标志
+    int realConnected; //真实连接上标志
 
-	int socStat;
-	int readStat;
-	int writeStat;
-}T_DSM_SOC_STAT;
+    int socStat;
+    int readStat;
+    int writeStat;
+} T_DSM_SOC_STAT;
 
-typedef struct
-{
-	void *callBack;
+typedef struct {
+    void *callBack;
 } mr_socket_struct;
 
-typedef struct
-{
-   int32 pos;  //单位,秒s.
-}T_SET_PLAY_POS;
+typedef struct {
+    int32 pos;  //单位,秒s.
+} T_SET_PLAY_POS;
 
-typedef struct
-{
-	int32 pos;
+typedef struct {
+    int32 pos;
 } T_MEDIA_TIME;
 
 /*回调有两种可能的返回值：
-ACI_PLAY_COMPLETE   0  //播放结束
-ACI_PLAY_ERROR       1  //播放时遇到错误
+ACI_PLAY_COMPLETE   0  // 播放结束
+ACI_PLAY_ERROR       1  // 播放时遇到错误
 Loop ：1，循环播放；0，不循环播放；2，PCM循环播放模式
 Block：1，阻塞播放；0，不阻塞播放*/
 typedef void (*ACI_PLAY_CB)(int32 result);
 
-typedef struct
-{
-	ACI_PLAY_CB cb; //回调函数
-	int32 loop;
-	int32 block;
-}T_DSM_MEDIA_PLAY;
+typedef struct {
+    ACI_PLAY_CB cb; // 回调函数
+    int32 loop;
+    int32 block;
+} T_DSM_MEDIA_PLAY;
 
-typedef struct
-{
-	char *src;
-	int32 len;
-	int32 src_type;// MRAPP_SRC_TYPE
+typedef struct {
+    char *src;
+    int32 len;
+    int32 src_type;// MRAPP_SRC_TYPE
 } MRAPP_IMAGE_ORIGIN_T;
 
-typedef struct
-{
-   int32 width;    //图片的宽度
-   int32 height;   //图片的高度
-}MRAPP_IMAGE_SIZE_T;
+typedef struct {
+    int32 width;    // 图片的宽度
+    int32 height;   // 图片的高度
+} MRAPP_IMAGE_SIZE_T;
 
-typedef struct
-{
-	char *src;
-	int32 src_len;
-	int32 src_type;
-	int32 ox;
-	int32 oy;
-	int32 w;
-	int32 h;
+typedef struct {
+    char *src;
+    int32 src_len;
+    int32 src_type;
+    int32 ox;
+    int32 oy;
+    int32 w;
+    int32 h;
 } T_DRAW_DIRECT_REQ;
 
-typedef struct
-{
-	uint8 level;
-	uint8 current_band;
-	uint8 rat;
-	uint8 flag;
+typedef struct {
+    uint8 level;
+    uint8 current_band;
+    uint8 rat;
+    uint8 flag;
 } T_RX;
 
-typedef struct
-{
-	uint16 lac;
-	uint16 cell_id;
-	uint8 mnc[2];
-	uint8 mcc[3];
-	uint8 mnc3[4];
-}T_DSM_CELL_INFO;
+typedef struct {
+    uint16 lac;
+    uint16 cell_id;
+    uint8 mnc[2];
+    uint8 mcc[3];
+    uint8 mnc3[4];
+} T_DSM_CELL_INFO;
 
 
-typedef struct
-{
-	uint32 total;
-	uint32 tUnit;
-	uint32 account;
-	uint32 unit;
-}T_DSM_DISK_INFO;
+typedef struct {
+    uint32 total;
+    uint32 tUnit;
+    uint32 account;
+    uint32 unit;
+} T_DSM_DISK_INFO;
 
 ////---------------------------------
 typedef enum {
-	NETTYPE_WIFI=0,
-	NETTYPE_CMWAP=1,
-	NETTYPE_CMNET=2,
-	NETTYPE_UNKNOW=3
-}AND_NETTYPE;
+    NETTYPE_WIFI = 0,
+    NETTYPE_CMWAP = 1,
+    NETTYPE_CMNET = 2,
+    NETTYPE_UNKNOW = 3
+} AND_NETTYPE;
 
-typedef enum
-{
-	DSM_SOC_CLOSE,
-	DSM_SOC_OPEN,
-	DSM_SOC_CONNECTING,
-	DSM_SOC_CONNECTED,
-	DSM_SOC_ERR
-}T_DSM_SOC_STAT_ENUM;
+typedef enum {
+    DSM_SOC_CLOSE,
+    DSM_SOC_OPEN,
+    DSM_SOC_CONNECTING,
+    DSM_SOC_CONNECTED,
+    DSM_SOC_ERR
+} T_DSM_SOC_STAT_ENUM;
 
-typedef enum
-{
-	DSM_SOC_NOREAD,
-	DSM_SOC_READABLE
-}T_DSM_SOC_READ_STAT;
+typedef enum {
+    DSM_SOC_NOREAD,
+    DSM_SOC_READABLE
+} T_DSM_SOC_READ_STAT;
 
-typedef enum
-{
-	DSM_SOC_NOWRITE,
-	DSM_SOC_WRITEABLE
-}T_DSM_SOC_WRITE_STAT;
+typedef enum {
+    DSM_SOC_NOWRITE,
+    DSM_SOC_WRITEABLE
+} T_DSM_SOC_WRITE_STAT;
 
 
-typedef struct
-{
-	uint8 mod_id;
-	uint8 identifier;
-	int event_id;
-	int result;
+typedef struct {
+    uint8 mod_id;
+    uint8 identifier;
+    int event_id;
+    int result;
 } mr_socket_event_struct;
 
-typedef int32 (*startSkyLapp)(uint8* param);
-void mr_registerLappEntry(void* entry);
+typedef int32 (*startSkyLapp)(uint8 *param);
+
+void mr_registerLappEntry(void *entry);
 
 
 /*
 这个函数，转成小端的unicode。支持批量转，但是一次
 最好不要多于128个字节。
 */
-void dsmGB2UCS2(char * src,char *dest);
+void dsmGB2UCS2(char *src, char *dest);
 
-int32 mr_cacheSync(void* addr, int32 len);
+int32 mr_cacheSync(void *addr, int32 len);
 
 int mr_sprintf(char *buf, const char *fmt, ...);
 

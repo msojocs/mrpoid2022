@@ -183,7 +183,7 @@ jint vm_smsIndiaction(JNIEnv * env, jobject self, jstring content, jstring numbe
 
 			UTF8ToGBString((uint8 *)contentStr, buf2, sizeof(buf2));
 
-			ret = mr_smsIndiaction(buf2, strlen(buf2), buf, MR_ENCODE_ASCII);
+			ret = mr_smsIndication(buf2, strlen(buf2), buf, MR_ENCODE_ASCII);
 
 			(*env)->ReleaseStringUTFChars(env, content, contentStr);
 		}

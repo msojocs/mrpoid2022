@@ -3,13 +3,18 @@
 //#include <stdio.h>
 
 #ifndef SYMBIAN_MOD
+
 #include <stdlib.h>
 #include <string.h>
+
 #endif
 
 #include "mr.h"
+
 #ifndef BREW_MOD
+
 #include "mr_forvm.h"
+
 #endif
 
 #ifdef BREW_MOD
@@ -511,176 +516,176 @@ static const unicode_char gb2312_f7[94]={40140,40141,40142,40143,40144,40147,401
 40671,40674,40681,40679,40677,40682,40687,40738,40748,40751,40761,40759,40765,40766,40772};
 
 const unicode_char * const mr_gb2312[]= {
-	gb2312_a1,
-	gb2312_a2,
-	gb2312_a3,
-	gb2312_a4,
-	gb2312_a5,
-	gb2312_a6,
-	gb2312_a7,
-	gb2312_a8,
-	gb2312_a9,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	gb2312_b0,
-	gb2312_b1,
-	gb2312_b2,
-	gb2312_b3,
-	gb2312_b4,
-	gb2312_b5,
-	gb2312_b6,
-	gb2312_b7,
-	gb2312_b8,
-	gb2312_b9,
-	gb2312_ba,
-	gb2312_bb,
-	gb2312_bc,
-	gb2312_bd,
-	gb2312_be,
-	gb2312_bf,
-	gb2312_c0,
-	gb2312_c1,
-	gb2312_c2,
-	gb2312_c3,
-	gb2312_c4,
-	gb2312_c5,
-	gb2312_c6,
-	gb2312_c7,
-	gb2312_c8,
-	gb2312_c9,
-	gb2312_ca,
-	gb2312_cb,
-	gb2312_cc,
-	gb2312_cd,
-	gb2312_ce,
-	gb2312_cf,
-	gb2312_d0,
-	gb2312_d1,
-	gb2312_d2,
-	gb2312_d3,
-	gb2312_d4,
-	gb2312_d5,
-	gb2312_d6,
-	gb2312_d7,
-	gb2312_d8,
-	gb2312_d9,
-	gb2312_da,
-	gb2312_db,
-	gb2312_dc,
-	gb2312_dd,
-	gb2312_de,
-	gb2312_df,
-	gb2312_e0,
-	gb2312_e1,
-	gb2312_e2,
-	gb2312_e3,
-	gb2312_e4,
-	gb2312_e5,
-	gb2312_e6,
-	gb2312_e7,
-	gb2312_e8,
-	gb2312_e9,
-	gb2312_ea,
-	gb2312_eb,
-	gb2312_ec,
-	gb2312_ed,
-	gb2312_ee,
-	gb2312_ef,
-	gb2312_f0,
-	gb2312_f1,
-	gb2312_f2,
-	gb2312_f3,
-	gb2312_f4,
-	gb2312_f5,
-	gb2312_f6,
-	gb2312_f7,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL};
+    gb2312_a1,
+    gb2312_a2,
+    gb2312_a3,
+    gb2312_a4,
+    gb2312_a5,
+    gb2312_a6,
+    gb2312_a7,
+    gb2312_a8,
+    gb2312_a9,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    gb2312_b0,
+    gb2312_b1,
+    gb2312_b2,
+    gb2312_b3,
+    gb2312_b4,
+    gb2312_b5,
+    gb2312_b6,
+    gb2312_b7,
+    gb2312_b8,
+    gb2312_b9,
+    gb2312_ba,
+    gb2312_bb,
+    gb2312_bc,
+    gb2312_bd,
+    gb2312_be,
+    gb2312_bf,
+    gb2312_c0,
+    gb2312_c1,
+    gb2312_c2,
+    gb2312_c3,
+    gb2312_c4,
+    gb2312_c5,
+    gb2312_c6,
+    gb2312_c7,
+    gb2312_c8,
+    gb2312_c9,
+    gb2312_ca,
+    gb2312_cb,
+    gb2312_cc,
+    gb2312_cd,
+    gb2312_ce,
+    gb2312_cf,
+    gb2312_d0,
+    gb2312_d1,
+    gb2312_d2,
+    gb2312_d3,
+    gb2312_d4,
+    gb2312_d5,
+    gb2312_d6,
+    gb2312_d7,
+    gb2312_d8,
+    gb2312_d9,
+    gb2312_da,
+    gb2312_db,
+    gb2312_dc,
+    gb2312_dd,
+    gb2312_de,
+    gb2312_df,
+    gb2312_e0,
+    gb2312_e1,
+    gb2312_e2,
+    gb2312_e3,
+    gb2312_e4,
+    gb2312_e5,
+    gb2312_e6,
+    gb2312_e7,
+    gb2312_e8,
+    gb2312_e9,
+    gb2312_ea,
+    gb2312_eb,
+    gb2312_ec,
+    gb2312_ed,
+    gb2312_ee,
+    gb2312_ef,
+    gb2312_f0,
+    gb2312_f1,
+    gb2312_f2,
+    gb2312_f3,
+    gb2312_f4,
+    gb2312_f5,
+    gb2312_f6,
+    gb2312_f7,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL};
 
 unicode_char *c2u(const char *cp, int *err, int *size)
 {
-	size_t i, cnt;
-	unicode_char *uc;
+    size_t i, cnt;
+    unicode_char *uc;
 
-	if (err)
-		*err= -1;
-   
-	/*
-	** Count the number of potential unicode characters first.
-	*/
+    if (err)
+        *err= -1;
 
-	for (i=cnt=0; cp[i]; i++)
-	{
-		if ( (int)(unsigned char)cp[i] < 0xA1 ||
-		     (int)(unsigned char)cp[i] > 0xFE ||
-		     cp[i+1] == 0)
-		{
-			++cnt;
-			continue;
-		}
+    /*
+    ** Count the number of potential unicode characters first.
+    */
 
-		++i;
-		++cnt;
-	}
+    for (i=cnt=0; cp[i]; i++)
+    {
+        if ( (int)(unsigned char)cp[i] < 0xA1 ||
+             (int)(unsigned char)cp[i] > 0xFE ||
+             cp[i+1] == 0)
+        {
+            ++cnt;
+            continue;
+        }
 
-	*size = (cnt+1)*sizeof(unicode_char);
-	uc = (unicode_char *)MR_MALLOC(*size);
-	if (!uc)
-		return (NULL);
+        ++i;
+        ++cnt;
+    }
+
+    *size = (cnt+1)*sizeof(unicode_char);
+    uc = (unicode_char *)MR_MALLOC(*size);
+    if (!uc)
+        return (NULL);
 
 
     i=cnt=0;
 
-	while (cp[i])
-	{
-		int a=(int)(unsigned char)cp[i], b;
+    while (cp[i])
+    {
+        int a=(int)(unsigned char)cp[i], b;
 
-		if ( a >= 0xA1 && a <= 0xFE && cp[i+1])
-		{
-			unicode_char ucv;
-			b=(int)(unsigned char)cp[i+1];
+        if ( a >= 0xA1 && a <= 0xFE && cp[i+1])
+        {
+            unicode_char ucv;
+            b=(int)(unsigned char)cp[i+1];
 
-			if (0xA1 <= b && b <= 0xFE
-			    && mr_gb2312[a-0xA1]
-			    && (ucv=mr_gb2312[a-0xA1][b-0xA1]))
-			{
+            if (0xA1 <= b && b <= 0xFE
+                && mr_gb2312[a-0xA1]
+                && (ucv=mr_gb2312[a-0xA1][b-0xA1]))
+            {
 #ifdef MR_BIG_ENDIAN
                      uc[cnt++]= ucv;                //MR_BIG_ENDIAN
 #else
-				uc[cnt++]= (ucv << 8) +  (ucv >> 8);          //TI
+                uc[cnt++]= (ucv << 8) +  (ucv >> 8);          //TI
 #endif  //#ifdef MR_BIG_ENDIAN
-			}
-			else if (err)
-			{
-			     LUADBGPRINTF("c2u:err   1");
-				*err = i;
-				MR_FREE(uc, (cnt+1)*sizeof(unicode_char));
-				return NULL;
-			}
-			else{
-				//uc[cnt++] = (unicode_char)0xFFFD;
+            }
+            else if (err)
+            {
+                 LUADBGPRINTF("c2u:err   1");
+                *err = i;
+                MR_FREE(uc, (cnt+1)*sizeof(unicode_char));
+                return NULL;
+            }
+            else{
+                //uc[cnt++] = (unicode_char)0xFFFD;
 #ifdef MR_BIG_ENDIAN
                      uc[cnt++]= 0xFFFD;
 #else
-				uc[cnt++]= 0xFDFF;          //TI
+                uc[cnt++]= 0xFDFF;          //TI
 #endif  //#ifdef MR_BIG_ENDIAN
 
 
 
             }
-			i += 2;
-		}
-		else if (a < (unsigned)0x80)
-		{
+            i += 2;
+        }
+        else if (a < (unsigned)0x80)
+        {
 #ifdef MR_BIG_ENDIAN
                 uc[cnt++]=a;
 #else
@@ -689,10 +694,10 @@ unicode_char *c2u(const char *cp, int *err, int *size)
 
 
 
-			i += 1;
-		}
-		else if (err)
-		{
+            i += 1;
+        }
+        else if (err)
+        {
          /*
 #ifdef MR_BIG_ENDIAN
                      uc[cnt++]= 0x25a0;//ucv;
@@ -702,132 +707,115 @@ unicode_char *c2u(const char *cp, int *err, int *size)
                      i += 2;
                 */
                 LUADBGPRINTF("c2u:err   2");
-			*err=i;
-			MR_FREE(uc, (cnt+1)*sizeof(unicode_char));
-			return (NULL);
-		}
-		else
-		{
+            *err=i;
+            MR_FREE(uc, (cnt+1)*sizeof(unicode_char));
+            return (NULL);
+        }
+        else
+        {
          //uc[cnt++] = (unicode_char)0xFFFD;
 #ifdef MR_BIG_ENDIAN
                   uc[cnt++]= 0xFFFD;
 #else
                   uc[cnt++]= 0xFDFF;          //TI
 #endif  //#ifdef MR_BIG_ENDIAN
-			i += 2;
-		}
-	}
-	uc[cnt]=0;
+            i += 2;
+        }
+    }
+    uc[cnt]=0;
 
-	return (uc);
+    return (uc);
 }
 
 #else  //#if !(defined(MTK_MOD) && defined(MR_V2000))
 
-unicode_char *c2u(const char *cp, int *err, int *size)
-{
-	size_t i, cnt;
-	unicode_char *uc;
-	char a_ch[4]= {0,0,0,0};
-	
-	if (err)
-		*err= -1;
-   
-	/*
-	** Count the number of potential unicode characters first.
-	*/
+unicode_char *c2u(const unsigned char *cp, int *err, int *size) {
+    size_t i, cnt;
+    unicode_char *uc;
+    unsigned char a_ch[4] = {0, 0, 0, 0};
 
-	for (i=cnt=0; cp[i]; i++)
-	{
-		if ( (int)(unsigned char)cp[i] < 0xA1 ||
-		     (int)(unsigned char)cp[i] > 0xFE ||
-		     cp[i+1] == 0)
-		{
-			++cnt;
-			continue;
-		}
+    if (err)
+        *err = -1;
 
-		++i;
-		++cnt;
-	}
+    /*
+    ** Count the number of potential unicode characters first.
+    */
+    for (i = cnt = 0; cp[i]; i++) {
+        if ((int) (unsigned char) cp[i] < 0xA1 ||
+            (int) (unsigned char) cp[i] > 0xFE ||
+            cp[i + 1] == 0) {
+            ++cnt;
+            continue;
+        }
 
-	*size = (cnt+1)*sizeof(unicode_char);
-	uc = (unicode_char *)MR_MALLOC(*size);
-	if (!uc)
-		return (NULL);
+        ++i;
+        ++cnt;
+    }
+
+    *size = (cnt + 1) * sizeof(unicode_char);
+    uc = (unicode_char *) MR_MALLOC(*size);
+    if (!uc)
+        return (NULL);
 
 
-    i=cnt=0;
+    i = cnt = 0;
 
-	while (cp[i])
-	{
-		a_ch[0] = cp[i];
-		
-		
-		if (cp[i] >= 0xA1 && cp[i] <= 0xFE && cp[i+1])
-		{
-			a_ch[1] = cp[i+1];
-			
-			if (0xA1 <= cp[i+1] && cp[i+1] <= 0xFE)
-			{
-			   int dest[2];
-			   
-               dest[1] = 0;
-			   
-			   dsmGB2UCS2((char *)&a_ch[0], (char *)&dest[1]);
-#ifdef MR_BIG_ENDIAN			   
-			   uc[cnt++] = (unicode_char)(dest[1] >> 16);
+    while (cp[i]) {
+        a_ch[0] = cp[i];
+
+        if (cp[i] >= 0xA1 && cp[i] <= 0xFE && cp[i + 1]) {
+            a_ch[1] = cp[i + 1];
+
+            if (0xA1 <= cp[i + 1] && cp[i + 1] <= 0xFE) {
+                int dest[2];
+
+                dest[1] = 0;
+
+                dsmGB2UCS2((char *) &a_ch[0], (char *) &dest[1]);
+#ifdef MR_BIG_ENDIAN
+                uc[cnt++] = (unicode_char)(dest[1] >> 16);
 #else
-			   uc[cnt++]= ((dest[1]&0xff) << 8) +  (dest[1] >> 8);	
+                uc[cnt++] = ((dest[1] & 0xff) << 8) + (dest[1] >> 8);
 #endif
-			}
-			else if (err)
-			{
-			     LUADBGPRINTF("c2u:err   1");
-				*err = i;
-				MR_FREE(uc, (cnt+1)*sizeof(unicode_char));
-				return NULL;
-			}
-			else{
-#ifdef MR_BIG_ENDIAN				
-				uc[cnt++]= 0xFFFD;          //TI
+            } else if (err) {
+                LUADBGPRINTF("c2u:err   1");
+                *err = i;
+                MR_FREE(uc, (cnt + 1) * sizeof(unicode_char));
+                return NULL;
+            } else {
+#ifdef MR_BIG_ENDIAN
+                uc[cnt++]= 0xFFFD;          //TI
 #else
-				uc[cnt++]= 0xFDFF;
+                uc[cnt++] = 0xFDFF;
 #endif
 
             }
-			i += 2;
-		}
-		else if (cp[i] < (unsigned)0x80)
-		{
+            i += 2;
+        } else if (cp[i] < (unsigned) 0x80) {
 #ifdef MR_BIG_ENDIAN
             uc[cnt++]= (unicode_char)cp[i];
 #else
-            uc[cnt++]=((unicode_char)cp[i])<<8;
+            uc[cnt++] = ((unicode_char) cp[i]) << 8;
 #endif
 
-			i += 1;
-		}
-		else if (err)
-		{
-           LUADBGPRINTF("c2u:err   2");
-			*err=i;
-			MR_FREE(uc, (cnt+1)*sizeof(unicode_char));
-			return (NULL);
-		}
-		else
-		{
-#ifdef MR_BIG_ENDIAN		
-          uc[cnt++]= 0xFFFD;
+            i += 1;
+        } else if (err) {
+            LUADBGPRINTF("c2u:err   2");
+            *err = i;
+            MR_FREE(uc, (cnt + 1) * sizeof(unicode_char));
+            return (NULL);
+        } else {
+#ifdef MR_BIG_ENDIAN
+            uc[cnt++]= 0xFFFD;
 #else
-		  uc[cnt++]= 0xFDFF;
+            uc[cnt++] = 0xFDFF;
 #endif
-			i += 2;
-		}
-	}
-	uc[cnt]=0;
+            i += 2;
+        }
+    }
+    uc[cnt] = 0;
 
-	return (uc);
+    return (uc);
 }
 
 

@@ -84,6 +84,7 @@ static int mr_strlen(const char *s) {
 	return strlen(s);
 }
 
+// dsm初始化
 void dsm_init()
 {
 	DsmPathInit();
@@ -277,6 +278,12 @@ int32 mr_mem_free(char* memory, uint32 alloc_size)
 #else
 
 //extern void sys_cacheflush();
+/**
+* 内存申请
+* @param mem_base 存放内存地址的地址
+* @param mem_len 存放内存长度地址
+* @return MR_SUCCESS
+*/
 int32 mr_mem_get(char** mem_base, uint32* mem_len){
 	char *buffer;
 	int pagesize, pagecount, len = DSM_MEM_SIZE;
@@ -287,11 +294,12 @@ int32 mr_mem_get(char** mem_base, uint32* mem_len){
 
 	pagecount = len/pagesize;	
 	len = pagesize*pagecount;
+	// 在堆中分配内存，地址是pagesize的倍数，大小为len
 	buffer = memalign(pagesize, len);
 	if (buffer == NULL)
 		handle_error("memalign");
 
-	//设置内存可执行权限
+	//设置内存可执行权限，执行读写
 	if (mprotect(buffer, len, PROT_EXEC|PROT_WRITE|PROT_READ) == -1){
 		free(buffer);
 		handle_error("mprotect");
@@ -300,6 +308,7 @@ int32 mr_mem_get(char** mem_base, uint32* mem_len){
 	*mem_base = buffer;
 	*mem_len = len;
 
+	// 向全局VM环境内存信息赋值
     gEmuEnv.vm_mem_base = buffer;
 	gEmuEnv.vm_mem_len = len;
     gEmuEnv.vm_mem_end = buffer + len;
@@ -1288,6 +1297,13 @@ int32 dsmGetFreeSpace(uint8 *input, int32 input_len, T_DSM_DISK_INFO *spaceInfo)
 	return MR_FAILED;
 }
 
+/**
+* 获取屏幕信息
+* 屏幕宽，屏幕高
+* 比特
+* @param s 存取信息结构体
+* @return MR_SUCCESS
+*/
 int32 mr_getScreenInfo(mr_screeninfo *s)
 {
 	//if(showApiLog) LOGI("mr_getScreenInfo");

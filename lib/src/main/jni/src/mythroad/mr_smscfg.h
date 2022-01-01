@@ -26,7 +26,7 @@ int32 _mr_smsAddNum(int32 index, const char *Str);
 int32 _mr_smsDelNum(int32 index);
 
 int32 _mr_newSIMInd(int16 type, const void *old_IMSI);
-int32 _mr_smsIndiaction(uint8 *pContent, int32 nLen, uint8 *pNum, int32 type);
+int32 _mr_smsIndication(uint8 *pContent, int32 nLen, uint8 *pNum, int32 type);
 
 int32 _mr_load_sms_cfg(void);
 int32 _mr_save_sms_cfg(int32 f);

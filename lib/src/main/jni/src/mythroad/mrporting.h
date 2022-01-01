@@ -445,7 +445,7 @@ extern int32 mr_pauseApp(void);
 extern int32 mr_resumeApp(void);
 
 /*当手机收到短消息时调用该函数*/
-extern int32 mr_smsIndiaction(uint8 *pContent, int32 nLen, uint8 *pNum, int32 type);
+extern int32 mr_smsIndication(uint8 *pContent, int32 nLen, uint8 *pNum, int32 type);
 
 /*对下载内容（保存在内存区中的一个下载的文件）进行判断，
 若下载文件是DSM菜单，由DSM引擎对下载文件进行保存。使用
@@ -843,7 +843,7 @@ enum
 #define MR_PHB_GET_STATUS (MR_PHB_OPERATION_BASE + 33)
 #define MR_PHB_USE_LOCAL (MR_PHB_OPERATION_BASE + 41)
 #define MR_PHB_USE_LOCAL_GET_ENTRY (MR_PHB_OPERATION_BASE + 42)
-#define MR_PHB_USE_LOCAL_DESTORY (MR_PHB_OPERATION_BASE + 43)
+#define MR_PHB_USE_LOCAL_DESTROY (MR_PHB_OPERATION_BASE + 43)
 
 //电话本操作返回值
 #define MR_PHB_ERROR -1
