@@ -44,8 +44,8 @@ static jfieldID		fid_charW, fid_charH, fid_editInputContent;
 static jfieldID		fid_memLen, fid_memTop, fid_memLeft;
 
 static jmethodID	id_flush; //刷新画布函数 ID
-static jmethodID	id_finish; //结束activity 
-static jmethodID	id_timerStart, id_timerStop; 
+static jmethodID	id_finish; //结束activity
+static jmethodID	id_timerStart, id_timerStop;
 static jmethodID	id_showEdit, id_showDlg;
 static jmethodID	id_getIntSysinfo;
 static jmethodID	id_getStringSysinfo;
@@ -246,7 +246,7 @@ Java_com_mrpoid_core_Emulator_native_1startMrp(JNIEnv * env, jobject self, jstri
 		// MRP路径UTF8转GBK，存到runMrpPath
 		UTF8ToGBString((uint8 *)str, (uint8 *)runMrpPath, sizeof(runMrpPath));
 
-		// 释放MRP路径所用内存
+		// 释放JAVA层MRP路径所用内存
         (*env)->ReleaseStringUTFChars(env, path, str);
         // 清理异常
         (*env)->ExceptionClear(env);
@@ -646,7 +646,7 @@ static int clip_rect(int *x0, int *y0, int *x1, int *y1, int r, int b)
 	if (*x0>r || *y0>b || *x1<0 || *y1<0)
 		return 1;
 
-	//根据Clip修正后的 x y r b 
+	//根据Clip修正后的 x y r b
 	*x0 = MAX(*x0, 0);
 	*y0 = MAX(*y0, 0);
 	*x1 = MIN(*x1, r);
@@ -663,7 +663,7 @@ void emu_bitmapToscreen(uint16* data, int x, int y, int w, int h)
 	int ret;
 	int				x1, y1, r, b;
 	int32			sw=SCNW, sh=SCNH;
-	
+
 	if(x>=sw || y>=sh || w<=0 || h<=0)
 		return;
 
@@ -671,7 +671,7 @@ void emu_bitmapToscreen(uint16* data, int x, int y, int w, int h)
 	x1 = x+w-1, y1 = y+h-1;
 	clip_rect(&x, &y, &x1, &y1, r, b);
 	w = x1-x+1, h = y1-y+1;
-	
+
 	JNIEnv *e = getJniEnv();
 	void* pixels = realScreenBuffer;
 
@@ -854,7 +854,7 @@ int32 emu_showEdit(const char * title, const char * text, int type, int max_size
 	} else {
 		stitle = (*jniEnv)->NewStringUTF(jniEnv, "\x0\x0");
 	}
-	
+
 	if(text) {
 		l = UCS2_strlen(text);
 		buf = malloc(l+2);
@@ -906,8 +906,8 @@ const char* emu_getEditInputContent(int32 editHd)
 				return content;
 			}
 		}
-	} 
-	
+	}
+
 	//貌似直接返回空指针会挂
 	edit->buf_content = malloc(8);
 	memset(edit->buf_content, 0, 8);
@@ -928,6 +928,10 @@ void emu_releaseEdit(int32 editHd)
 	}
 }
 
+/**
+* 模拟器结束处理
+* 结束activity，异常清除
+*/
 void emu_finish()
 {
 	JNIEnv *e = getJniEnv();
@@ -1250,6 +1254,5 @@ void emu_stopShake()
 
 JNIEXPORT void JNICALL
 Java_com_mrpoid_core_Emulator_hello(JNIEnv *env, jobject thiz) {
-	// TODO: implement hello()
 	LOGI("你好我好大家好");
 }

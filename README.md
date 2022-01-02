@@ -5,27 +5,27 @@ Mrpoid is create by yichou angle at about 2013, All the MRP emulators on the mar
 ## Here is the changelog
 ## 交流群:209533157
 
+### 2022
+分析代码
+
 ### 2018
 项目转移到 AndroidStudio 
 
-<h3>Version 2.0</h3>
-<ol>
-	<li>虚拟键盘改用绘制，避免 Bitmap 回收崩溃问题</li>
-</ol>
+### Version 2.0
+1. 虚拟键盘改用绘制，避免 Bitmap 回收崩溃问题
 
-<h3>Version 1.4.x.x</h3>
-<ol>
-	<li>没有了，好久没更新，不记得改了什么。</li>
-	<li>完成短信发送接口，如果发现话费偷跑了，请不要联系我，联系斯凯^_^</li>
-	<li>修正虚拟键盘多线程冲突</li>
-	<li>增加外部调用功能</li>
-	<li>修正历史遗留BUG，解决冒泡网游不能进等问题！</li>
-	<li>修正音乐播放接口</li>
-	<li>增加显示内存使用情况功能</li>
-	<li>虚拟机内存调整为 4M</li>
-	<li>使用官方完整版虚拟机，支持mr运行，提高稳定性！</li>
-	<li>优化整体框架</li>
-</ol>
+
+### Version 1.4.x.x
+1. 没有了，好久没更新，不记得改了什么。
+2. 完成短信发送接口，如果发现话费偷跑了，请不要联系我，联系斯凯^_^
+3. 修正虚拟键盘多线程冲突
+4. 增加外部调用功能
+5. 修正历史遗留BUG，解决冒泡网游不能进等问题！
+6. 修正音乐播放接口
+7. 增加显示内存使用情况功能
+8. 虚拟机内存调整为 4M
+9. 使用官方完整版虚拟机，支持mr运行，提高稳定性！
+10. 优化整体框架
 
 <h3>Version 1.2.0.0</h3>
 <ol>
@@ -73,5 +73,6 @@ Mrpoid is create by yichou angle at about 2013, All the MRP emulators on the mar
 	<li>修正后台返回重启 mrp</li>
 </ol>
 
-<p>Version 1.1.0.0<br>----------</p>
+### Version 1.1.0.0
+
 更早的某年某月某日 Mrpoid 诞生了

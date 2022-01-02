@@ -84,7 +84,11 @@ static int mr_strlen(const char *s) {
 	return strlen(s);
 }
 
-// dsm初始化
+/**
+* dsm初始化
+* dsm路径初始化，socket初始化
+* 获取系统信息，网络信息
+*/
 void dsm_init()
 {
 	DsmPathInit();
@@ -106,6 +110,11 @@ void dsm_init()
 	dsmNetType = emu_getIntSysinfo("netType");
 }
 
+/**
+* dsm重置
+* 关闭socket
+* 环境释放
+*/
 void dsm_reset()
 {
 	DsmSocketClose();

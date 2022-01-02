@@ -8,18 +8,19 @@ FILE: mythroad.c
 INCLUDES AND VARIABLE DEFINITIONS
 =============================================================================== */
 #ifdef MR_TI_MOD
-#undef _INLINE 
+                                                                                                                        #undef _INLINE
 #include <string.h>
 #endif
 
-#if (defined(MR_ANYKA_MOD)||defined(MR_SPREADTRUM_MOD)||defined(MR_BREW_MOD))
+#if (defined(MR_ANYKA_MOD) || defined(MR_SPREADTRUM_MOD) || defined(MR_BREW_MOD))
 #else
 //#if (!defined(MR_ANYKA_MOD))
 #include <ctype.h>
+
 #endif
 
 
-//#include "tomr.h"         // 
+//#include "tomr.h"         //
 #include "mr.h"
 #include "mr_lib.h"
 #include "mr_auxlib.h"
@@ -65,28 +66,25 @@ static const unsigned char mr_m0_file1[]=
 
 
 const unsigned char *mr_m0_files[] =
-{NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,
-NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,
-NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,
-NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,
-NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL
-};
+        {NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+         NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+         NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+         NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+         NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL
+        };
 //#endif
 
 
-typedef struct  _mini_mr_c_event_st                       
-{
-	int32 code;
-	int32 param0;
-	int32 param1;
-	int32 param2;
-	int32 param3;
+typedef struct _mini_mr_c_event_st {
+    int32 code;
+    int32 param0;
+    int32 param1;
+    int32 param2;
+    int32 param3;
 } mini_mr_c_event_st;
 
 
-
 mini_mr_c_event_st c_event_st;
-
 
 
 #ifdef COMPATIBILITY01
@@ -97,51 +95,51 @@ mini_mr_c_event_st c_event_st;
 #define MRDBGPRINTF mr_printf
 
 
-mrp_State    *vm_state;
+mrp_State *vm_state;
 
 
-static uint16*      mr_screenBuf;
+static uint16 *mr_screenBuf;
 #ifdef MR_SCREEN_CACHE_BITMAP
 static uint8*      mr_screenBMP;
 #endif
 #ifdef MR_TRACE
-mr_bitmapSt  mr_bitmap[BITMAPMAX+1];
+                                                                                                                        mr_bitmapSt  mr_bitmap[BITMAPMAX+1];
 mr_tileSt    mr_tile[TILEMAX];
 int16*       mr_map[TILEMAX];
 mr_soundSt  mr_sound[SOUNDMAX];
 #else
-static mr_bitmapSt  mr_bitmap[BITMAPMAX+1];
-static mr_tileSt    mr_tile[TILEMAX];
-static int16*       mr_map[TILEMAX];
-static mr_soundSt  mr_sound[SOUNDMAX];
+static mr_bitmapSt mr_bitmap[BITMAPMAX + 1];
+static mr_tileSt mr_tile[TILEMAX];
+static int16 *mr_map[TILEMAX];
+static mr_soundSt mr_sound[SOUNDMAX];
 #endif
-static mr_spriteSt  mr_sprite[SPRITEMAX];
+static mr_spriteSt mr_sprite[SPRITEMAX];
 //static mr_cycleSt mr_cycle;
-int32        mr_state = MR_STATE_IDLE;
-static int32        bi = 0;
-static char  pack_filename[MR_MAX_FILENAME_SIZE];
+int32 mr_state = MR_STATE_IDLE;
+static int32 bi = 0;
+static char pack_filename[MR_MAX_FILENAME_SIZE];
 //static char  pack_filename_old[MR_MAX_FILENAME_SIZE];
-static char  start_filename[MR_MAX_FILENAME_SIZE];
+static char start_filename[MR_MAX_FILENAME_SIZE];
 
-static char  start_fileparameter[MR_MAX_FILENAME_SIZE];
+static char start_fileparameter[MR_MAX_FILENAME_SIZE];
 
-static char  old_pack_filename[MR_MAX_FILENAME_SIZE];
+static char old_pack_filename[MR_MAX_FILENAME_SIZE];
 //static char  pack_filename_old[MR_MAX_FILENAME_SIZE];
-static char  old_start_filename[MR_MAX_FILENAME_SIZE];
+static char old_start_filename[MR_MAX_FILENAME_SIZE];
 
-static char  mr_entry[MR_MAX_FILENAME_SIZE];
+static char mr_entry[MR_MAX_FILENAME_SIZE];
 
-static int32        mr_screen_w;
-static int32        mr_screen_h;
-static int32        mr_screen_bit;
-static void*       mr_timer_p;
-static int32                mr_timer_state = MR_TIMER_STATE_IDLE;
-int32                mr_timer_run_without_pause = FALSE;
+static int32 mr_screen_w;
+static int32 mr_screen_h;
+static int32 mr_screen_bit;
+static void *mr_timer_p;
+static int32 mr_timer_state = MR_TIMER_STATE_IDLE;
+int32 mr_timer_run_without_pause = FALSE;
 
-static char*      mr_exception_str = NULL;
+static char *mr_exception_str = NULL;
 
 
-extern int32 mr_cacheSync(void* addr,int32 len);
+extern int32 mr_cacheSync(void *addr, int32 len);
 
 
 #ifdef MR_CFG_USE_A_DISK
@@ -150,7 +148,7 @@ static char  temp_current_path[MR_MAX_FILENAME_SIZE];
 
 //******************************************
 //将应用加载到内存中运行
-static char* mr_ram_file=NULL;
+static char *mr_ram_file = NULL;
 static int mr_ram_file_len;
 //******************************************
 
@@ -179,12 +177,12 @@ static uint32 LG_mem_min;
 static uint32 LG_mem_top;
 #endif
 
-static LG_mem_free_t LG_mem_free;        
+static LG_mem_free_t LG_mem_free;
 static char *LG_mem_base;
 static uint32 LG_mem_len;
 static char *Origin_LG_mem_base;
 static uint32 Origin_LG_mem_len;
-static char *LG_mem_end;   
+static char *LG_mem_end;
 static uint32 LG_mem_left;
 //*****************************
 
@@ -205,7 +203,7 @@ static uint32 LG_mem_left;
 #define CFG_USE_URL_UPDATE_OFFSET 6//是否使用SMS更新的URL
 
 
-static const char* dsm_cfg_data_file_name = "dsm.cfg";
+static const char *dsm_cfg_data_file_name = "dsm.cfg";
 #define   DSM_CFG_FILE_NAME  dsm_cfg_data_file_name                     //短信文件名称
 
 static uint8 mr_sms_cfg_buf[MR_SMS_CFG_BUF_LEN];
@@ -223,7 +221,7 @@ MR_C_FUNCTION mr_c_function;
 void *mr_c_function_P;
 int32 mr_c_function_P_len;
 
-static int32* mr_c_function_fix_p;
+static int32 *mr_c_function_fix_p;
 
 MR_EVENT_FUNCTION mr_event_function = NULL;
 MR_TIMER_FUNCTION mr_timer_function = NULL;
@@ -234,13 +232,12 @@ MR_RESUMEAPP_FUNCTION mr_resumeApp_function = NULL;
 static mrc_timerCB mr_exit_cb = NULL;
 static int32 mr_exit_cb_data;
 
-typedef struct
-{
-	int32   id;
-	int32   ver;
-	char*  sidName;
-	int32   ram;
-}mrc_appInfoSt_st;
+typedef struct {
+    int32 id;
+    int32 ver;
+    char *sidName;
+    int32 ram;
+} mrc_appInfoSt_st;
 
 mrc_appInfoSt_st mrc_appInfo_st;
 
@@ -261,88 +258,117 @@ int8 mr_flagReadFileForPlat = FALSE;
 
 //************read file form mrp plat
 void mr_md5_init(md5_state_t *pms);
+
 void mr_md5_append(md5_state_t *pms, const md5_byte_t *data, int nbytes);
+
 void mr_md5_finish(md5_state_t *pms, md5_byte_t digest[16]);
 //int32 _mr_decode(unsigned char *in, unsigned int len, unsigned char *out);
 //int32 _mr_encode(unsigned char *in, unsigned int len, unsigned char *out);
 
-static int32 _mr_smsSetBytes(int32 pos, char* p, int32 len);
-static int32 _mr_smsAddNum(int32 index, char* pNum);
+static int32 _mr_smsSetBytes(int32 pos, char *p, int32 len);
+
+static int32 _mr_smsAddNum(int32 index, char *pNum);
+
 static int32 _mr_load_sms_cfg(void);
+
 static int32 _mr_save_sms_cfg(MR_FILE_HANDLE f);
-static int32 _mr_newSIMInd(int16  type, uint8* old_IMSI);
+
+static int32 _mr_newSIMInd(int16 type, uint8 *old_IMSI);
 
 
 static int32 _DispUpEx(int16 x, int16 y, uint16 w, uint16 h);
-static int _mr_isMr(char*  input);
+
+static int _mr_isMr(char *input);
 
 #ifdef MR_ANYKA_MOD
-static void _DrawPoint(int16 x, int16 y, uint32 nativecolor);
+                                                                                                                        static void _DrawPoint(int16 x, int16 y, uint32 nativecolor);
 static void _DrawBitmap(uint16* p, int16 x, int16 y, uint16 w, uint16 h, uint16 rop, uint32 transcoler, int16 sx, int16 sy, int16 mw);
 static void _DrawBitmapEx(mr_bitmapDrawSt* srcbmp, mr_bitmapDrawSt* dstbmp, uint16 w, uint16 h, mr_transMatrixSt* pTrans, uint32 transcoler);
 static void DrawRect(int16 x, int16 y, int16 w, int16 h, uint8 r, uint8 g, uint8 b);
 static int32 _DrawText(char* pcText, int16 x, int16 y, uint8 r, uint8 g, uint8 b, int is_unicode, uint16 font);
 int _BitmapCheck(uint16*p, int16 x, int16 y, uint16 w, uint16 h, uint32 transcoler, uint32 color_check);
 #else
+
 static void _DrawPoint(int16 x, int16 y, uint16 nativecolor);
-static void _DrawBitmap(uint16* p, int16 x, int16 y, uint16 w, uint16 h, uint16 rop, uint16 transcoler, int16 sx, int16 sy, int16 mw);
-static void _DrawBitmapEx(mr_bitmapDrawSt* srcbmp, mr_bitmapDrawSt* dstbmp, uint16 w, uint16 h, mr_transMatrixSt* pTrans, uint16 transcoler);
+
+static void
+_DrawBitmap(uint16 *p, int16 x, int16 y, uint16 w, uint16 h, uint16 rop, uint16 transcoler,
+            int16 sx, int16 sy, int16 mw);
+
+static void _DrawBitmapEx(mr_bitmapDrawSt *srcbmp, mr_bitmapDrawSt *dstbmp, uint16 w, uint16 h,
+                          mr_transMatrixSt *pTrans, uint16 transcoler);
+
 static void DrawRect(int16 x, int16 y, int16 w, int16 h, uint8 r, uint8 g, uint8 b);
-static int32 _DrawText(char* pcText, int16 x, int16 y, uint8 r, uint8 g, uint8 b, int is_unicode, uint16 font);
-int _BitmapCheck(uint16*p, int16 x, int16 y, uint16 w, uint16 h, uint16 transcoler, uint16 color_check);
+
+static int32
+_DrawText(char *pcText, int16 x, int16 y, uint8 r, uint8 g, uint8 b, int is_unicode, uint16 font);
+
+int _BitmapCheck(uint16 *p, int16 x, int16 y, uint16 w, uint16 h, uint16 transcoler,
+                 uint16 color_check);
+
 #endif
 
 
 void mr_platDrawChar(uint16 ch, int32 x, int32 y, int32 color);
 
-void * _mr_readFile(const char* filename, int *filelen, int lookfor);
-int mr_wstrlen(char * txt);
+void *_mr_readFile(const char *filename, int *filelen, int lookfor);
+
+int mr_wstrlen(char *txt);
+
 int32 mr_registerAPP(uint8 *p, int32 len, int32 index);
 
-void* mr_malloc(uint32 len);
-void mr_free(void* p, uint32 len);
-void* mr_realloc(void* p, uint32 oldlen, uint32 len);
-int32 _mr_c_function_new(MR_C_FUNCTION f, int32 len);
-static int _mr_EffSetCon(int16 x, int16 y, int16 w, int16 h, int16 perr, int16 perg, int16 perb);
-static int _mr_TestCom(mrp_State* L, int input0, int input1);
-static int32 _DrawTextEx(char* pcText, int16 x, int16 y, 
-						 mr_screenRectSt rect, mr_colourSt colorst, int flag, uint16 font);
+void *mr_malloc(uint32 len);
 
-static int _mr_TestCom1(mrp_State* L, int input0, char* input1, int32 len);
-static int _mr_TestComC(int input0, char* input1, int32 len, int32 code);
+void mr_free(void *p, uint32 len);
+
+void *mr_realloc(void *p, uint32 oldlen, uint32 len);
+
+int32 _mr_c_function_new(MR_C_FUNCTION f, int32 len);
+
+static int _mr_EffSetCon(int16 x, int16 y, int16 w, int16 h, int16 perr, int16 perg, int16 perb);
+
+static int _mr_TestCom(mrp_State *L, int input0, int input1);
+
+static int32 _DrawTextEx(char *pcText, int16 x, int16 y,
+                         mr_screenRectSt rect, mr_colourSt colorst, int flag, uint16 font);
+
+static int _mr_TestCom1(mrp_State *L, int input0, char *input1, int32 len);
+
+static int _mr_TestComC(int input0, char *input1, int32 len, int32 code);
 
 int32 mr_stop_ex(int16 freemem);
 
 static int32 _mr_div(int32 a, int32 b);
+
 static int32 _mr_mod(int32 a, int32 b);
 
 static int32 _mr_getMetaMemLimit(void);
 
-static const void* _mr_c_internal_table[] = {
-	(void*)mr_m0_files,
-	(void*)&vm_state,
-	(void*)&mr_state,
-	(void*)&bi,
+static const void *_mr_c_internal_table[] = {
+        (void *) mr_m0_files,
+        (void *) &vm_state,
+        (void *) &mr_state,
+        (void *) &bi,
 
-	(void*)&mr_timer_p,
-	(void*)&mr_timer_state,
-	(void*)&mr_timer_run_without_pause,
+        (void *) &mr_timer_p,
+        (void *) &mr_timer_state,
+        (void *) &mr_timer_run_without_pause,
 
-	(void*)&mr_gzInBuf,
-	(void*)&mr_gzOutBuf,
-	(void*)&LG_gzinptr,
-	(void*)&LG_gzoutcnt,
+        (void *) &mr_gzInBuf,
+        (void *) &mr_gzOutBuf,
+        (void *) &LG_gzinptr,
+        (void *) &LG_gzoutcnt,
 
-	(void*)&mr_sms_cfg_need_save,
-	(void*)_mr_smsSetBytes,
-	(void*)_mr_smsAddNum,
-	(void*)_mr_newSIMInd,
+        (void *) &mr_sms_cfg_need_save,
+        (void *) _mr_smsSetBytes,
+        (void *) _mr_smsAddNum,
+        (void *) _mr_newSIMInd,
 
-	(void*)_mr_isMr,
+        (void *) _mr_isMr,
 
 #if 0
 
-	(void*)mrp_gettop,  //1937
+                                                                                                                                (void*)mrp_gettop,  //1937
 	(void*)mrp_settop,
 	(void*)mrp_pushvalue,
 	(void*)mrp_remove,
@@ -420,16 +446,16 @@ static const void* _mr_c_internal_table[] = {
 	(void*)mrp_resume,
 
 #endif
-	NULL
+        NULL
 };
 
-static void* _mr_c_port_table[] = {
-	NULL,NULL,NULL,NULL
+static void *_mr_c_port_table[] = {
+        NULL, NULL, NULL, NULL
 };
 
 
 #if defined(MR_BREW_MOD) || defined(MR_MSTAR_MOD)
-int mr_strlen(const char * s)
+                                                                                                                        int mr_strlen(const char * s)
 {
 	if (s){
 		return strlen(s);
@@ -442,313 +468,303 @@ int mr_strlen(const char * s)
 extern int mr_sprintf(char *buf, const char *fmt, ...);
 
 #ifdef  SDK_MOD
-void* sdk_mr_c_function_table;
+                                                                                                                        void* sdk_mr_c_function_table;
 
 const void* _mr_c_function_table[] = {
 #else
-static const void* _mr_c_function_table[] = {
+static const void *_mr_c_function_table[] = {
 #endif
-	(void*)mr_malloc,
-	(void*)mr_free,
-	(void*)mr_realloc,   // 3
+        (void *) mr_malloc,
+        (void *) mr_free,
+        (void *) mr_realloc,   // 3
 
-	(void*)mr_memcpy,
-	(void*)mr_memmove,
-	(void*)mr_strcpy,
-	(void*)mr_strncpy,
-	(void*)mr_strcat,
-	(void*)mr_strncat,
-	(void*)mr_memcmp,
-	(void*)mr_strcmp,
-	(void*)mr_strncmp,
-	(void*)mr_strcoll,
-	(void*)mr_memchr,
-	(void*)mr_memset,
+        (void *) mr_memcpy,
+        (void *) mr_memmove,
+        (void *) mr_strcpy,
+        (void *) mr_strncpy,
+        (void *) mr_strcat,
+        (void *) mr_strncat,
+        (void *) mr_memcmp,
+        (void *) mr_strcmp,
+        (void *) mr_strncmp,
+        (void *) mr_strcoll,
+        (void *) mr_memchr,
+        (void *) mr_memset,
 #if (!defined(MR_BREW_MOD) && !defined(MR_MSTAR_MOD))
-	(void*)mr_strlen,
+        (void *) mr_strlen,
 #else
-	(void*)mr_strlen,
+        (void*)mr_strlen,
 #endif
-	(void*)mr_strstr,
-	(void*)mr_sprintf,
-	(void*)mr_atoi,
-	(void*)mr_strtoul,       // 20
-	(void*)mr_rand,
+        (void *) mr_strstr,
+        (void *) mr_sprintf,
+        (void *) mr_atoi,
+        (void *) mr_strtoul,       // 20
+        (void *) mr_rand,
 
-	(void*)NULL,
-	(void*)mr_stop_ex,    //V1939
-	(void*)_mr_c_internal_table,
+        (void *) NULL,
+        (void *) mr_stop_ex,    //V1939
+        (void *) _mr_c_internal_table,
 
-	(void*)_mr_c_port_table,
-	(void*)_mr_c_function_new,  //26
-	(void*)mr_printf,
-	(void*)mr_mem_get,
-	(void*)mr_mem_free ,
-	(void*)mr_drawBitmap,
-	(void*)mr_getCharBitmap,
-	(void*)mr_timerStart,
-	(void*)mr_timerStop,
-	(void*)mr_getTime,
-	(void*)mr_getDatetime,
-	(void*)mr_getUserInfo,
-	(void*)mr_sleep,           //37
+        (void *) _mr_c_port_table,
+        (void *) _mr_c_function_new,  //26
+        (void *) mr_printf,
+        (void *) mr_mem_get,
+        (void *) mr_mem_free,
+        (void *) mr_drawBitmap,
+        (void *) mr_getCharBitmap,
+        (void *) mr_timerStart,
+        (void *) mr_timerStop,
+        (void *) mr_getTime,
+        (void *) mr_getDatetime,
+        (void *) mr_getUserInfo,
+        (void *) mr_sleep,           //37
 
-	(void*)mr_plat,
-	(void*)mr_platEx,          //39
+        (void *) mr_plat,
+        (void *) mr_platEx,          //39
 
-	(void*)mr_ferrno,
-	(void*)mr_open,
-	(void*)mr_close,
-	(void*)mr_info,
-	(void*)mr_write,
-	(void*)mr_read,
-	(void*)mr_seek,
-	(void*)mr_getLen,
-	(void*)mr_remove,
-	(void*)mr_rename,
-	(void*)mr_mkDir,
-	(void*)mr_rmDir,
-	(void*)mr_findStart,
-	(void*)mr_findGetNext,
-	(void*)mr_findStop,              //54
+        (void *) mr_ferrno,
+        (void *) mr_open,
+        (void *) mr_close,
+        (void *) mr_info,
+        (void *) mr_write,
+        (void *) mr_read,
+        (void *) mr_seek,
+        (void *) mr_getLen,
+        (void *) mr_remove,
+        (void *) mr_rename,
+        (void *) mr_mkDir,
+        (void *) mr_rmDir,
+        (void *) mr_findStart,
+        (void *) mr_findGetNext,
+        (void *) mr_findStop,              //54
 
-	(void*)mr_exit,
-	(void*)mr_startShake,
-	(void*)mr_stopShake,
-	(void*)mr_playSound,
-	(void*)mr_stopSound ,         //59
+        (void *) mr_exit,
+        (void *) mr_startShake,
+        (void *) mr_stopShake,
+        (void *) mr_playSound,
+        (void *) mr_stopSound,         //59
 
-	(void*)mr_sendSms,
-	(void*)mr_call,
-	(void*)mr_getNetworkID,
-	(void*)mr_connectWAP,
+        (void *) mr_sendSms,
+        (void *) mr_call,
+        (void *) mr_getNetworkID,
+        (void *) mr_connectWAP,
 
-	(void*)mr_menuCreate,
-	(void*)mr_menuSetItem,
-	(void*)mr_menuShow,
-	(void*)NULL,//mr_menuSetFocus,
-	(void*)mr_menuRelease,
-	(void*)mr_menuRefresh,
-	(void*)mr_dialogCreate,
-	(void*)mr_dialogRelease,
-	(void*)mr_dialogRefresh,
-	(void*)mr_textCreate,
-	(void*)mr_textRelease,
-	(void*)mr_textRefresh,
-	(void*)mr_editCreate,
-	(void*)mr_editRelease,
-	(void*)mr_editGetText,
-	(void*)mr_winCreate,
-	(void*)mr_winRelease,
+        (void *) mr_menuCreate,
+        (void *) mr_menuSetItem,
+        (void *) mr_menuShow,
+        (void *) NULL,//mr_menuSetFocus,
+        (void *) mr_menuRelease,
+        (void *) mr_menuRefresh,
+        (void *) mr_dialogCreate,
+        (void *) mr_dialogRelease,
+        (void *) mr_dialogRefresh,
+        (void *) mr_textCreate,
+        (void *) mr_textRelease,
+        (void *) mr_textRefresh,
+        (void *) mr_editCreate,
+        (void *) mr_editRelease,
+        (void *) mr_editGetText,
+        (void *) mr_winCreate,
+        (void *) mr_winRelease,
 
-	(void*)mr_getScreenInfo,
+        (void *) mr_getScreenInfo,
 
-	(void*)mr_initNetwork,
-	(void*)mr_closeNetwork,
-	(void*)mr_getHostByName,
-	(void*)mr_socket,
-	(void*)mr_connect,
-	(void*)mr_closeSocket,
-	(void*)mr_recv,
-	(void*)mr_recvfrom,
-	(void*)mr_send,
-	(void*)mr_sendto,
+        (void *) mr_initNetwork,
+        (void *) mr_closeNetwork,
+        (void *) mr_getHostByName,
+        (void *) mr_socket,
+        (void *) mr_connect,
+        (void *) mr_closeSocket,
+        (void *) mr_recv,
+        (void *) mr_recvfrom,
+        (void *) mr_send,
+        (void *) mr_sendto,
 
 
-	(void*)&mr_screenBuf,
-	(void*)&mr_screen_w,
-	(void*)&mr_screen_h,
-	(void*)&mr_screen_bit,
-	(void*)mr_bitmap,
-	(void*)mr_tile,
-	(void*)mr_map,
-	(void*)mr_sound,
-	(void*)mr_sprite,
+        (void *) &mr_screenBuf,
+        (void *) &mr_screen_w,
+        (void *) &mr_screen_h,
+        (void *) &mr_screen_bit,
+        (void *) mr_bitmap,
+        (void *) mr_tile,
+        (void *) mr_map,
+        (void *) mr_sound,
+        (void *) mr_sprite,
 
-	(void*)pack_filename,
-	(void*)start_filename,
-	(void*)old_pack_filename,
-	(void*)old_start_filename,
+        (void *) pack_filename,
+        (void *) start_filename,
+        (void *) old_pack_filename,
+        (void *) old_start_filename,
 
-	(void*)&mr_ram_file,
-	(void*)&mr_ram_file_len,
+        (void *) &mr_ram_file,
+        (void *) &mr_ram_file_len,
 
-	(void*)&mr_soundOn,
-	(void*)&mr_shakeOn,
+        (void *) &mr_soundOn,
+        (void *) &mr_shakeOn,
 
-	(void*)&LG_mem_base,
-	(void*)&LG_mem_len,
-	(void*)&LG_mem_end,
-	(void*)&LG_mem_left,
+        (void *) &LG_mem_base,
+        (void *) &LG_mem_len,
+        (void *) &LG_mem_end,
+        (void *) &LG_mem_left,
 
-	(void*)&mr_sms_cfg_buf,
-	(void*)mr_md5_init,
-	(void*)mr_md5_append,
-	(void*)mr_md5_finish,
-	(void*)_mr_load_sms_cfg,
-	(void*)_mr_save_sms_cfg,
-	(void*)_DispUpEx,
+        (void *) &mr_sms_cfg_buf,
+        (void *) mr_md5_init,
+        (void *) mr_md5_append,
+        (void *) mr_md5_finish,
+        (void *) _mr_load_sms_cfg,
+        (void *) _mr_save_sms_cfg,
+        (void *) _DispUpEx,
 
-	(void*)_DrawPoint,
-	(void*)_DrawBitmap,
-	(void*)_DrawBitmapEx,
-	(void*)DrawRect,
-	(void*)_DrawText,
-	(void*)_BitmapCheck,
-	(void*)_mr_readFile,
-	(void*)mr_wstrlen,
-	(void*)mr_registerAPP,
-	(void*)_DrawTextEx,  //1936
-	(void*)_mr_EffSetCon,
-	(void*)_mr_TestCom,
-	(void*)_mr_TestCom1,   //1938
-	(void*)c2u,            //1939
-	(void*)_mr_div,            //1941
-	(void*)_mr_mod,          
+        (void *) _DrawPoint,
+        (void *) _DrawBitmap,
+        (void *) _DrawBitmapEx,
+        (void *) DrawRect,
+        (void *) _DrawText,
+        (void *) _BitmapCheck,
+        (void *) _mr_readFile,
+        (void *) mr_wstrlen,
+        (void *) mr_registerAPP,
+        (void *) _DrawTextEx,  //1936
+        (void *) _mr_EffSetCon,
+        (void *) _mr_TestCom,
+        (void *) _mr_TestCom1,   //1938
+        (void *) c2u,            //1939
+        (void *) _mr_div,            //1941
+        (void *) _mr_mod,
 
-	(void*)&LG_mem_min,
-	(void*)&LG_mem_top,
-	(void*)mr_updcrc,       //1943
-	(void*)start_fileparameter, //1945
-	(void*)&mr_sms_return_flag,//1949
-	(void*)&mr_sms_return_val,
-	(void*)mr_unzip,   //1950
-	(void*)&mr_exit_cb,//1951
-	(void*)&mr_exit_cb_data,//1951
-	(void*)mr_entry,//1952
-	(void*)mr_platDrawChar,//2004
-	(void*)&LG_mem_free,//1967,2009
+        (void *) &LG_mem_min,
+        (void *) &LG_mem_top,
+        (void *) mr_updcrc,       //1943
+        (void *) start_fileparameter, //1945
+        (void *) &mr_sms_return_flag,//1949
+        (void *) &mr_sms_return_val,
+        (void *) mr_unzip,   //1950
+        (void *) &mr_exit_cb,//1951
+        (void *) &mr_exit_cb_data,//1951
+        (void *) mr_entry,//1952
+        (void *) mr_platDrawChar,//2004
+        (void *) &LG_mem_free,//1967,2009
 
-	(void*)mr_transbitmapDraw,
-	(void*)mr_drawRegion,	   
-	NULL
+        (void *) mr_transbitmapDraw,
+        (void *) mr_drawRegion,
+        NULL
 
 };
 
-static int32 _mr_div(int32 a, int32 b)
-{
-	return a/b;
+static int32 _mr_div(int32 a, int32 b) {
+    return a / b;
 }
 
-static int32 _mr_mod(int32 a, int32 b)
-{
-	return a%b;
+static int32 _mr_mod(int32 a, int32 b) {
+    return a % b;
 }
 
 /**
 * 内存申请与地址初始化
+* 结果存储在LG_mem_
 * @param ram 内存大小
 * @return MR_FAILED | MR_SUCCESS
 */
-static int32 _mr_mem_init_ex(int32 ram)
-{
+static int32 _mr_mem_init_ex(int32 ram) {
 //	内存申请
 #if 1
-	if (mr_mem_get(&Origin_LG_mem_base, &Origin_LG_mem_len) != MR_SUCCESS)
+    if (mr_mem_get(&Origin_LG_mem_base, &Origin_LG_mem_len) != MR_SUCCESS)
 #else
-	if (mr_mem_get_ex(ram, &Origin_LG_mem_base, &Origin_LG_mem_len) != MR_SUCCESS)
+        if (mr_mem_get_ex(ram, &Origin_LG_mem_base, &Origin_LG_mem_len) != MR_SUCCESS)
 #endif
-	{
-		return MR_FAILED;
-	}
-	/**
+    {
+        return MR_FAILED;
+    }
+    /**
 	* 确保地址低两位为0
 	* 为了避免地址向地位溢出，+3
 	* (~3)   28个1 1100
 	*/
-	LG_mem_base = (char*)((uint32)(Origin_LG_mem_base + 3) & (~3));
-	LG_mem_len = (Origin_LG_mem_len - (LG_mem_base - Origin_LG_mem_base)) & (~3);
-	LG_mem_end = LG_mem_base + LG_mem_len;
-	LG_mem_free.next = 0;
-	LG_mem_free.len = 0;
-	((LG_mem_free_t *) LG_mem_base)->next = LG_mem_len;
-	((LG_mem_free_t *) LG_mem_base)->len = LG_mem_len;
-	LG_mem_left = LG_mem_len;
+    LG_mem_base = (char *) ((uint32) (Origin_LG_mem_base + 3) & (~3));
+    LG_mem_len = (Origin_LG_mem_len - (LG_mem_base - Origin_LG_mem_base)) & (~3);
+    LG_mem_end = LG_mem_base + LG_mem_len;
+    LG_mem_free.next = 0;
+    LG_mem_free.len = 0;
+    ((LG_mem_free_t *) LG_mem_base)->next = LG_mem_len;
+    ((LG_mem_free_t *) LG_mem_base)->len = LG_mem_len;
+    LG_mem_left = LG_mem_len;
 #ifdef MYTHROAD_DEBUG
-	LG_mem_min = LG_mem_len;
-	LG_mem_top = 0;
+    LG_mem_min = LG_mem_len;
+    LG_mem_top = 0;
 #endif
-	//memset(LG_mem_base+sizeof(LG_mem_free_t),0,
-	//                           mem_len-sizeof(LG_mem_free_t));
-	return MR_SUCCESS;
+    //memset(LG_mem_base+sizeof(LG_mem_free_t),0,
+    //                           mem_len-sizeof(LG_mem_free_t));
+    return MR_SUCCESS;
 }
 
-void* mr_malloc(uint32 len)
-{
+void *mr_malloc(uint32 len) {
 #if 0
-	//#ifdef SDK_MOD
+                                                                                                                            //#ifdef SDK_MOD
 	int32 *t;
 	t = malloc(len + 4);
 	*t = len;
 	return (void*)(t+1);
 #else
 
-	LG_mem_free_t *previous, *nextfree, *l;
+    LG_mem_free_t *previous, *nextfree, *l;
 
-	len = (uint32) realLGmemSize(len);
-	if (len >= LG_mem_left)
-	{
-		MRDBGPRINTF("mr_malloc no memory");
-		return 0;
-	}
+    len = (uint32) realLGmemSize(len);
+    if (len >= LG_mem_left) {
+        MRDBGPRINTF("mr_malloc no memory");
+        return 0;
+    }
 
-	if (!len)
-	{
-		MRDBGPRINTF("mr_malloc invalid memory request");
-		return 0;
-	}
-	if (LG_mem_base + LG_mem_free.next > LG_mem_end)
-	{
-		MRDBGPRINTF("mr_malloc corrupted memory");
-		return 0;
-	}
+    if (!len) {
+        MRDBGPRINTF("mr_malloc invalid memory request");
+        return 0;
+    }
+    if (LG_mem_base + LG_mem_free.next > LG_mem_end) {
+        MRDBGPRINTF("mr_malloc corrupted memory");
+        return 0;
+    }
 
-	previous = &LG_mem_free;                        
-	nextfree = (LG_mem_free_t *) (LG_mem_base + previous->next); 
-	while ((char *) nextfree < LG_mem_end)
-	{
-		if (nextfree->len == len)             
-		{
-			previous->next = nextfree->next;         
-			LG_mem_left -= len;
+    previous = &LG_mem_free;
+    nextfree = (LG_mem_free_t *) (LG_mem_base + previous->next);
+    while ((char *) nextfree < LG_mem_end) {
+        if (nextfree->len == len) {
+            previous->next = nextfree->next;
+            LG_mem_left -= len;
 #ifdef MYTHROAD_DEBUG
-			if (LG_mem_left < LG_mem_min)
-				LG_mem_min = LG_mem_left;
-			if (LG_mem_top < previous->next)
-				LG_mem_top = previous->next;
-			//memset(nextfree,0,len); //ouli
+            if (LG_mem_left < LG_mem_min)
+                LG_mem_min = LG_mem_left;
+            if (LG_mem_top < previous->next)
+                LG_mem_top = previous->next;
+            //memset(nextfree,0,len); //ouli
 #endif
-			return (void *) nextfree;
-		}
-		if (nextfree->len > len)              
-		{
-			l = (LG_mem_free_t *) ((char *) nextfree + len); 
-			l->next = nextfree->next;         
-			l->len = (uint32) (nextfree->len - len); 
-			previous->next += len;            
-			LG_mem_left -= len;
+            return (void *) nextfree;
+        }
+        if (nextfree->len > len) {
+            l = (LG_mem_free_t *) ((char *) nextfree + len);
+            l->next = nextfree->next;
+            l->len = (uint32) (nextfree->len - len);
+            previous->next += len;
+            LG_mem_left -= len;
 #ifdef MYTHROAD_DEBUG
-			if (LG_mem_left < LG_mem_min)
-				LG_mem_min = LG_mem_left;
-			if (LG_mem_top < previous->next)
-				LG_mem_top = previous->next;
-			//memset(nextfree,0,len);
+            if (LG_mem_left < LG_mem_min)
+                LG_mem_min = LG_mem_left;
+            if (LG_mem_top < previous->next)
+                LG_mem_top = previous->next;
+            //memset(nextfree,0,len);
 #endif
-			return (void *) nextfree;            
-		}
-		previous = nextfree;
-		nextfree = (LG_mem_free_t *) (LG_mem_base + nextfree->next);
-	}
-	MRDBGPRINTF("mr_malloc no memory");
+            return (void *) nextfree;
+        }
+        previous = nextfree;
+        nextfree = (LG_mem_free_t *) (LG_mem_base + nextfree->next);
+    }
+    MRDBGPRINTF("mr_malloc no memory");
 
-	return 0;
+    return 0;
 #endif
 }
 
-void mr_free(void* p, uint32 len)
-{
+void mr_free(void *p, uint32 len) {
 #if 0
-	//#ifdef SDK_MOD
+                                                                                                                            //#ifdef SDK_MOD
 	int32 *t = (int32 *)p;
 	t = t - 1;
 	if(*t == len){
@@ -758,80 +774,69 @@ void mr_free(void* p, uint32 len)
 	}
 #else
 
-	LG_mem_free_t *free, *n;
+    LG_mem_free_t *free, *n;
 
-	len = (uint32) realLGmemSize(len);
+    len = (uint32) realLGmemSize(len);
 #ifdef MYTHROAD_DEBUG
-	if (!len || !p || (char*)p < LG_mem_base || (char*)p >= LG_mem_end
-		|| (char*)p + len > LG_mem_end
-		|| (char*)p + len <= LG_mem_base)
-	{
-		MRDBGPRINTF("mr_free invalid");
-		MRDBGPRINTF("p=%d,l=%d,base=%d,LG_mem_end=%d", (int32)p, len, 
-			(int32)LG_mem_base, (int32)LG_mem_end);
-		return;                     
-	}
+    if (!len || !p || (char *) p < LG_mem_base || (char *) p >= LG_mem_end
+        || (char *) p + len > LG_mem_end
+        || (char *) p + len <= LG_mem_base) {
+        MRDBGPRINTF("mr_free invalid");
+        MRDBGPRINTF("p=%d,l=%d,base=%d,LG_mem_end=%d", (int32) p, len,
+                    (int32) LG_mem_base, (int32) LG_mem_end);
+        return;
+    }
 #endif
 
-	free = &LG_mem_free;                      
-	n = (LG_mem_free_t *) (LG_mem_base + free->next);
-	while (((char*) n < LG_mem_end) && ((void*) n < p))
-	{                                  
-		free = n;
-		n = (LG_mem_free_t *) (LG_mem_base + n->next);
-	}
+    free = &LG_mem_free;
+    n = (LG_mem_free_t *) (LG_mem_base + free->next);
+    while (((char *) n < LG_mem_end) && ((void *) n < p)) {
+        free = n;
+        n = (LG_mem_free_t *) (LG_mem_base + n->next);
+    }
 #ifdef MYTHROAD_DEBUG
-	if (p == (void *) free || p == (void *) n)
-	{
-		MRDBGPRINTF("mr_free:already free");
-		return;                   
-	}
-	//memset(p,0,len);  //ouli
+    if (p == (void *) free || p == (void *) n) {
+        MRDBGPRINTF("mr_free:already free");
+        return;
+    }
+    //memset(p,0,len);  //ouli
 #endif
-	if ((free != &LG_mem_free) && ((char *) free + free->len == p))
-	{                               
-		free->len += len;               
-	}
-	else
-	{
-		free->next = (uint32) ((char* )p - LG_mem_base); 
-		free = (LG_mem_free_t *) p;         
-		free->next = (uint32) ((char *) n - LG_mem_base);
-		free->len = len;
-	}
-	if (((char *) n < LG_mem_end) &&( (char* )p + len == (char *) n))
-	{                                  
-		free->next = n->next;             
-		free->len += n->len;             
-	}
-	LG_mem_left += len;
+    if ((free != &LG_mem_free) && ((char *) free + free->len == p)) {
+        free->len += len;
+    } else {
+        free->next = (uint32) ((char *) p - LG_mem_base);
+        free = (LG_mem_free_t *) p;
+        free->next = (uint32) ((char *) n - LG_mem_base);
+        free->len = len;
+    }
+    if (((char *) n < LG_mem_end) && ((char *) p + len == (char *) n)) {
+        free->next = n->next;
+        free->len += n->len;
+    }
+    LG_mem_left += len;
 
 #endif
 }
 
-void* mr_realloc(void* p, uint32 oldlen, uint32 len)
-{
-	unsigned long minsize = (oldlen>len)? len:oldlen;
-	void *newblock;
-	if (p == NULL)
-	{
-		return mr_malloc(len);
-	}
+void *mr_realloc(void *p, uint32 oldlen, uint32 len) {
+    unsigned long minsize = (oldlen > len) ? len : oldlen;
+    void *newblock;
+    if (p == NULL) {
+        return mr_malloc(len);
+    }
 
-	if (len == 0)
-	{
-		mr_free(p,oldlen);
-		return NULL;
-	}
-	newblock = mr_malloc(len);
-	if (newblock == NULL)
-	{
-		return newblock;
-	}
+    if (len == 0) {
+        mr_free(p, oldlen);
+        return NULL;
+    }
+    newblock = mr_malloc(len);
+    if (newblock == NULL) {
+        return newblock;
+    }
 
-	MEMMOVE(newblock, p, minsize);
-	mr_free(p,oldlen);
-	return newblock;
+    MEMMOVE(newblock, p, minsize);
+    mr_free(p, oldlen);
+    return newblock;
 
 }
 
@@ -848,70 +853,69 @@ int32 color;
 */
 
 #ifdef MR_PLAT_DRAWTEXT
-void mr_platDrawChar(uint16 ch, int32 x, int32 y, int32 color)
-{
-	mr_platDrawCharReal((uint16)ch, x, y, (uint16)color);
+
+void mr_platDrawChar(uint16 ch, int32 x, int32 y, int32 color) {
+    mr_platDrawCharReal((uint16) ch, x, y, (uint16) color);
 }
+
 #else
-void mr_platDrawChar(uint16 ch, int32 x, int32 y, int32 color)
+                                                                                                                        void mr_platDrawChar(uint16 ch, int32 x, int32 y, int32 color)
 {
 
 }
 #endif
 
 
-
-static void _DrawPoint(int16 x, int16 y, uint16 nativecolor)
-{
-	if (x < 0 || y < 0 || x >= MR_SCREEN_W || y >= MR_SCREEN_H)
-		return;
-	//*(mr_screenBuf + y * MR_SCREEN_MAX_W + x) = nativecolor;
-	*MR_SCREEN_CACHE_POINT(x,y) = nativecolor;
+static void _DrawPoint(int16 x, int16 y, uint16 nativecolor) {
+    if (x < 0 || y < 0 || x >= MR_SCREEN_W || y >= MR_SCREEN_H)
+        return;
+    //*(mr_screenBuf + y * MR_SCREEN_MAX_W + x) = nativecolor;
+    *MR_SCREEN_CACHE_POINT(x, y) = nativecolor;
 }
 
-static void _DrawBitmap(uint16* p, int16 x, int16 y, uint16 w, uint16 h, uint16 rop, uint16 transcoler, int16 sx, int16 sy, int16 mw)
-{
-	uint16 *dstp,*srcp;
-	int MaxY = MIN(MR_SCREEN_H, y+h);
-	int MaxX = MIN(MR_SCREEN_W, x+w);
-	int MinY = MAX(0, y);
-	int MinX = MAX(0, x);
-	uint16 dx,dy;
+static void
+_DrawBitmap(uint16 *p, int16 x, int16 y, uint16 w, uint16 h, uint16 rop, uint16 transcoler,
+            int16 sx, int16 sy, int16 mw) {
+    uint16 *dstp, *srcp;
+    int MaxY = MIN(MR_SCREEN_H, y + h);
+    int MaxX = MIN(MR_SCREEN_W, x + w);
+    int MinY = MAX(0, y);
+    int MinX = MAX(0, x);
+    uint16 dx, dy;
 
-	if( rop > MR_SPRITE_TRANSPARENT) 
-	{
-		uint16 BitmapRop = rop & MR_SPRITE_INDEX_MASK;
-		uint16 BitmapMode = (rop >> MR_TILE_SHIFT)&0x3;
-		uint16 BitmapFlip = (rop >> MR_TILE_SHIFT)&0x4;
-		switch (BitmapRop) 
-		{
-		case BM_TRANSPARENT:
-			for (dy=MinY; dy < MaxY; dy++)
-			{
-				//dstp = mr_screenBuf + dy * MR_SCREEN_MAX_W + MinX;
-				dstp = MR_SCREEN_CACHE_POINT(MinX, dy);
-				srcp = p + (dy - y) * w + (MinX - x);
-				for (dx = MinX; dx < MaxX; dx++)
-				{
-					if (*srcp != transcoler)
-						*dstp = *srcp;
-					dstp++;
-					srcp++;
-				}
-			}
-			break;
-		case BM_COPY:
-			switch (BitmapMode)
-			{
-			case MR_ROTATE_0:
-				if (MaxX > MinX){
-					for (dy=MinY; dy < MaxY; dy++)
-					{
-						//dstp = mr_screenBuf + dy * MR_SCREEN_MAX_W + MinX;
-						dstp = MR_SCREEN_CACHE_POINT(MinX, dy);
-						srcp = BitmapFlip? p + (h - 1 - (dy - y)) * w + (MinX - x):p + (dy - y) * w + (MinX - x);
-						MEMCPY(dstp, srcp, (MaxX - MinX)<<1);
-						/*
+    if (rop > MR_SPRITE_TRANSPARENT) {
+        uint16 BitmapRop = rop & MR_SPRITE_INDEX_MASK;
+        uint16 BitmapMode = (rop >> MR_TILE_SHIFT) & 0x3;
+        uint16 BitmapFlip = (rop >> MR_TILE_SHIFT) & 0x4;
+        switch (BitmapRop) {
+            case BM_TRANSPARENT:
+                for (dy = MinY; dy < MaxY; dy++) {
+                    //dstp = mr_screenBuf + dy * MR_SCREEN_MAX_W + MinX;
+                    dstp = MR_SCREEN_CACHE_POINT(MinX, dy);
+                    srcp = p + (dy - y) * w + (MinX - x);
+                    for (dx = MinX; dx < MaxX; dx++) {
+                        if (*srcp != transcoler)
+                            *dstp = *srcp;
+                        dstp++;
+                        srcp++;
+                    }
+                }
+                break;
+            case BM_COPY:
+                switch (BitmapMode) {
+                    case MR_ROTATE_0:
+                        if (MaxX > MinX) {
+                            for (dy = MinY; dy < MaxY; dy++) {
+                                //dstp = mr_screenBuf + dy * MR_SCREEN_MAX_W + MinX;
+                                dstp = MR_SCREEN_CACHE_POINT(MinX, dy);
+                                srcp = BitmapFlip ? p + (h - 1 - (dy - y)) * w + (MinX - x) : p +
+                                                                                              (dy -
+                                                                                               y) *
+                                                                                              w +
+                                                                                              (MinX -
+                                                                                               x);
+                                MEMCPY(dstp, srcp, (MaxX - MinX) << 1);
+                                /*
 						for (dx = MinX; dx < MaxX; dx++)
 						{
 						*dstp = *srcp;
@@ -919,81 +923,80 @@ static void _DrawBitmap(uint16* p, int16 x, int16 y, uint16 w, uint16 h, uint16 
 						srcp++;
 						}
 						*/
-					}
-				}
-				break;
-			case MR_ROTATE_90:
-				for (dy=MinY; dy < MaxY; dy++)
-				{
-					//dstp = mr_screenBuf + dy * MR_SCREEN_MAX_W + MinX;
-					dstp = MR_SCREEN_CACHE_POINT(MinX, dy);
-					srcp = BitmapFlip? p + (h - 1 - (MinX - x)) * w + (w - 1 - (dy - y)):p + (MinX - x) * w + (w - 1 - (dy - y));
-					for (dx = MinX; dx < MaxX; dx++)
-					{
-						*dstp = *srcp;
-						dstp++;
-						srcp = BitmapFlip? srcp - w:srcp + w;
-					}
-				}
-				break;
-			case MR_ROTATE_180:
-				for (dy=MinY; dy < MaxY; dy++)
-				{
-					//dstp = mr_screenBuf + dy * MR_SCREEN_MAX_W + MinX;
-					dstp = MR_SCREEN_CACHE_POINT(MinX, dy);
-					srcp = BitmapFlip? p + (dy - y) * w + (w - 1 - (MinX - x)):p + (h - 1 - (dy - y)) * w + (w - 1 - (MinX - x));
-					for (dx = MinX; dx < MaxX; dx++)
-					{
-						*dstp = *srcp;
-						dstp++;
-						srcp--;
-					}
-				}
-				break;
-			case MR_ROTATE_270:
-				for (dy=MinY; dy < MaxY; dy++)
-				{
-					//dstp = mr_screenBuf + dy * MR_SCREEN_MAX_W + MinX;
-					dstp = MR_SCREEN_CACHE_POINT(MinX, dy);
-					srcp = BitmapFlip? p + (MinX - x) * w + (dy - y):p + (h - 1 - (MinX - x)) * w + (dy - y);
-					for (dx = MinX; dx < MaxX; dx++)
-					{
-						*dstp = *srcp;
-						dstp++;
-						srcp = BitmapFlip? srcp + w:srcp - w;
-					}
-				}
-				break;
-			}
-		}
-	}else
-	{
-		switch (rop) 
-		{
-		case BM_TRANSPARENT:
-			for (dy=MinY; dy < MaxY; dy++)
-			{
-				//dstp = mr_screenBuf + dy * MR_SCREEN_MAX_W + MinX;
-				dstp = MR_SCREEN_CACHE_POINT(MinX, dy);
-				srcp = p + (dy - y + sy) * mw + (MinX - x + sx);
-				for (dx = MinX; dx < MaxX; dx++)
-				{
-					if (*srcp != transcoler)
-						*dstp = *srcp;
-					dstp++;
-					srcp++;
-				}
-			}
-			break;
-		case BM_COPY:
-			if (MaxX > MinX){
-				for (dy=MinY; dy < MaxY; dy++)
-				{
-					//dstp = mr_screenBuf + dy * MR_SCREEN_MAX_W + MinX;
-					dstp = MR_SCREEN_CACHE_POINT(MinX, dy);
-					srcp = p + (dy - y + sy) * mw + (MinX - x + sx);
-					MEMCPY(dstp, srcp, (MaxX - MinX)<<1);
-					/*
+                            }
+                        }
+                        break;
+                    case MR_ROTATE_90:
+                        for (dy = MinY; dy < MaxY; dy++) {
+                            //dstp = mr_screenBuf + dy * MR_SCREEN_MAX_W + MinX;
+                            dstp = MR_SCREEN_CACHE_POINT(MinX, dy);
+                            srcp = BitmapFlip ? p + (h - 1 - (MinX - x)) * w + (w - 1 - (dy - y)) :
+                                   p + (MinX - x) * w + (w - 1 - (dy - y));
+                            for (dx = MinX; dx < MaxX; dx++) {
+                                *dstp = *srcp;
+                                dstp++;
+                                srcp = BitmapFlip ? srcp - w : srcp + w;
+                            }
+                        }
+                        break;
+                    case MR_ROTATE_180:
+                        for (dy = MinY; dy < MaxY; dy++) {
+                            //dstp = mr_screenBuf + dy * MR_SCREEN_MAX_W + MinX;
+                            dstp = MR_SCREEN_CACHE_POINT(MinX, dy);
+                            srcp = BitmapFlip ? p + (dy - y) * w + (w - 1 - (MinX - x)) : p +
+                                                                                          (h - 1 -
+                                                                                           (dy -
+                                                                                            y)) *
+                                                                                          w +
+                                                                                          (w - 1 -
+                                                                                           (MinX -
+                                                                                            x));
+                            for (dx = MinX; dx < MaxX; dx++) {
+                                *dstp = *srcp;
+                                dstp++;
+                                srcp--;
+                            }
+                        }
+                        break;
+                    case MR_ROTATE_270:
+                        for (dy = MinY; dy < MaxY; dy++) {
+                            //dstp = mr_screenBuf + dy * MR_SCREEN_MAX_W + MinX;
+                            dstp = MR_SCREEN_CACHE_POINT(MinX, dy);
+                            srcp = BitmapFlip ? p + (MinX - x) * w + (dy - y) : p + (h - 1 -
+                                                                                     (MinX - x)) *
+                                                                                    w + (dy - y);
+                            for (dx = MinX; dx < MaxX; dx++) {
+                                *dstp = *srcp;
+                                dstp++;
+                                srcp = BitmapFlip ? srcp + w : srcp - w;
+                            }
+                        }
+                        break;
+                }
+        }
+    } else {
+        switch (rop) {
+            case BM_TRANSPARENT:
+                for (dy = MinY; dy < MaxY; dy++) {
+                    //dstp = mr_screenBuf + dy * MR_SCREEN_MAX_W + MinX;
+                    dstp = MR_SCREEN_CACHE_POINT(MinX, dy);
+                    srcp = p + (dy - y + sy) * mw + (MinX - x + sx);
+                    for (dx = MinX; dx < MaxX; dx++) {
+                        if (*srcp != transcoler)
+                            *dstp = *srcp;
+                        dstp++;
+                        srcp++;
+                    }
+                }
+                break;
+            case BM_COPY:
+                if (MaxX > MinX) {
+                    for (dy = MinY; dy < MaxY; dy++) {
+                        //dstp = mr_screenBuf + dy * MR_SCREEN_MAX_W + MinX;
+                        dstp = MR_SCREEN_CACHE_POINT(MinX, dy);
+                        srcp = p + (dy - y + sy) * mw + (MinX - x + sx);
+                        MEMCPY(dstp, srcp, (MaxX - MinX) << 1);
+                        /*
 					for (dx = MinX; dx < MaxX; dx++)
 					{
 					*dstp = *srcp;
@@ -1001,81 +1004,79 @@ static void _DrawBitmap(uint16* p, int16 x, int16 y, uint16 w, uint16 h, uint16 
 					srcp++;
 					}
 					*/
-				}
-			}
-			break;
-		case BM_GRAY:
-		case BM_OR:
-		case BM_XOR:
-		case BM_NOT:
-		case BM_MERGENOT:
-		case BM_ANDNOT:
-		case BM_AND:
-		case BM_REVERSE:
-			for (dy=MinY; dy < MaxY; dy++)
-			{
-				//dstp = mr_screenBuf + dy * MR_SCREEN_MAX_W + MinX;
-				dstp = MR_SCREEN_CACHE_POINT(MinX, dy);
-				srcp = p + (dy - y + sy) * mw + (MinX - x + sx);
-				for (dx = MinX; dx < MaxX; dx++)
-				{
-					switch (rop) {
-					case BM_GRAY:
-						if (*srcp != transcoler){
-							uint32 color_old = *srcp;
-							uint32 r,g,b;
+                    }
+                }
+                break;
+            case BM_GRAY:
+            case BM_OR:
+            case BM_XOR:
+            case BM_NOT:
+            case BM_MERGENOT:
+            case BM_ANDNOT:
+            case BM_AND:
+            case BM_REVERSE:
+                for (dy = MinY; dy < MaxY; dy++) {
+                    //dstp = mr_screenBuf + dy * MR_SCREEN_MAX_W + MinX;
+                    dstp = MR_SCREEN_CACHE_POINT(MinX, dy);
+                    srcp = p + (dy - y + sy) * mw + (MinX - x + sx);
+                    for (dx = MinX; dx < MaxX; dx++) {
+                        switch (rop) {
+                            case BM_GRAY:
+                                if (*srcp != transcoler) {
+                                    uint32 color_old = *srcp;
+                                    uint32 r, g, b;
 #ifdef MR_SCREEN_CACHE_BITMAP
-							r = ((color_old&0x7c00) >> 10);
+                                                                                                                                                            r = ((color_old&0x7c00) >> 10);
 							g = ((color_old&0x3e0) >> 5) ;
 							b = ((color_old&0x1f));
 #else
-							r = ((color_old&0xf800) >> 11);
-							g = ((color_old&0x7e0)  >> 6);
-							b = ((color_old&0x1f));
+                                    r = ((color_old & 0xf800) >> 11);
+                                    g = ((color_old & 0x7e0) >> 6);
+                                    b = ((color_old & 0x1f));
 #endif
-							r= (r*60+g*118+b*22)/25;
-							*dstp = MAKERGB(r, r, r);
-						}
-						break;
-					case BM_REVERSE:
-						if (*srcp != transcoler){
-							*dstp = ~*srcp;
-						}
-						break;
-					case BM_OR:
-						*dstp = (*srcp) | (*dstp);
-						break;
-					case BM_XOR:
-						*dstp = (*srcp) ^ (*dstp);
-						break;
-					case BM_NOT:
-						*dstp = ~ (*srcp);
-						break;
-					case BM_MERGENOT:
-						*dstp = (~ *srcp) | (*dstp);
-						break;
-					case BM_ANDNOT:
-						*dstp = (~ *srcp) & (*dstp);
-						break;
-					case BM_AND:
-						*dstp = (*srcp) & (*dstp);
-						break;
-					}
-					dstp++;
-					srcp++;
-				}
-			}
-			break;
-		}
-	}
+                                    r = (r * 60 + g * 118 + b * 22) / 25;
+                                    *dstp = MAKERGB(r, r, r);
+                                }
+                                break;
+                            case BM_REVERSE:
+                                if (*srcp != transcoler) {
+                                    *dstp = ~*srcp;
+                                }
+                                break;
+                            case BM_OR:
+                                *dstp = (*srcp) | (*dstp);
+                                break;
+                            case BM_XOR:
+                                *dstp = (*srcp) ^ (*dstp);
+                                break;
+                            case BM_NOT:
+                                *dstp = ~(*srcp);
+                                break;
+                            case BM_MERGENOT:
+                                *dstp = (~*srcp) | (*dstp);
+                                break;
+                            case BM_ANDNOT:
+                                *dstp = (~*srcp) & (*dstp);
+                                break;
+                            case BM_AND:
+                                *dstp = (*srcp) & (*dstp);
+                                break;
+                        }
+                        dstp++;
+                        srcp++;
+                    }
+                }
+                break;
+        }
+    }
 
 }
 
 
 //static void _DrawBitmapEx(uint16* p, int16 x, int16 y, uint16 w, uint16 h, mr_transMatrixSt* pTrans, uint16 transcoler)
-static void _DrawBitmapEx(mr_bitmapDrawSt* srcbmp, mr_bitmapDrawSt* dstbmp, uint16 w, uint16 h, mr_transMatrixSt* pTrans, uint16 transcoler)
-{
-	/*
+static void _DrawBitmapEx(mr_bitmapDrawSt *srcbmp, mr_bitmapDrawSt *dstbmp, uint16 w, uint16 h,
+                          mr_transMatrixSt *pTrans, uint16 transcoler) {
+    /*
 	int16 A = pTrans->A;
 	int16 B = pTrans->B;
 	int16 C = pTrans->C;
@@ -1094,9 +1095,9 @@ static void _DrawBitmapEx(mr_bitmapDrawSt* srcbmp, mr_bitmapDrawSt* dstbmp, uint
 
 	for(dy=MinY;dy<MaxY;dy++)
 	{
-	int16 MaxX = MIN(D==0? 999:(D>0? (w * I / 2 /256 + B * dy )/D:(B * dy - w * I / 2 /256 )/D), 
+	int16 MaxX = MIN(D==0? 999:(D>0? (w * I / 2 /256 + B * dy )/D:(B * dy - w * I / 2 /256 )/D),
 	C==0? 999:(C>0? (A * dy + h * I / 2/256)/C:(A * dy - h * I / 2/256)/C));
-	int16 MinX = MAX(D==0? -999:(D>0? (B * dy - w * I / 2 /256 )/D:(w * I / 2 /256 + B * dy )/D), 
+	int16 MinX = MAX(D==0? -999:(D>0? (B * dy - w * I / 2 /256 )/D:(w * I / 2 /256 + B * dy )/D),
 	C==0? -999:(C>0? (A * dy - h * I / 2/256)/C:(A * dy + h * I / 2/256)/C));
 	MaxX = MIN(MaxX, MR_SCREEN_W - CenterX);
 	MinX = MAX(MinX, 0 - CenterX);
@@ -1111,91 +1112,92 @@ static void _DrawBitmapEx(mr_bitmapDrawSt* srcbmp, mr_bitmapDrawSt* dstbmp, uint
 	}
 	*/
 
-	/*
-	int16 MaxX = MIN(D==0? 999:(D>0? (((w * I)>>9) + B * dy )/D:(B * dy - ((w * I)>>9) )/D), 
+    /*
+	int16 MaxX = MIN(D==0? 999:(D>0? (((w * I)>>9) + B * dy )/D:(B * dy - ((w * I)>>9) )/D),
 	C==0? 999:(C>0? (A * dy + ((h * I)>>9))/C:(A * dy - ((h * I) >>9))/C));
-	int16 MinX = MAX(D==0? -999:(D>0? (B * dy - ((w * I)>>9) )/D:(((w * I) >>9) + B * dy )/D), 
+	int16 MinX = MAX(D==0? -999:(D>0? (B * dy - ((w * I)>>9) )/D:(((w * I) >>9) + B * dy )/D),
 	C==0? -999:(C>0? (A * dy - ((h * I)>>9))/C:(A * dy + ((h * I)>>9))/C));
 	*/
-	int32 A = pTrans->A;
-	int32 B = pTrans->B;
-	int32 C = pTrans->C;
-	int32 D = pTrans->D;
-	//uint16 rop = pTrans->rop;
-	uint16 *dstp,*srcp;
-	int16 CenterX = dstbmp->x + w/2;
-	int16 CenterY = dstbmp->y + h/2;
-	int32 dx,dy;
-	int32 I = A * D - B * C;
-	int16 MaxY = (ABS(C) * w + ABS(D) * h)>>9;
-	int16 MinY = 0-MaxY;
+    int32 A = pTrans->A;
+    int32 B = pTrans->B;
+    int32 C = pTrans->C;
+    int32 D = pTrans->D;
+    //uint16 rop = pTrans->rop;
+    uint16 *dstp, *srcp;
+    int16 CenterX = dstbmp->x + w / 2;
+    int16 CenterY = dstbmp->y + h / 2;
+    int32 dx, dy;
+    int32 I = A * D - B * C;
+    int16 MaxY = (ABS(C) * w + ABS(D) * h) >> 9;
+    int16 MinY = 0 - MaxY;
 
-	MaxY = MIN(MaxY, dstbmp->h - CenterY);
-	MinY = MAX(MinY, 0 - CenterY);
+    MaxY = MIN(MaxY, dstbmp->h - CenterY);
+    MinY = MAX(MinY, 0 - CenterY);
 
-	for(dy=MinY;dy<MaxY;dy++)
-	{
-		int16 MaxX = (int16)MIN(D==0? 999:(MAX((((w * I)>>9) + B * dy )/D,(B * dy - ((w * I)>>9) )/D)), 
-			C==0? 999:(MAX((A * dy + ((h * I)>>9))/C,(A * dy - ((h * I) >>9))/C)));
-		int16 MinX = (int16)MAX(D==0? -999:(MIN((B * dy - ((w * I)>>9) )/D,(((w * I) >>9) + B * dy )/D)), 
-			C==0? -999:(MIN((A * dy - ((h * I)>>9))/C,(A * dy + ((h * I)>>9))/C)));
-		MaxX = MIN(MaxX, dstbmp->w - CenterX);
-		MinX = MAX(MinX, 0 - CenterX);
-		dstp = dstbmp->p + (dy + CenterY) * dstbmp->w + (MinX + CenterX);
-		switch(pTrans->rop){
-		case BM_TRANSPARENT:
-			for(dx=MinX;dx<MaxX;dx++)
-			{
-				int32 offsety = ((A * dy - C * dx )<<8)/I + h/2;
-				int32 offsetx = ((D * dx - B * dy )<<8)/I + w/2;
-				if(((offsety < h) && (offsety >= 0))&&((offsetx < w) && (offsetx >= 0))){
-					srcp = srcbmp->p + (offsety+srcbmp->y)*srcbmp->w+(offsetx+srcbmp->x);
-					//if (!((rop == BM_TRANSPARENT) && (*srcp == transcoler)))
-					if (*srcp != transcoler)
-						*dstp = *srcp;
-				}
-				dstp++;
-			}
-			break;
-		case BM_COPY:
-			for(dx=MinX;dx<MaxX;dx++)
-			{
-				int32 offsety = ((A * dy - C * dx )<<8)/I + h/2;
-				int32 offsetx = ((D * dx - B * dy )<<8)/I + w/2;
-				if(((offsety < h) && (offsety >= 0))&&((offsetx < w) && (offsetx >= 0))){
-					srcp = srcbmp->p + (offsety+srcbmp->y)*srcbmp->w+(offsetx+srcbmp->x);
-					//if (!((rop == BM_TRANSPARENT) && (*srcp == transcoler)))
-					*dstp = *srcp;
-				}
-				dstp++;
-			}
-			break;
-		}
-	}
+    for (dy = MinY; dy < MaxY; dy++) {
+        int16 MaxX = (int16) MIN(
+                D == 0 ? 999 : (MAX((((w * I) >> 9) + B * dy) / D, (B * dy - ((w * I) >> 9)) / D)),
+                C == 0 ? 999 : (MAX((A * dy + ((h * I) >> 9)) / C, (A * dy - ((h * I) >> 9)) / C)));
+        int16 MinX = (int16) MAX(
+                D == 0 ? -999 : (MIN((B * dy - ((w * I) >> 9)) / D, (((w * I) >> 9) + B * dy) / D)),
+                C == 0 ? -999 : (MIN((A * dy - ((h * I) >> 9)) / C,
+                                     (A * dy + ((h * I) >> 9)) / C)));
+        MaxX = MIN(MaxX, dstbmp->w - CenterX);
+        MinX = MAX(MinX, 0 - CenterX);
+        dstp = dstbmp->p + (dy + CenterY) * dstbmp->w + (MinX + CenterX);
+        switch (pTrans->rop) {
+            case BM_TRANSPARENT:
+                for (dx = MinX; dx < MaxX; dx++) {
+                    int32 offsety = ((A * dy - C * dx) << 8) / I + h / 2;
+                    int32 offsetx = ((D * dx - B * dy) << 8) / I + w / 2;
+                    if (((offsety < h) && (offsety >= 0)) && ((offsetx < w) && (offsetx >= 0))) {
+                        srcp = srcbmp->p + (offsety + srcbmp->y) * srcbmp->w +
+                               (offsetx + srcbmp->x);
+                        //if (!((rop == BM_TRANSPARENT) && (*srcp == transcoler)))
+                        if (*srcp != transcoler)
+                            *dstp = *srcp;
+                    }
+                    dstp++;
+                }
+                break;
+            case BM_COPY:
+                for (dx = MinX; dx < MaxX; dx++) {
+                    int32 offsety = ((A * dy - C * dx) << 8) / I + h / 2;
+                    int32 offsetx = ((D * dx - B * dy) << 8) / I + w / 2;
+                    if (((offsety < h) && (offsety >= 0)) && ((offsetx < w) && (offsetx >= 0))) {
+                        srcp = srcbmp->p + (offsety + srcbmp->y) * srcbmp->w +
+                               (offsetx + srcbmp->x);
+                        //if (!((rop == BM_TRANSPARENT) && (*srcp == transcoler)))
+                        *dstp = *srcp;
+                    }
+                    dstp++;
+                }
+                break;
+        }
+    }
 
 }
 
-static void DrawRect(int16 x, int16 y, int16 w, int16 h, uint8 r, uint8 g, uint8 b)
-{
-	//   mr_drawRect(x,y,w,h,MAKERGB(r, g, b)); 
-	uint16 *dstp,*srcp;
-	int MaxY = MIN(MR_SCREEN_H, y+h);
-	int MaxX = MIN(MR_SCREEN_W, x+w);
-	int MinY = MAX(0, y);
-	int MinX = MAX(0, x);
-	uint16 dx,dy;
-	uint16 nativecolor;
+static void DrawRect(int16 x, int16 y, int16 w, int16 h, uint8 r, uint8 g, uint8 b) {
+    //   mr_drawRect(x,y,w,h,MAKERGB(r, g, b));
+    uint16 *dstp, *srcp;
+    int MaxY = MIN(MR_SCREEN_H, y + h);
+    int MaxX = MIN(MR_SCREEN_W, x + w);
+    int MinY = MAX(0, y);
+    int MinX = MAX(0, x);
+    uint16 dx, dy;
+    uint16 nativecolor;
 
-	/*
+    /*
 	nativecolor = (r/8)<<11;
 	nativecolor |=(g/4)<<5;
-	nativecolor |=(b/8);          
+	nativecolor |=(b/8);
 	*/
-	nativecolor = MAKERGB(r, g, b);
+    nativecolor = MAKERGB(r, g, b);
 
-	if ((MaxY > MinY) && (MaxX > MinX)){
+    if ((MaxY > MinY) && (MaxX > MinX)) {
 #if 0
-		// for align speed test
+                                                                                                                                // for align speed test
 		srcp = MR_MALLOC((MaxX - MinX)<<1+8);
 		dstp = srcp;
 		for (dx = MinX; dx < MaxX; dx++)
@@ -1218,7 +1220,7 @@ static void DrawRect(int16 x, int16 y, int16 w, int16 h, uint8 r, uint8 g, uint8
 		MR_FREE(srcp, (MaxX - MinX)<<1+8);
 #endif
 #if 0
-		// for align test, shut down
+                                                                                                                                // for align test, shut down
 		dstp = mr_screenBuf + MinY * MR_SCREEN_MAX_W + MinX;
 		srcp = dstp;
 		for (dx = MinX; dx < MaxX; dx++)
@@ -1238,104 +1240,96 @@ static void DrawRect(int16 x, int16 y, int16 w, int16 h, uint8 r, uint8 g, uint8
 		}
 
 #else
-		//dstp = mr_screenBuf + MinY * MR_SCREEN_MAX_W + MinX;
-		dstp = MR_SCREEN_CACHE_POINT(MinX, MinY);
-		srcp = dstp;
-		for (dx = MinX; dx < MaxX; dx++)
-		{
-			*dstp = nativecolor;
-			dstp++;
-		}
+        //dstp = mr_screenBuf + MinY * MR_SCREEN_MAX_W + MinX;
+        dstp = MR_SCREEN_CACHE_POINT(MinX, MinY);
+        srcp = dstp;
+        for (dx = MinX; dx < MaxX; dx++) {
+            *dstp = nativecolor;
+            dstp++;
+        }
 
-		if (((uint32)srcp & 0x00000003) != 0){
-			//srcp = ((srcp+1) & 0xfffffffc);
-			srcp++;
-			for (dy=MinY+1; dy < MaxY; dy++)
-			{
-				//dstp = mr_screenBuf + dy * MR_SCREEN_MAX_W + MinX;
-				dstp = MR_SCREEN_CACHE_POINT(MinX, dy);
-				*dstp = nativecolor;
-				//dstp = ((dstp+1) & 0xfffffffc);
-				dstp++;
-				MEMCPY(dstp, srcp, (MaxX - MinX - 1)<<1);
-				/*
+        if (((uint32) srcp & 0x00000003) != 0) {
+            //srcp = ((srcp+1) & 0xfffffffc);
+            srcp++;
+            for (dy = MinY + 1; dy < MaxY; dy++) {
+                //dstp = mr_screenBuf + dy * MR_SCREEN_MAX_W + MinX;
+                dstp = MR_SCREEN_CACHE_POINT(MinX, dy);
+                *dstp = nativecolor;
+                //dstp = ((dstp+1) & 0xfffffffc);
+                dstp++;
+                MEMCPY(dstp, srcp, (MaxX - MinX - 1) << 1);
+                /*
 				for (dx = MinX; dx < MaxX; dx++)
 				{
 				*dstp = nativecolor;
 				dstp++;
 				}
 				*/
-			}
-		}else{
-			for (dy=MinY+1; dy < MaxY; dy++)
-			{
-				//dstp = mr_screenBuf + dy * MR_SCREEN_MAX_W + MinX;
-				dstp = MR_SCREEN_CACHE_POINT(MinX, dy);
-				MEMCPY(dstp, srcp, (MaxX - MinX)<<1);
-				/*
+            }
+        } else {
+            for (dy = MinY + 1; dy < MaxY; dy++) {
+                //dstp = mr_screenBuf + dy * MR_SCREEN_MAX_W + MinX;
+                dstp = MR_SCREEN_CACHE_POINT(MinX, dy);
+                MEMCPY(dstp, srcp, (MaxX - MinX) << 1);
+                /*
 				for (dx = MinX; dx < MaxX; dx++)
 				{
 				*dstp = nativecolor;
 				dstp++;
 				}
 				*/
-			}
-		}
+            }
+        }
 #endif
-	}
-	return;
+    }
+    return;
 }
 
 
-
-static int32 _DrawText(char* pcText, int16 x, int16 y, uint8 r, uint8 g, uint8 b, int is_unicode, uint16 font)
-{
-	int TextSize;
-	//#endif
-	uint16 *tempBuf;
-	//int tempret=0;
+static int32
+_DrawText(char *pcText, int16 x, int16 y, uint8 r, uint8 g, uint8 b, int is_unicode, uint16 font) {
+    int TextSize;
+    //#endif
+    uint16 *tempBuf;
+    //int tempret=0;
 
 #ifdef MYTHROAD_DEBUG
-	if (!pcText)
-	{
-		//mrp_pushfstring(vm_state, "DrawText x=%d: txt is nil!",x);
-		//mrp_error(vm_state);
-		MRDBGPRINTF("DrawText x=%d: txt is nil!",x);
-		return 0;
-	}
+    if (!pcText) {
+        //mrp_pushfstring(vm_state, "DrawText x=%d: txt is nil!",x);
+        //mrp_error(vm_state);
+        MRDBGPRINTF("DrawText x=%d: txt is nil!", x);
+        return 0;
+    }
 #endif
 
-	if (!is_unicode){
-		tempBuf = c2u((const char*)pcText, NULL, &TextSize); 
-		if (!tempBuf)
-		{
-			//mrp_pushfstring(vm_state, "DrawText x=%d:c2u err!",x);
-			//mrp_error(vm_state);
-			MRDBGPRINTF("DrawText x=%d:c2u err!",x);
-			return 0;
-		}
-	}else{
-		tempBuf = (uint16 *)pcText;
-	}
+    if (!is_unicode) {
+        tempBuf = c2u((const char *) pcText, NULL, &TextSize);
+        if (!tempBuf) {
+            //mrp_pushfstring(vm_state, "DrawText x=%d:c2u err!",x);
+            //mrp_error(vm_state);
+            MRDBGPRINTF("DrawText x=%d:c2u err!", x);
+            return 0;
+        }
+    } else {
+        tempBuf = (uint16 *) pcText;
+    }
 
 #ifdef MR_SCREEN_CACHE
-	{
-		uint16 ch;
-		int width, height;
-		const char *current_bitmap;
-		uint8  *p=(uint8*)tempBuf;
-		int32 X1,Y1;
-		uint16 a_,b_;
-		uint16 chx=x,chy=y,color=MAKERGB(r, g, b);
-		ch = (uint16) ((*p<<8)+*(p+1));
-		while(ch)
-		{
-			current_bitmap = mr_getCharBitmap(ch, font, &width, &height);
-			if(current_bitmap)
-			{
-				//MRDBGPRINTF("mr_platDrawChar 21!");
+    {
+        uint16 ch;
+        int width, height;
+        const char *current_bitmap;
+        uint8 *p = (uint8 *) tempBuf;
+        int32 X1, Y1;
+        uint16 a_, b_;
+        uint16 chx = x, chy = y, color = MAKERGB(r, g, b);
+        ch = (uint16) ((*p << 8) + *(p + 1));
+        while (ch) {
+            current_bitmap = mr_getCharBitmap(ch, font, &width, &height);
+            if (current_bitmap) {
+                //MRDBGPRINTF("mr_platDrawChar 21!");
 #ifndef MR_PLAT_DRAWTEXT
-#ifndef MR_VIA_MOD
+                                                                                                                                        #ifndef MR_VIA_MOD
 #ifndef MR_FONT_LIB_REDUNDANCY_BIT
 				int32 font_data_size = ((width * height) + 7) >> 3;
 				int32 X2=0,Y2;
@@ -1357,42 +1351,42 @@ static int32 _DrawText(char* pcText, int16 x, int16 y, uint8 r, uint8 g, uint8 b
 
 							height-=nTemp;
 
-							if(!height) 
+							if(!height)
 								break;
 						}
 
 						X2%=width;
 						X1=chx+X2;
 					}else{
-						for(Y2 = 0; Y2 < 8; Y2++)               
-						{                   
+						for(Y2 = 0; Y2 < 8; Y2++)
+						{
 #ifdef MTK_MOD
-							if(pattern&1)     
+							if(pattern&1)
 #else
-							if(pattern&0x80)     
+							if(pattern&0x80)
 #endif
-								_DrawPoint(X1, Y1, color); 
-							++X2;      
-							if(X2 == width )  
-							{                
-								X1=chx;          
-								height--;         
-								++Y1;             
+								_DrawPoint(X1, Y1, color);
+							++X2;
+							if(X2 == width )
+							{
+								X1=chx;
+								height--;
+								++Y1;
 
-								if(height == 0)     
-									break ;           
-								X2=0;              
-							}                  
-							else              
-							{                 
-								++X1;            
-							}                 
+								if(height == 0)
+									break ;
+								X2=0;
+							}
+							else
+							{
+								++X1;
+							}
 #ifdef MTK_MOD
-							pattern >>=1;            
+							pattern >>=1;
 #else
-							pattern <<=1;            
+							pattern <<=1;
 #endif
-						}     
+						}
 					}
 				}
 #else
@@ -1429,106 +1423,102 @@ static int32 _DrawText(char* pcText, int16 x, int16 y, uint8 r, uint8 g, uint8 b
 					};
 #endif
 #else // MR_PLAT_DRAWTEXT
-				//MRDBGPRINTF("mr_platDrawChar 1!");
-				mr_platDrawChar(ch, chx, chy, MAKERGB(r, g, b)); 
+                //MRDBGPRINTF("mr_platDrawChar 1!");
+                mr_platDrawChar(ch, chx, chy, MAKERGB(r, g, b));
 #endif
-				chx = chx + width;
-			};
-			p+=2;
-			ch = (uint16) ((*p<<8)+*(p+1));
-		};
-	}
+                chx = chx + width;
+            };
+            p += 2;
+            ch = (uint16) ((*p << 8) + *(p + 1));
+        };
+    }
 #else
-	mr_drawText((char *)tempBuf, x, y, MAKERGB(r, g, b)); 
+    mr_drawText((char *)tempBuf, x, y, MAKERGB(r, g, b));
 #endif
-	//#ifdef MR_DRAW_TXT_AUTO_UNICODE
-	if (!is_unicode){
-		MR_FREE((void *)tempBuf, TextSize);
-	}
-	//#endif
-	return 0;
+    //#ifdef MR_DRAW_TXT_AUTO_UNICODE
+    if (!is_unicode) {
+        MR_FREE((void *) tempBuf, TextSize);
+    }
+    //#endif
+    return 0;
 }
 
-static int32 _DrawTextEx(char* pcText, int16 x, int16 y, mr_screenRectSt rect, mr_colourSt colorst, int flag, uint16 font)
-{
-	int TextSize,endchar_index;
-	uint16 *tempBuf;
-	//int tempret=0;
-	uint16 ch;
-	endchar_index = 0;
+static int32
+_DrawTextEx(char *pcText, int16 x, int16 y, mr_screenRectSt rect, mr_colourSt colorst, int flag,
+            uint16 font) {
+    int TextSize, endchar_index;
+    uint16 *tempBuf;
+    //int tempret=0;
+    uint16 ch;
+    endchar_index = 0;
 
-	if (!pcText)
-	{
-		MRDBGPRINTF("DrawTextEx x=%d: txt is nil!",x);
-		return 0;
-	}
+    if (!pcText) {
+        MRDBGPRINTF("DrawTextEx x=%d: txt is nil!", x);
+        return 0;
+    }
 
-	if (!(flag & DRAW_TEXT_EX_IS_UNICODE)){
-		tempBuf = c2u((const char*)pcText, NULL, &TextSize); 
-		if (!tempBuf)
-		{
-			MRDBGPRINTF("DrawTextEx x=%d:c2u err!",x);
-			return 0;
-		}
-	}else{
-		tempBuf = (uint16 *)pcText;
-	}
+    if (!(flag & DRAW_TEXT_EX_IS_UNICODE)) {
+        tempBuf = c2u((const char *) pcText, NULL, &TextSize);
+        if (!tempBuf) {
+            MRDBGPRINTF("DrawTextEx x=%d:c2u err!", x);
+            return 0;
+        }
+    } else {
+        tempBuf = (uint16 *) pcText;
+    }
 
-	{
-		int width, height, mh;
-		const char *current_bitmap;
-		uint8  *p=(uint8*)tempBuf;
-		int32 X1,Y1;
-		uint16 a_,b_;
-		uint16 chx=x,chy=y,color=MAKERGB(colorst.r, colorst.g, colorst.b);
-		ch = (uint16) ((*p<<8)+*(p+1));
-		mh = 0;
-		while(ch)
-		{
-			if ((ch == 0x0a) || (ch == 0x0d)){
-				current_bitmap = mr_getCharBitmap(0x20, font, &width, &height);
-			}else{
-				current_bitmap = mr_getCharBitmap(ch, font, &width, &height);
-			}
-			if(current_bitmap)
-			{
-				int32 font_data_size = ((width * height) + 7) >> 3;
-				int32 X2=0,Y2;
-				if(flag & DRAW_TEXT_EX_IS_AUTO_NEWLINE)
-				{
-					if(((chx + width) > (x + rect.w)) || (ch == 0x0a)){
-						if ((chy + mh) < (y + rect.h) ){
-							endchar_index = p - (uint8*)tempBuf;
-						}
-						X1 = chx = x;
-						Y1 = chy = chy + mh + 2;
-						mh = 0;
-						if(Y1 > (y + rect.h)){
-							break;
-						}
-					}else{
-						X1 = chx;
-						Y1 = chy;
-					}
-					mh = (mh > height)? mh:height;
-				}else{
-					if((chx > (x + rect.w)) || (ch == 0x0a)){
-						break;
-					}
-					if((chx + width) > (x + rect.w)){
-						endchar_index = p - (uint8*)tempBuf;
-					}
-					X1 = chx;
-					Y1 = chy;
-				}
+    {
+        int width, height, mh;
+        const char *current_bitmap;
+        uint8 *p = (uint8 *) tempBuf;
+        int32 X1, Y1;
+        uint16 a_, b_;
+        uint16 chx = x, chy = y, color = MAKERGB(colorst.r, colorst.g, colorst.b);
+        ch = (uint16) ((*p << 8) + *(p + 1));
+        mh = 0;
+        while (ch) {
+            if ((ch == 0x0a) || (ch == 0x0d)) {
+                current_bitmap = mr_getCharBitmap(0x20, font, &width, &height);
+            } else {
+                current_bitmap = mr_getCharBitmap(ch, font, &width, &height);
+            }
+            if (current_bitmap) {
+                int32 font_data_size = ((width * height) + 7) >> 3;
+                int32 X2 = 0, Y2;
+                if (flag & DRAW_TEXT_EX_IS_AUTO_NEWLINE) {
+                    if (((chx + width) > (x + rect.w)) || (ch == 0x0a)) {
+                        if ((chy + mh) < (y + rect.h)) {
+                            endchar_index = p - (uint8 *) tempBuf;
+                        }
+                        X1 = chx = x;
+                        Y1 = chy = chy + mh + 2;
+                        mh = 0;
+                        if (Y1 > (y + rect.h)) {
+                            break;
+                        }
+                    } else {
+                        X1 = chx;
+                        Y1 = chy;
+                    }
+                    mh = (mh > height) ? mh : height;
+                } else {
+                    if ((chx > (x + rect.w)) || (ch == 0x0a)) {
+                        break;
+                    }
+                    if ((chx + width) > (x + rect.w)) {
+                        endchar_index = p - (uint8 *) tempBuf;
+                    }
+                    X1 = chx;
+                    Y1 = chy;
+                }
 
-				if ((ch == 0x0a) || (ch == 0x0d)){
-					p+=2;
-					ch = (uint16) ((*p<<8)+*(p+1));
-					continue;
-				}
+                if ((ch == 0x0a) || (ch == 0x0d)) {
+                    p += 2;
+                    ch = (uint16) ((*p << 8) + *(p + 1));
+                    continue;
+                }
 #ifndef MR_PLAT_DRAWTEXT
-#ifndef MR_FONT_LIB_REDUNDANCY_BIT
+                                                                                                                                        #ifndef MR_FONT_LIB_REDUNDANCY_BIT
 #ifndef MR_VIA_MOD
 				while(font_data_size--)
 				{
@@ -1546,43 +1536,43 @@ static int32 _DrawTextEx(char* pcText, int16 x, int16 y, mr_screenRectSt rect, m
 
 							height-=nTemp;
 
-							if(!height) 
+							if(!height)
 								break;
 						}
 
 						X2%=width;
 						X1=chx+X2;
 					}else{
-						for(Y2 = 0; Y2 < 8; Y2++)               
-						{                   
+						for(Y2 = 0; Y2 < 8; Y2++)
+						{
 #ifdef MTK_MOD
-							if(pattern&1)     
+							if(pattern&1)
 #else
-							if(pattern&0x80)     
+							if(pattern&0x80)
 #endif
 								if(X1 < (x + rect.w) && Y1 < (y + rect.h))
-									_DrawPoint(X1, Y1, color); 
-							++X2;      
-							if(X2 == width )  
-							{                
-								X1=chx;          
-								height--;         
-								++Y1;             
+									_DrawPoint(X1, Y1, color);
+							++X2;
+							if(X2 == width )
+							{
+								X1=chx;
+								height--;
+								++Y1;
 
-								if(height == 0)     
-									break ;           
-								X2=0;              
-							}                  
-							else              
-							{                 
-								++X1;            
-							}                 
+								if(height == 0)
+									break ;
+								X2=0;
+							}
+							else
+							{
+								++X1;
+							}
 #ifdef MTK_MOD
-							pattern >>=1;            
+							pattern >>=1;
 #else
-							pattern <<=1;            
+							pattern <<=1;
 #endif
-						}     
+						}
 					}
 				}
 #else //defined MR_VIA_MOD
@@ -1654,72 +1644,66 @@ static int32 _DrawTextEx(char* pcText, int16 x, int16 y, mr_screenRectSt rect, m
 #endif  //MR_FONT_LIB_REDUNDANCY_BIT
 
 #else //MR_PLAT_DRAWTEXT
-				mr_platDrawChar(ch, chx, chy, color); 
+                mr_platDrawChar(ch, chx, chy, color);
 #endif
 
 
+                chx = chx + width;
+            };
+            p += 2;
+            ch = (uint16) ((*p << 8) + *(p + 1));
+        };
+        if (!ch) {
+            if (flag & DRAW_TEXT_EX_IS_AUTO_NEWLINE) {
+                if ((chy + mh) < (y + rect.h)) {
+                    endchar_index = mr_wstrlen((char *) tempBuf);
+                }
+            } else {
+                if (!((chx > (x + rect.w)) || (ch == 0x0a))) {
+                    endchar_index = mr_wstrlen((char *) tempBuf);
+                }
+            }
+        }
+    }
 
-				chx = chx + width;
-			};
-			p+=2;
-			ch = (uint16) ((*p<<8)+*(p+1));
-		};
-		if(!ch){
-			if(flag & DRAW_TEXT_EX_IS_AUTO_NEWLINE){
-				if((chy + mh) < (y + rect.h)){
-					endchar_index = mr_wstrlen((char*)tempBuf);
-				}
-			}else{
-				if(!((chx > (x + rect.w)) || (ch == 0x0a))){
-					endchar_index = mr_wstrlen((char*)tempBuf);
-				}
-			}
-		}
-	}
-
-	if (!(flag & DRAW_TEXT_EX_IS_UNICODE)){
-		MR_FREE((void *)tempBuf, TextSize);
-	}
-	return endchar_index;
+    if (!(flag & DRAW_TEXT_EX_IS_UNICODE)) {
+        MR_FREE((void *) tempBuf, TextSize);
+    }
+    return endchar_index;
 }
 
 
+int _BitmapCheck(uint16 *p, int16 x, int16 y, uint16 w, uint16 h, uint16 transcoler,
+                 uint16 color_check) {
 
-int _BitmapCheck(uint16*p, int16 x, int16 y, uint16 w, uint16 h, uint16 transcoler, uint16 color_check)
-{
+    uint16 *dstp, *srcp;
+    int16 MaxY = MIN(MR_SCREEN_H, y + h);
+    int16 MaxX = MIN(MR_SCREEN_W, x + w);
+    int16 MinY = MAX(0, y);
+    int16 MinX = MAX(0, x);
+    uint16 dx, dy;
+    int nResult = 0;
 
-	uint16 *dstp,*srcp;
-	int16 MaxY = MIN(MR_SCREEN_H, y+h);
-	int16 MaxX = MIN(MR_SCREEN_W, x+w);
-	int16 MinY = MAX(0, y);
-	int16 MinX = MAX(0, x);
-	uint16 dx,dy;
-	int nResult = 0;
+    for (dy = MinY; dy < MaxY; dy++) {
+        //dstp = mr_screenBuf + dy * MR_SCREEN_MAX_W + MinX;
+        dstp = MR_SCREEN_CACHE_POINT(MinX, dy);
+        srcp = p + (dy - y) * w + (MinX - x);
+        for (dx = MinX; dx < MaxX; dx++) {
+            if (*srcp != transcoler) {
+                if (*dstp != color_check) {
+                    nResult++;
+                }
+            }
+            dstp++;
+            srcp++;
+        }
+    }
 
-	for (dy=MinY; dy < MaxY; dy++)
-	{
-		//dstp = mr_screenBuf + dy * MR_SCREEN_MAX_W + MinX;
-		dstp = MR_SCREEN_CACHE_POINT(MinX, dy);
-		srcp = p + (dy - y) * w + (MinX - x);
-		for (dx = MinX; dx < MaxX; dx++)
-		{
-			if (*srcp != transcoler)
-			{
-				if (*dstp != color_check)
-				{
-					nResult++;
-				}
-			}
-			dstp++;
-			srcp++;
-		}
-	}
-
-	return nResult;
+    return nResult;
 }
 
 #if 0
-static int MRF_BmGetScr(mrp_State* L)
+                                                                                                                        static int MRF_BmGetScr(mrp_State* L)
 {
 	uint16 i = ((uint16)  to_mr_tonumber(L,1,0));
 	uint16 *srcp,*dstp;
@@ -1763,42 +1747,39 @@ static int MRF_BmGetScr(mrp_State* L)
 #endif
 
 //effect
-static int _mr_EffSetCon(int16 x, int16 y, int16 w, int16 h, int16 perr, int16 perg, int16 perb)
-{
-	uint16 *dstp;
-	uint32 color_old,coloer_new;
-	int MaxY = MIN(MR_SCREEN_H, y+h);
-	int MaxX = MIN(MR_SCREEN_W, x+w);
-	int MinY = MAX(0, y);
-	int MinX = MAX(0, x);
-	uint16 dx,dy;
+static int _mr_EffSetCon(int16 x, int16 y, int16 w, int16 h, int16 perr, int16 perg, int16 perb) {
+    uint16 *dstp;
+    uint32 color_old, coloer_new;
+    int MaxY = MIN(MR_SCREEN_H, y + h);
+    int MaxX = MIN(MR_SCREEN_W, x + w);
+    int MinY = MAX(0, y);
+    int MinX = MAX(0, x);
+    uint16 dx, dy;
 
-	for (dy=MinY; dy < MaxY; dy++)
-	{
-		//dstp = mr_screenBuf + dy * MR_SCREEN_MAX_W + MinX;
-		dstp = MR_SCREEN_CACHE_POINT(MinX, dy);
-		for (dx = MinX; dx < MaxX; dx++)
-		{
-			color_old = *dstp;
+    for (dy = MinY; dy < MaxY; dy++) {
+        //dstp = mr_screenBuf + dy * MR_SCREEN_MAX_W + MinX;
+        dstp = MR_SCREEN_CACHE_POINT(MinX, dy);
+        for (dx = MinX; dx < MaxX; dx++) {
+            color_old = *dstp;
 #ifdef MR_SCREEN_CACHE_BITMAP
-			coloer_new = (((color_old&0x7c00) * perr ) >>8) & 0x7c00;
+                                                                                                                                    coloer_new = (((color_old&0x7c00) * perr ) >>8) & 0x7c00;
 			coloer_new |= (((color_old&0x3e0) * perg ) >>8) & 0x3e0;
 			coloer_new |= (((color_old&0x1f) * perb ) >>8) & 0x1f;
 #else
-			coloer_new = (((color_old&0xf800) * perr ) >>8) & 0xf800;
-			coloer_new |= (((color_old&0x7e0) * perg ) >>8) & 0x7e0;
-			coloer_new |= (((color_old&0x1f) * perb ) >>8) & 0x1f;
+            coloer_new = (((color_old & 0xf800) * perr) >> 8) & 0xf800;
+            coloer_new |= (((color_old & 0x7e0) * perg) >> 8) & 0x7e0;
+            coloer_new |= (((color_old & 0x1f) * perb) >> 8) & 0x1f;
 #endif
-			*dstp=(uint16)coloer_new;
-			dstp++;
-		}
-	}
-	return 0;
+            *dstp = (uint16) coloer_new;
+            dstp++;
+        }
+    }
+    return 0;
 }
 //effect
 
 #if 0
-static int MRF_SpriteCheck(mrp_State* L)
+                                                                                                                        static int MRF_SpriteCheck(mrp_State* L)
 {
 	uint16 i = ((uint16)  to_mr_tonumber(L,1,0));
 	uint16 spriteindex = ((uint16)  to_mr_tonumber(L,2,0));
@@ -1827,15 +1808,15 @@ static int MRF_SpriteCheck(mrp_State* L)
 	/*
 	color = (r/8)<<11;
 	color |=(g/4)<<5;
-	color |=(b/8);     
+	color |=(b/8);
 	*/
 	color = MAKERGB(r, g, b);
 	//   return mr_check(mr_bitmap[i].p + spriteindex*mr_bitmap[i].w*mr_sprite[i].h,
 	//      x, y, mr_bitmap[i].w, mr_sprite[i].h, *(mr_bitmap[i].p), color);
 	{
-		int to_mr_ret = (int)  _BitmapCheck(mr_bitmap[i].p + 
+		int to_mr_ret = (int)  _BitmapCheck(mr_bitmap[i].p +
 			spriteindex*mr_bitmap[i].w*mr_sprite[i].h,
-			(uint16)x, (uint16)y, (uint16)mr_bitmap[i].w, (uint16)mr_sprite[i].h, 
+			(uint16)x, (uint16)y, (uint16)mr_bitmap[i].w, (uint16)mr_sprite[i].h,
 			(uint16)*(mr_bitmap[i].p), (uint16)color);
 		to_mr_pushnumber(L,(mrp_Number)to_mr_ret);
 	}
@@ -1845,330 +1826,304 @@ static int MRF_SpriteCheck(mrp_State* L)
 #endif
 
 
+void _mr_showErrorInfo(const char *errstr) {
+    int32 i;
+    int32 len = STRLEN(errstr);
+    char buf[16];
 
-void _mr_showErrorInfo(const char *errstr)
-{
-	int32 i;
-	int32 len = STRLEN(errstr);
-	char buf[16];
+    MRDBGPRINTF(errstr);
+    len = (len < (12 * 8)) ? len : 12 * 8;
+    DrawRect(0, 0, (int16) MR_SCREEN_W, (int16) MR_SCREEN_H, (uint8) 255, (uint8) 255, (uint8) 255);
+    for (i = 0; i < len; i = i + 12) {
+        MEMSET(buf, 0, sizeof(buf));
+        MEMCPY(buf, errstr + i, ((len - i) > 12) ? 12 : (len - i));
+        _DrawText(buf, (int16) 0, (int16) ((i / 12) * 18), 0, 0, 0, (int) FALSE, MR_FONT_MEDIUM);
+        //_DispUpEx(0,0,(uint16)MR_SCREEN_W,(uint16)MR_SCREEN_H);
+    }
 
-	MRDBGPRINTF(errstr);
-	len = (len < (12*8))? len:12*8;
-	DrawRect(0,0,(int16)MR_SCREEN_W,(int16)MR_SCREEN_H,(uint8)255,(uint8)255,(uint8)255);
-	for(i=0;i<len;i=i+12)
-	{
-		MEMSET(buf, 0, sizeof(buf));
-		MEMCPY(buf, errstr+i, ((len - i)>12)? 12:(len - i));
-		_DrawText(buf, (int16)0, (int16)((i/12)*18), 0, 0, 0, (int)FALSE, MR_FONT_MEDIUM);
-		//_DispUpEx(0,0,(uint16)MR_SCREEN_W,(uint16)MR_SCREEN_H);
-	}
-
-	mr_drawBitmap(mr_screenBuf, 0,0,(uint16)MR_SCREEN_W,(uint16)MR_SCREEN_H);
-	//MRF_DrawText(errstr, 2, 2, 0, 0,0);
+    mr_drawBitmap(mr_screenBuf, 0, 0, (uint16) MR_SCREEN_W, (uint16) MR_SCREEN_H);
+    //MRF_DrawText(errstr, 2, 2, 0, 0,0);
 }
 
-static void _mr_readFileShowInfo(const char* filename, int32 code)
-{
-	MRDBGPRINTF( "read file  \"%s\" err, code=%d", filename, code);
+static void _mr_readFileShowInfo(const char *filename, int32 code) {
+    MRDBGPRINTF("read file  \"%s\" err, code=%d", filename, code);
 }
 
-void * _mr_readFile(const char* filename, int *filelen, int lookfor)
-{
-	//int ret;
-	int method;
-	uint32 reallen,found=0;
-	int32 oldlen,nTmp;
-	uint32 len;
-	void* filebuf;
-	MR_FILE_HANDLE f;
-	char TempName[MR_MAX_FILENAME_SIZE];
-	char* mr_m0_file;
-	int is_rom_file = FALSE;
+void *_mr_readFile(const char *filename, int *filelen, int lookfor) {
+    //int ret;
+    int method;
+    uint32 reallen, found = 0;
+    int32 oldlen, nTmp;
+    uint32 len;
+    void *filebuf;
+    MR_FILE_HANDLE f;
+    char TempName[MR_MAX_FILENAME_SIZE];
+    char *mr_m0_file;
+    int is_rom_file = FALSE;
 
 
 //	if(strstr(filename, ".ext") != NULL)
 //		mr_printf("_mr_readFile:%s", filename);
 
 
-	if ((pack_filename[0] == '*')||(pack_filename[0] == '$'))/*m0 file or ram file?*/
-	{/*read file from m0*/
-		uint32 pos = 0;
-		uint32 m0file_len;
+    if ((pack_filename[0] == '*') || (pack_filename[0] == '$'))/*m0 file or ram file?*/
+    {/*read file from m0*/
+        uint32 pos = 0;
+        uint32 m0file_len;
 
-		if (pack_filename[0] == '*'){/*m0 file?*/
-			mr_m0_file = (char*)mr_m0_files[pack_filename[1]-0x41]; //这里定义文件名为*A即是第一个m0文件
-			//*B是第二个.........
-		}else{
-			mr_m0_file = mr_ram_file;
-		}
+        if (pack_filename[0] == '*') {/*m0 file?*/
+            mr_m0_file = (char *) mr_m0_files[pack_filename[1] - 0x41]; //这里定义文件名为*A即是第一个m0文件
+            //*B是第二个.........
+        } else {
+            mr_m0_file = mr_ram_file;
+        }
 
-		if (mr_m0_file == NULL){
+        if (mr_m0_file == NULL) {
 
-			if ((char*)mr_m0_files[pack_filename[1]-0x41]==NULL) MRDBGPRINTF("mr_m0_files[%d] nil!",pack_filename[1]-0x41);
-			if (mr_ram_file == NULL) MRDBGPRINTF("mr_ram_file nil!");
-			//MRDBGPRINTF( "_mr_readFile:mr_m0_file nil at \"%s\"!",filename);
-			_mr_readFileShowInfo(filename, 1001);
-			return 0;
-		}
-		pos = pos + 4;
-		MEMCPY(&len, &mr_m0_file[pos], 4);
+            if ((char *) mr_m0_files[pack_filename[1] - 0x41] == NULL)
+                MRDBGPRINTF("mr_m0_files[%d] nil!", pack_filename[1] - 0x41);
+            if (mr_ram_file == NULL) MRDBGPRINTF("mr_ram_file nil!");
+            //MRDBGPRINTF( "_mr_readFile:mr_m0_file nil at \"%s\"!",filename);
+            _mr_readFileShowInfo(filename, 1001);
+            return 0;
+        }
+        pos = pos + 4;
+        MEMCPY(&len, &mr_m0_file[pos], 4);
 #ifdef MR_BIG_ENDIAN
-		len = ntohl(len);
+        len = ntohl(len);
 #endif
-		pos = pos + 4;
+        pos = pos + 4;
 
-		if(pack_filename[0] == '$'){
-			m0file_len = mr_ram_file_len;
+        if (pack_filename[0] == '$') {
+            m0file_len = mr_ram_file_len;
 
 #ifdef MR_AUTHORIZATION
-			if(bi & MR_FLAGS_AI){
-				if(_mr_isMr(&mr_m0_file[52]) != MR_SUCCESS){
-					_mr_readFileShowInfo("unauthorized", 3);
-					return 0;
-				}
-			}else{
-			}
+            if (bi & MR_FLAGS_AI) {
+                if (_mr_isMr(&mr_m0_file[52]) != MR_SUCCESS) {
+                    _mr_readFileShowInfo("unauthorized", 3);
+                    return 0;
+                }
+            } else {
+            }
 #endif
-		}else{
-			MEMCPY(&m0file_len, &mr_m0_file[pos], 4);
+        } else {
+            MEMCPY(&m0file_len, &mr_m0_file[pos], 4);
 
 #ifdef MR_BIG_ENDIAN
-			m0file_len = ntohl(m0file_len);
+            m0file_len = ntohl(m0file_len);
 #endif
-		}
+        }
 
-		//MRDBGPRINTF("readFile 11 len = %d", len);
-		//MRDBGPRINTF("readFile 21 len = %d", m0file_len);
-		pos = pos + len;
-		while(!found)
-		{
-			if (((pos+4) >= m0file_len)||(len<1)||(len>=MR_MAX_FILE_SIZE))
-			{
-				//MRDBGPRINTF( "_mr_readFile:err 4 at \"%s\"!",filename);
-				_mr_readFileShowInfo(filename, 1004);
-				return 0;
-			}
-			MEMCPY(&len, &mr_m0_file[pos], 4);
-			//MRDBGPRINTF("readFile 3 len = %d", len);
+        //MRDBGPRINTF("readFile 11 len = %d", len);
+        //MRDBGPRINTF("readFile 21 len = %d", m0file_len);
+        pos = pos + len;
+        while (!found) {
+            if (((pos + 4) >= m0file_len) || (len < 1) || (len >= MR_MAX_FILE_SIZE)) {
+                //MRDBGPRINTF( "_mr_readFile:err 4 at \"%s\"!",filename);
+                _mr_readFileShowInfo(filename, 1004);
+                return 0;
+            }
+            MEMCPY(&len, &mr_m0_file[pos], 4);
+            //MRDBGPRINTF("readFile 3 len = %d", len);
 
 #ifdef MR_BIG_ENDIAN
-			len = ntohl(len);
+            len = ntohl(len);
 #endif
 
-			//MRDBGPRINTF("readFile 3 len = %d", len);
-			pos = pos + 4;
-			if (((len + pos) >= m0file_len)||(len<1)||(len>=MR_MAX_FILENAME_SIZE))
-			{
-				//MRDBGPRINTF( "_mr_readFile:err 2 at \"%s\"!",filename);
-				_mr_readFileShowInfo(filename, 1002);
-				return 0;
-			}
-			MEMSET(TempName, 0, sizeof(TempName));
-			MEMCPY(TempName, &mr_m0_file[pos], len);
-			//MRDBGPRINTF(TempName);
-			pos = pos + len;
-			if (STRCMP(filename, TempName)==0)
-			{
-				if(lookfor == 1)
-				{
-					return (void *)1;
-				}
-				found = 1;
-				MEMCPY(&len, &mr_m0_file[pos], 4);
+            //MRDBGPRINTF("readFile 3 len = %d", len);
+            pos = pos + 4;
+            if (((len + pos) >= m0file_len) || (len < 1) || (len >= MR_MAX_FILENAME_SIZE)) {
+                //MRDBGPRINTF( "_mr_readFile:err 2 at \"%s\"!",filename);
+                _mr_readFileShowInfo(filename, 1002);
+                return 0;
+            }
+            MEMSET(TempName, 0, sizeof(TempName));
+            MEMCPY(TempName, &mr_m0_file[pos], len);
+            //MRDBGPRINTF(TempName);
+            pos = pos + len;
+            if (STRCMP(filename, TempName) == 0) {
+                if (lookfor == 1) {
+                    return (void *) 1;
+                }
+                found = 1;
+                MEMCPY(&len, &mr_m0_file[pos], 4);
 
 #ifdef MR_BIG_ENDIAN
-				len = ntohl(len);
+                len = ntohl(len);
 #endif
 
-				pos = pos + 4;
-				if (((len + pos) > m0file_len)||(len<1)||(len>=MR_MAX_FILE_SIZE))
-				{
-					//MRDBGPRINTF( "_mr_readFile:err 4 at \"%s\"!",filename);
-					_mr_readFileShowInfo(filename, 1003);
-					return 0;
-				}
-			}else
-			{
-				MEMCPY(&len, &mr_m0_file[pos], 4);
+                pos = pos + 4;
+                if (((len + pos) > m0file_len) || (len < 1) || (len >= MR_MAX_FILE_SIZE)) {
+                    //MRDBGPRINTF( "_mr_readFile:err 4 at \"%s\"!",filename);
+                    _mr_readFileShowInfo(filename, 1003);
+                    return 0;
+                }
+            } else {
+                MEMCPY(&len, &mr_m0_file[pos], 4);
 
 #ifdef MR_BIG_ENDIAN
-				len = ntohl(len);
+                len = ntohl(len);
 #endif
 
-				//MRDBGPRINTF("l = %d,p = %d", len, pos);
-				pos = pos + 4 + len;
-			}/*if (STRCMP(filename, TempName)==0)*/
-		}
+                //MRDBGPRINTF("l = %d,p = %d", len, pos);
+                pos = pos + 4 + len;
+            }/*if (STRCMP(filename, TempName)==0)*/
+        }
 
-		*filelen = len;
-		if (*filelen <= 0 )
-		{
-			//MRDBGPRINTF("_mr_readFile  \"%s\" len err!", filename);
-			_mr_readFileShowInfo(filename, 1005);
-			return 0;
-		}
+        *filelen = len;
+        if (*filelen <= 0) {
+            //MRDBGPRINTF("_mr_readFile  \"%s\" len err!", filename);
+            _mr_readFileShowInfo(filename, 1005);
+            return 0;
+        }
 
-		if(lookfor == 2)
-		{
-			return (void *)&mr_m0_file[pos];
-		}
-		filebuf = &mr_m0_file[pos];
-		is_rom_file = TRUE;
+        if (lookfor == 2) {
+            return (void *) &mr_m0_file[pos];
+        }
+        filebuf = &mr_m0_file[pos];
+        is_rom_file = TRUE;
 
-	}else   /*read file from efs , EFS 中的文件*/
-	{
+    } else   /*read file from efs , EFS 中的文件*/
+    {
 
-		f = mr_open(pack_filename, MR_FILE_RDONLY );
-		if (f == 0)
-		{
-			//MRDBGPRINTF( "file  \"%s\" can not be opened!", filename);
-			_mr_readFileShowInfo(filename, 2002);
-			return 0;
-		}
+        f = mr_open(pack_filename, MR_FILE_RDONLY);
+        if (f == 0) {
+            //MRDBGPRINTF( "file  \"%s\" can not be opened!", filename);
+            _mr_readFileShowInfo(filename, 2002);
+            return 0;
+        }
 
-		// 从这里开始是新版的mrp处理
-		{
-			uint32 headbuf[4];
-			//uint32 infohead_len, mrp_tag;
-			//headbuf = (uint32 *)MR_MALLOC(16);
-			MEMSET(headbuf, 0, sizeof(headbuf));
-			nTmp = mr_read(f, &headbuf, sizeof(headbuf));
+        // 从这里开始是新版的mrp处理
+        {
+            uint32 headbuf[4];
+            //uint32 infohead_len, mrp_tag;
+            //headbuf = (uint32 *)MR_MALLOC(16);
+            MEMSET(headbuf, 0, sizeof(headbuf));
+            nTmp = mr_read(f, &headbuf, sizeof(headbuf));
 #ifdef MR_BIG_ENDIAN
-			headbuf[0] = ntohl(headbuf[0]);
+                                                                                                                                    headbuf[0] = ntohl(headbuf[0]);
 			headbuf[1] = ntohl(headbuf[1]);
 			headbuf[2] = ntohl(headbuf[2]);
 			headbuf[3] = ntohl(headbuf[3]);
 #endif
-			if( (nTmp != 16)||(headbuf[0] != 1196446285))
-			{
-				mr_close(f);
-				_mr_readFileShowInfo(filename, 3001);
-				return 0;
-			}
-			if(headbuf[1] <= 232){
-				mr_close(f);
-				_mr_readFileShowInfo(filename, 3051);
-				return 0;
-			}
-			{                             //新版mrp 
-				uint32 indexlen = headbuf[1] + 8 - headbuf[3];
-				uint8* indexbuf = MR_MALLOC(indexlen);
-				uint32 pos = 0;
-				uint32 file_pos,file_len;
-				if(!indexbuf){
-					mr_close(f);
-					_mr_readFileShowInfo(filename, 3003);
-					return 0;
-				}
-				nTmp = mr_seek(f, headbuf[3] - 16, MR_SEEK_CUR);
-				if (nTmp < 0)
-				{
-					mr_close(f);
-					MR_FREE(indexbuf, indexlen);
-					_mr_readFileShowInfo(filename, 3002);
-					return 0;
-				}
+            if ((nTmp != 16) || (headbuf[0] != 1196446285)) {
+                mr_close(f);
+                _mr_readFileShowInfo(filename, 3001);
+                return 0;
+            }
+            if (headbuf[1] <= 232) {
+                mr_close(f);
+                _mr_readFileShowInfo(filename, 3051);
+                return 0;
+            }
+            {                             //新版mrp
+                uint32 indexlen = headbuf[1] + 8 - headbuf[3];
+                uint8 *indexbuf = MR_MALLOC(indexlen);
+                uint32 pos = 0;
+                uint32 file_pos, file_len;
+                if (!indexbuf) {
+                    mr_close(f);
+                    _mr_readFileShowInfo(filename, 3003);
+                    return 0;
+                }
+                nTmp = mr_seek(f, headbuf[3] - 16, MR_SEEK_CUR);
+                if (nTmp < 0) {
+                    mr_close(f);
+                    MR_FREE(indexbuf, indexlen);
+                    _mr_readFileShowInfo(filename, 3002);
+                    return 0;
+                }
 
-				nTmp = mr_read(f, indexbuf, indexlen);
+                nTmp = mr_read(f, indexbuf, indexlen);
 
-				if ((nTmp != (int32)indexlen))
-				{
-					mr_close(f);
-					MR_FREE(indexbuf, indexlen);
-					_mr_readFileShowInfo(filename, 3003);
-					return 0;
-				}
+                if ((nTmp != (int32) indexlen)) {
+                    mr_close(f);
+                    MR_FREE(indexbuf, indexlen);
+                    _mr_readFileShowInfo(filename, 3003);
+                    return 0;
+                }
 
 
-				//MRDBGPRINTF("str1=%s",filename);
-				while(!found)
-				{
-					MEMCPY(&len, &indexbuf[pos], 4);
+                //MRDBGPRINTF("str1=%s",filename);
+                while (!found) {
+                    MEMCPY(&len, &indexbuf[pos], 4);
 #ifdef MR_BIG_ENDIAN
-					len = ntohl(len);
+                    len = ntohl(len);
 #endif
-					pos = pos + 4;
-					if (((len + pos) > indexlen)||(len<1)||(len>=MR_MAX_FILENAME_SIZE))
-					{
-						mr_close(f);
-						MR_FREE(indexbuf, indexlen);
-						_mr_readFileShowInfo(filename, 3004);
-						return 0;
-					}
-					MEMSET(TempName, 0, sizeof(TempName));
-					MEMCPY(TempName, &indexbuf[pos], len);
-					pos = pos + len;
+                    pos = pos + 4;
+                    if (((len + pos) > indexlen) || (len < 1) || (len >= MR_MAX_FILENAME_SIZE)) {
+                        mr_close(f);
+                        MR_FREE(indexbuf, indexlen);
+                        _mr_readFileShowInfo(filename, 3004);
+                        return 0;
+                    }
+                    MEMSET(TempName, 0, sizeof(TempName));
+                    MEMCPY(TempName, &indexbuf[pos], len);
+                    pos = pos + len;
 
 #if 0
-					MRDBGPRINTF("pos=%d,len=%d",pos,len);
+                                                                                                                                            MRDBGPRINTF("pos=%d,len=%d",pos,len);
 					MRDBGPRINTF("str2=%s",TempName);
 					MRDBGPRINTF("strcmp=%d",STRCMP(filename, TempName));
 					mr_sleep(50);
 #endif
 
-					if (STRCMP(filename, TempName)==0)
-					{
-						if(lookfor == 1)
-						{
-							mr_close(f);
-							MR_FREE(indexbuf, indexlen);
-							return (void *)1;
-						}
-						found = 1;
-						MEMCPY(&file_pos, &indexbuf[pos], 4);
-						pos = pos + 4;
-						MEMCPY(&file_len, &indexbuf[pos], 4);
-						pos = pos + 4;
+                    if (STRCMP(filename, TempName) == 0) {
+                        if (lookfor == 1) {
+                            mr_close(f);
+                            MR_FREE(indexbuf, indexlen);
+                            return (void *) 1;
+                        }
+                        found = 1;
+                        MEMCPY(&file_pos, &indexbuf[pos], 4);
+                        pos = pos + 4;
+                        MEMCPY(&file_len, &indexbuf[pos], 4);
+                        pos = pos + 4;
 #ifdef MR_BIG_ENDIAN
-						file_pos = ntohl(file_pos);
+                                                                                                                                                file_pos = ntohl(file_pos);
 						file_len = ntohl(file_len);
 #endif
-						if ((file_pos + file_len) > headbuf[2])
-						{
-							mr_close(f);
-							MR_FREE(indexbuf, indexlen);
-							_mr_readFileShowInfo(filename, 3005);
-							return 0;
-						}
-					}else{
-						pos = pos + 12;
-						if (pos >= indexlen)
-						{
-							mr_close(f);
-							MR_FREE(indexbuf, indexlen);
-							_mr_readFileShowInfo(filename, 3006);
-							return 0;
-						}
-					}/*if (STRCMP(filename, TempName)==0)*/
-				}
+                        if ((file_pos + file_len) > headbuf[2]) {
+                            mr_close(f);
+                            MR_FREE(indexbuf, indexlen);
+                            _mr_readFileShowInfo(filename, 3005);
+                            return 0;
+                        }
+                    } else {
+                        pos = pos + 12;
+                        if (pos >= indexlen) {
+                            mr_close(f);
+                            MR_FREE(indexbuf, indexlen);
+                            _mr_readFileShowInfo(filename, 3006);
+                            return 0;
+                        }
+                    }/*if (STRCMP(filename, TempName)==0)*/
+                }
 
-				MR_FREE(indexbuf, indexlen);
+                MR_FREE(indexbuf, indexlen);
 
-				*filelen = file_len;
+                *filelen = file_len;
 
-				//MRDBGPRINTF("Debug:_mr_readFile:old filelen = %d",file_len);
-				filebuf = MR_MALLOC((uint32)*filelen);
-				if(filebuf == NULL)
-				{
-					mr_close(f);
-					_mr_readFileShowInfo(filename, 3007);
-					return 0;
-				}
+                //MRDBGPRINTF("Debug:_mr_readFile:old filelen = %d",file_len);
+                filebuf = MR_MALLOC((uint32) *filelen);
+                if (filebuf == NULL) {
+                    mr_close(f);
+                    _mr_readFileShowInfo(filename, 3007);
+                    return 0;
+                }
 
-				nTmp = mr_seek(f, file_pos, MR_SEEK_SET);
-				if (nTmp < 0)
-				{
-					MR_FREE(filebuf, *filelen);
-					mr_close(f);
-					_mr_readFileShowInfo(filename, 3008);
-					return 0;
-				}
+                nTmp = mr_seek(f, file_pos, MR_SEEK_SET);
+                if (nTmp < 0) {
+                    MR_FREE(filebuf, *filelen);
+                    mr_close(f);
+                    _mr_readFileShowInfo(filename, 3008);
+                    return 0;
+                }
 
 
-
-				oldlen = 0;
+                oldlen = 0;
 #ifdef MR_SPREADTRUM_MOD
-				if ((*filelen < 0)){
+                                                                                                                                        if ((*filelen < 0)){
 					MRDBGPRINTF("filelen=%d",*filelen);
 					MR_FREE(filebuf, file_len);
 					mr_close(f);
@@ -2176,94 +2131,91 @@ void * _mr_readFile(const char* filename, int *filelen, int lookfor)
 					return 0;
 				}
 #endif
-				//MRDBGPRINTF("oldlen=%d",oldlen);
-				while(oldlen < *filelen){
-					//MRDBGPRINTF("oldlen=%d",oldlen);
-					nTmp = mr_read(f, (char*)filebuf+oldlen, *filelen-oldlen);
-					//MRDBGPRINTF("Debug:_mr_readFile:readlen = %d,oldlen=%d",nTmp,oldlen);
-					//MRDBGPRINTF("oldlen=%d",oldlen);
+                //MRDBGPRINTF("oldlen=%d",oldlen);
+                while (oldlen < *filelen) {
+                    //MRDBGPRINTF("oldlen=%d",oldlen);
+                    nTmp = mr_read(f, (char *) filebuf + oldlen, *filelen - oldlen);
+                    //MRDBGPRINTF("Debug:_mr_readFile:readlen = %d,oldlen=%d",nTmp,oldlen);
+                    //MRDBGPRINTF("oldlen=%d",oldlen);
 #ifdef MR_SPREADTRUM_MOD
-					if ((nTmp <= 0) || (oldlen > 1024*1024))
+                    if ((nTmp <= 0) || (oldlen > 1024*1024))
 #else
-					if (nTmp <= 0)
+                    if (nTmp <= 0)
 #endif
-					{
-						//MRDBGPRINTF("oldlen=%d",oldlen);
-						MR_FREE(filebuf, *filelen);
-						mr_close(f);
-						_mr_readFileShowInfo(filename, 3009);
-						return 0;
-					}
-					oldlen = oldlen + nTmp;
-				}
+                    {
+                        //MRDBGPRINTF("oldlen=%d",oldlen);
+                        MR_FREE(filebuf, *filelen);
+                        mr_close(f);
+                        _mr_readFileShowInfo(filename, 3009);
+                        return 0;
+                    }
+                    oldlen = oldlen + nTmp;
+                }
 
-				mr_close(f);
-
-
-			}
-		}
-		// 新版的mrp处理
-	}/*efs file*/
+                mr_close(f);
 
 
+            }
+        }
+        // 新版的mrp处理
+    }/*efs file*/
 
 
-	mr_gzInBuf = filebuf;
-	LG_gzoutcnt = 0;
-	LG_gzinptr = 0;
 
-	method = mr_get_method(*filelen);
-	if (method < 0) 
-	{
-		return filebuf;             
-	}
 
-	reallen  = (uint32)(((uch*)filebuf)[*filelen-4]);
-	reallen |= (uint32)(((uch*)filebuf)[*filelen-3]) << 8;
-	reallen |= (uint32)(((uch*)filebuf)[*filelen-2]) << 16;
-	reallen |= (uint32)(((uch*)filebuf)[*filelen-1]) << 24;
+    mr_gzInBuf = filebuf;
+    LG_gzoutcnt = 0;
+    LG_gzinptr = 0;
 
-	//MRDBGPRINTF("Debug:_mr_readFile:filelen = %d",reallen);
-	//MRDBGPRINTF("Debug:_mr_readFile:mem left = %d",LG_mem_left);
+    method = mr_get_method(*filelen);
+    if (method < 0) {
+        return filebuf;
+    }
 
-	//MRDBGPRINTF("1base=%d,end=%d",  (int32)LG_mem_base, (int32)LG_mem_end);   
-	//MRDBGPRINTF("is_rom_file = %d",is_rom_file);
-	mr_gzOutBuf = MR_MALLOC(reallen);
-	//MRDBGPRINTF("mr_gzOutBuf = %d",mr_gzOutBuf);
-	oldlen = *filelen;
-	*filelen = reallen;
-	//MRDBGPRINTF("2base=%d,end=%d",  (int32)LG_mem_base, (int32)LG_mem_end);   
-	if(mr_gzOutBuf == NULL)
-	{
-		if(!is_rom_file)
-			MR_FREE(mr_gzInBuf, oldlen);
-		//MRDBGPRINTF("_mr_readFile  \"%s\" Not memory unzip!", filename);
-		return 0;
-	}
+    reallen = (uint32) (((uch *) filebuf)[*filelen - 4]);
+    reallen |= (uint32) (((uch *) filebuf)[*filelen - 3]) << 8;
+    reallen |= (uint32) (((uch *) filebuf)[*filelen - 2]) << 16;
+    reallen |= (uint32) (((uch *) filebuf)[*filelen - 1]) << 24;
 
-	//MRDBGPRINTF("3base=%d,end=%d",  (int32)LG_mem_base, (int32)LG_mem_end);   
-	if (mr_unzip() != 0) {
-		if(!is_rom_file)
-			MR_FREE(mr_gzInBuf, oldlen);
-		MR_FREE(mr_gzOutBuf, reallen);
-		MRDBGPRINTF("_mr_readFile: \"%s\" Unzip err!", filename);
-		return 0;
-	}
+    //MRDBGPRINTF("Debug:_mr_readFile:filelen = %d",reallen);
+    //MRDBGPRINTF("Debug:_mr_readFile:mem left = %d",LG_mem_left);
 
-	//MRDBGPRINTF("4base=%d,end=%d",  (int32)LG_mem_base, (int32)LG_mem_end);   
-	//MRDBGPRINTF("is_rom_file = %d",is_rom_file);
-	if(!is_rom_file)
-		MR_FREE(mr_gzInBuf, oldlen);
+    //MRDBGPRINTF("1base=%d,end=%d",  (int32)LG_mem_base, (int32)LG_mem_end);
+    //MRDBGPRINTF("is_rom_file = %d",is_rom_file);
+    mr_gzOutBuf = MR_MALLOC(reallen);
+    //MRDBGPRINTF("mr_gzOutBuf = %d",mr_gzOutBuf);
+    oldlen = *filelen;
+    *filelen = reallen;
+    //MRDBGPRINTF("2base=%d,end=%d",  (int32)LG_mem_base, (int32)LG_mem_end);
+    if (mr_gzOutBuf == NULL) {
+        if (!is_rom_file)
+            MR_FREE(mr_gzInBuf, oldlen);
+        //MRDBGPRINTF("_mr_readFile  \"%s\" Not memory unzip!", filename);
+        return 0;
+    }
 
-	//MRDBGPRINTF("is_rom_file = %d",is_rom_file);
-	//MRDBGPRINTF("5base=%d,end=%d",  (int32)LG_mem_base, (int32)LG_mem_end);   
-	return mr_gzOutBuf;
+    //MRDBGPRINTF("3base=%d,end=%d",  (int32)LG_mem_base, (int32)LG_mem_end);
+    if (mr_unzip() != 0) {
+        if (!is_rom_file)
+            MR_FREE(mr_gzInBuf, oldlen);
+        MR_FREE(mr_gzOutBuf, reallen);
+        MRDBGPRINTF("_mr_readFile: \"%s\" Unzip err!", filename);
+        return 0;
+    }
+
+    //MRDBGPRINTF("4base=%d,end=%d",  (int32)LG_mem_base, (int32)LG_mem_end);
+    //MRDBGPRINTF("is_rom_file = %d",is_rom_file);
+    if (!is_rom_file)
+        MR_FREE(mr_gzInBuf, oldlen);
+
+    //MRDBGPRINTF("is_rom_file = %d",is_rom_file);
+    //MRDBGPRINTF("5base=%d,end=%d",  (int32)LG_mem_base, (int32)LG_mem_end);
+    return mr_gzOutBuf;
 }
 
 
-
 #ifdef MR_PLAT_READFILE
-extern MR_FILE_HANDLE mr_openForPlat(const char* filename,  uint32 mode);
+                                                                                                                        extern MR_FILE_HANDLE mr_openForPlat(const char* filename,  uint32 mode);
 extern int32 mr_closeForPlat(MR_FILE_HANDLE f);
 extern int32 mr_readForPlat(MR_FILE_HANDLE f,void *p,uint32 l);
 extern int32 mr_seekForPlat(MR_FILE_HANDLE f, int32 pos, int method);
@@ -2309,7 +2261,7 @@ void * _mr_readFileForPlat(const char* mrpname, const char* filename, int *filel
 			_mr_readFileShowInfo(filename, 3001);
 			return 0;
 		}
-		if(headbuf[1] > 232){                             //新版mrp 
+		if(headbuf[1] > 232){                             //新版mrp
 			uint32 indexlen = headbuf[1] + 8 - headbuf[3];
 			uint8* indexbuf = mr_mallocForPlat(indexlen);
 			uint32 pos = 0;
@@ -2460,9 +2412,9 @@ void * _mr_readFileForPlat(const char* mrpname, const char* filename, int *filel
 	LG_gzinptr = 0;
 
 	method = mr_get_method(*filelen);
-	if (method < 0) 
+	if (method < 0)
 	{
-		return filebuf;             
+		return filebuf;
 	}
 
 	reallen  = (uint32)(((uch*)filebuf)[*filelen-4]);
@@ -2505,29 +2457,27 @@ void * _mrc_readFile(const char* mrpname, const char* filename, int *filelen, in
 #endif
 
 //display
-static int32 _DispUpEx(int16 x, int16 y, uint16 w, uint16 h)
-{
-	if (!(mr_state == MR_STATE_RUN))
-	{
-		return 0;
-	}
+static int32 _DispUpEx(int16 x, int16 y, uint16 w, uint16 h) {
+    if (!(mr_state == MR_STATE_RUN)) {
+        return 0;
+    }
 #ifdef MR_SCREEN_CACHE
-	//mr_drawBitmap(mr_screenBuf,0,0,MR_SCREEN_W,MR_SCREEN_H);
+    //mr_drawBitmap(mr_screenBuf,0,0,MR_SCREEN_W,MR_SCREEN_H);
 #ifdef MR_SCREEN_CACHE_BITMAP
-	//mr_drawBitmap((uint16*)mr_screenBMP,x, y, w, h);
+                                                                                                                            //mr_drawBitmap((uint16*)mr_screenBMP,x, y, w, h);
 	mr_drawBitmap((uint16*)mr_screenBMP,0, 0, (uint16)MR_SCREEN_W,(uint16)MR_SCREEN_H);
 #else
-	//mr_drawBitmap(mr_screenBuf,0, 0, (uint16)MR_SCREEN_W,(uint16)MR_SCREEN_H);
-	mr_drawBitmap(mr_screenBuf,x, y, (uint16)w,(uint16)h);
+    //mr_drawBitmap(mr_screenBuf,0, 0, (uint16)MR_SCREEN_W,(uint16)MR_SCREEN_H);
+    mr_drawBitmap(mr_screenBuf, x, y, (uint16) w, (uint16) h);
 #endif
 #else
-	mr_bufToScreen(x, y, w, h);
+    mr_bufToScreen(x, y, w, h);
 #endif
-	return 0;
+    return 0;
 }
 
 #if 0
-static int MRF_DispUpEx(mrp_State* L)
+                                                                                                                        static int MRF_DispUpEx(mrp_State* L)
 {
 	int16 x = ((int16)  mrp_tonumber(L,1));
 	int16 y = ((int16)  mrp_tonumber(L,2));
@@ -2614,8 +2564,8 @@ static int MRF_DrawText(mrp_State* L)
 
 	//#ifdef MR_DRAW_TXT_AUTO_UNICODE
 	if (!is_unicode){
-	//tempBuf = c2u((const char*)pcText, &tempret, &TextSize); 
-	tempBuf = c2u((const char*)pcText, NULL, &TextSize); 
+	//tempBuf = c2u((const char*)pcText, &tempret, &TextSize);
+	tempBuf = c2u((const char*)pcText, NULL, &TextSize);
 	if (!tempBuf)
 	{
 	mrp_pushfstring(L, "DrawText x=%d:c2u err!",x);
@@ -2628,7 +2578,7 @@ static int MRF_DrawText(mrp_State* L)
 	}
 	//#endif
 
-	//mr_drawText((char *)tempBuf+1, x, y, MAKERGB(r, g, b)); 
+	//mr_drawText((char *)tempBuf+1, x, y, MAKERGB(r, g, b));
 	#ifdef MR_SCREEN_CACHE
 	{
 	uint16 ch;
@@ -2660,7 +2610,7 @@ static int MRF_DrawText(mrp_State* L)
 	};
 	}
 	#else
-	mr_drawText((char *)tempBuf, x, y, MAKERGB(r, g, b)); 
+	mr_drawText((char *)tempBuf, x, y, MAKERGB(r, g, b));
 	#endif
 	//#ifdef MR_DRAW_TXT_AUTO_UNICODE
 	if (!is_unicode){
@@ -2720,7 +2670,7 @@ static int MRF_TextWidth(mrp_State* L)
 		}
 
 		if (!is_unicode){
-			tempBuf = c2u((const char*)pcText, NULL, &TextSize); 
+			tempBuf = c2u((const char*)pcText, NULL, &TextSize);
 			if (!tempBuf)
 			{
 				mrp_pushfstring(vm_state, "TextWidth:c2u err!");
@@ -2768,7 +2718,7 @@ static int MRF_TextWidth(mrp_State* L)
 				temp[0] = ch / 256;
 				temp[1] = ch % 256;
 				temp[3] = 0;
-				tempBuf = c2u((const char*)temp, NULL, &TextSize); 
+				tempBuf = c2u((const char*)temp, NULL, &TextSize);
 				if (!tempBuf)
 				{
 					mrp_pushfstring(vm_state, "TextWidth:c2u err!");
@@ -2815,7 +2765,7 @@ static int MRF_DrawPoint(mrp_State* L)
 	/*
 	nativecolor = (r/8)<<11;
 	nativecolor |=(g/4)<<5;
-	nativecolor |=(b/8);        
+	nativecolor |=(b/8);
 	*/
 	nativecolor = MAKERGB(r, g, b);
 	_DrawPoint(x, y, nativecolor);
@@ -2841,11 +2791,11 @@ static int MRF_DrawLine(mrp_State* L)
 	/*
 	nativecolor = (r/8)<<11;
 	nativecolor |=(g/4)<<5;
-	nativecolor |=(b/8);     
+	nativecolor |=(b/8);
 	*/
 	nativecolor = MAKERGB(r, g, b);
 
-	/*   
+	/*
 	if (x1 < 0 || x1 >= MR_SCREEN_W || x2 < 0 || x2 >= MR_SCREEN_W ||
 	y1 < 0 || y1 >= MR_SCREEN_H || y2 < 0 || y2 >= MR_SCREEN_H)
 	return;
@@ -3050,7 +3000,7 @@ static int MRF_BitmapShow(mrp_State* L)
 	h = (h==-1)? mr_bitmap[i].h:h;
 	//   mr_drawBitmap(mr_bitmap[i].p, x, y, mr_bitmap[i].w, mr_bitmap[i].h, rop, *(mr_bitmap[i].p));
 #ifdef MR_ANYKA_MOD
-	_DrawBitmap(mr_bitmap[i].p, x, y, w, h, rop, 
+	_DrawBitmap(mr_bitmap[i].p, x, y, w, h, rop,
 		MR_BITMAP_POINT_COLOUR(mr_bitmap[i].p),
 		sx, sy, mr_bitmap[i].w);
 #else
@@ -3192,9 +3142,9 @@ static int MRF_BitmapDraw(mrp_State* L)
 
 	for(dy=MinY;dy<MaxY;dy++)
 	{
-	int16 MaxX = MIN(D==0? 999:(D>0? (((w * I)>>9) + B * dy )/D:(B * dy - ((w * I)>>9) )/D), 
+	int16 MaxX = MIN(D==0? 999:(D>0? (((w * I)>>9) + B * dy )/D:(B * dy - ((w * I)>>9) )/D),
 	C==0? 999:(C>0? (A * dy + ((h * I)>>9))/C:(A * dy - ((h * I) >>9))/C));
-	int16 MinX = MAX(D==0? -999:(D>0? (B * dy - ((w * I)>>9) )/D:(((w * I) >>9) + B * dy )/D), 
+	int16 MinX = MAX(D==0? -999:(D>0? (B * dy - ((w * I)>>9) )/D:(((w * I) >>9) + B * dy )/D),
 	C==0? -999:(C>0? (A * dy - ((h * I)>>9))/C:(A * dy + ((h * I)>>9))/C));
 	MaxX = MIN(MaxX, dw - CenterX);
 	MinX = MAX(MinX, 0 - CenterX);
@@ -3320,7 +3270,7 @@ static int MRF_SpriteDrawEx(mrp_State* L)
 	srcbmp.x = 0;
 	srcbmp.y = 0;
 #ifdef MR_ANYKA_MOD
-	srcbmp.p = (uint16*)((uint8*)mr_bitmap[i].p + 
+	srcbmp.p = (uint16*)((uint8*)mr_bitmap[i].p +
 		(spriteindex & MR_SPRITE_INDEX_MASK)*mr_bitmap[i].w*mr_sprite[i].h*3);
 	_DrawBitmapEx(&srcbmp, &dstbmp, mr_bitmap[i].w, mr_sprite[i].h, &Trans,
 		MR_BITMAP_POINT_COLOUR(mr_bitmap[i].p)   );
@@ -3436,37 +3386,37 @@ static int MRF_TileDraw(mrp_State* L)
 
 	for (dy = yStart; dy < yEnd; dy++)
 	{
-		for (dx = xStart; dx < xEnd; dx++) 
+		for (dx = xStart; dx < xEnd; dx++)
 		{
 			//         mr_drawBitmap(mr_bitmap[i].p + mr_map[i][mr_tile[i].w * dy + dx]*mr_bitmap[i].w*mr_tile[i].tileh,
-			//            dx * mr_bitmap[i].w + x, dy * mr_tile[i].tileh + y, mr_bitmap[i].w, 
+			//            dx * mr_bitmap[i].w + x, dy * mr_tile[i].tileh + y, mr_bitmap[i].w,
 			//            mr_tile[i].tileh, BM_COPY, 0);
 			uint16 unTile = mr_map[i][w * dy + dx];
 
-			if ((unTile & MR_SPRITE_INDEX_MASK) != MR_SPRITE_INDEX_MASK) 
+			if ((unTile & MR_SPRITE_INDEX_MASK) != MR_SPRITE_INDEX_MASK)
 			{
 				int16 drawX = dx * tilew + x;
 				int16 drawY = dy * tileh + y;
-				if ((drawX+tilew>= mr_tile[i].x1) &&  (drawX< mr_tile[i].x2) 
+				if ((drawX+tilew>= mr_tile[i].x1) &&  (drawX< mr_tile[i].x2)
 					&& (drawY+tileh>= mr_tile[i].y1) &&  (drawY< mr_tile[i].y2) )
 #ifdef MR_ANYKA_MOD
 					_DrawBitmap((uint16*)((uint8*)mr_bitmap[i].p +
 					(unTile&MR_SPRITE_INDEX_MASK)*tilew*tileh*3),
-					(int16)drawX, 
-					(int16)drawY, 
-					(uint16)tilew, 
-					(uint16)tileh, 
-					(uint16)((unTile & 0xfc00) + 
+					(int16)drawX,
+					(int16)drawY,
+					(uint16)tilew,
+					(uint16)tileh,
+					(uint16)((unTile & 0xfc00) +
 					((unTile & MR_SPRITE_TRANSPARENT)? BM_TRANSPARENT:BM_COPY)),
 					MR_BITMAP_POINT_COLOUR(mr_bitmap[i].p), 0, 0, (uint16)tilew);
 #else
 					_DrawBitmap(mr_bitmap[i].p +
 					(unTile&MR_SPRITE_INDEX_MASK)*tilew*tileh,
-					(int16)drawX, 
-					(int16)drawY, 
-					(uint16)tilew, 
-					(uint16)tileh, 
-					(uint16)((unTile & 0xfc00) + 
+					(int16)drawX,
+					(int16)drawY,
+					(uint16)tilew,
+					(uint16)tileh,
+					(uint16)((unTile & 0xfc00) +
 					((unTile & MR_SPRITE_TRANSPARENT)? BM_TRANSPARENT:BM_COPY)),
 					(uint16)*(mr_bitmap[i].p), 0, 0, (uint16)tilew);
 #endif
@@ -3490,29 +3440,29 @@ static int MRF_TileShift(mrp_State* L)
 		return 0;
 	}
 #endif
-	switch (mode) 
+	switch (mode)
 	{
 	case 0:    //up
-		memmove(mr_map[i], 
-			mr_map[i] + mr_tile[i].w, 
+		memmove(mr_map[i],
+			mr_map[i] + mr_tile[i].w,
 			mr_tile[i].w*(mr_tile[i].h-1)*2);
 		break;
 	case 1:    //down
-		memmove(mr_map[i] + mr_tile[i].w, 
-			mr_map[i], 
+		memmove(mr_map[i] + mr_tile[i].w,
+			mr_map[i],
 			mr_tile[i].w*(mr_tile[i].h-1)*2);
 		break;
 	case 2:    //left
 		for(j=0;j<mr_tile[i].h;j++){
-			memmove(mr_map[i] + mr_tile[i].w * j, 
-				mr_map[i] + mr_tile[i].w * j + 1, 
+			memmove(mr_map[i] + mr_tile[i].w * j,
+				mr_map[i] + mr_tile[i].w * j + 1,
 				(mr_tile[i].w*-1)*2);
 		}
 		break;
 	case 3:    //right
 		for(j=0;j<mr_tile[i].h;j++){
-			memmove(mr_map[i] + mr_tile[i].w * j + 1, 
-				mr_map[i] + mr_tile[i].w * j, 
+			memmove(mr_map[i] + mr_tile[i].w * j + 1,
+				mr_map[i] + mr_tile[i].w * j,
 				(mr_tile[i].w*-1)*2);
 		}
 		break;
@@ -3558,7 +3508,7 @@ static int MRF_TileLoad(mrp_State* L)
 #ifdef MR_BIG_ENDIAN
 	for (dy = 0; dy < mr_tile[i].h; dy++)
 	{
-		for (dx = 0; dx < mr_tile[i].w; dx++) 
+		for (dx = 0; dx < mr_tile[i].w; dx++)
 		{
 			w = mr_tile[i].w;
 			mr_map[i][w* dy + dx] = ntohs(mr_map[i][w* dy + dx]);
@@ -3656,7 +3606,7 @@ static int MRF_ClearScreen(mrp_State* L)
 //Screen
 
 //effect
-static int MRF_EffSetCon(mrp_State* L) 
+static int MRF_EffSetCon(mrp_State* L)
 {
 	int16 x = ((int16)  to_mr_tonumber(L,1,0));
 	int16 y = ((int16)  to_mr_tonumber(L,2,0));
@@ -3919,7 +3869,7 @@ static int SaveTable(mrp_State* L)
 	return 1;
 }
 
-static const char *bufreader(mrp_State *L, void *ud, size_t *sz) 
+static const char *bufreader(mrp_State *L, void *ud, size_t *sz)
 {
 	LoadF *lf = (LoadF *)ud;
 	(void)L;
@@ -3986,7 +3936,7 @@ int _mr_GetSysInfo(mrp_State* L)
 	//mrp_pushliteral(L, "_vmver", );
 	//mrp_pushnumber(L, MR_VERSION);
 	//mrp_rawset(L, -3);
-	setfield(L, "vmver", MR_VERSION); 
+	setfield(L, "vmver", MR_VERSION);
 
 #ifdef COMPATIBILITY01
 	setfield(L, "ScreenW", MR_SCREEN_W);
@@ -4196,7 +4146,7 @@ int mr_Gb2312toUnicode(mrp_State* L)
 	uint16 *tempBuf;
 	int tempret=0;
 	//tempBuf = c2u((const char*)text, &tempret, &TextSize);
-	tempBuf = c2u((const char*)text, NULL, &TextSize); 
+	tempBuf = c2u((const char*)text, NULL, &TextSize);
 	if (!tempBuf)
 	{
 		mrp_pushfstring(L, "Gb2312toUnicode text[0]=%d: err!", *text);
@@ -4254,7 +4204,7 @@ static int MRF_closeNet(mrp_State* L)
 	int32 ret;
 	ret = mr_closeNetwork();
 	mrp_pushstring(L, "socket");
-	mrp_rawget(L, MRP_GLOBALSINDEX);  
+	mrp_rawget(L, MRP_GLOBALSINDEX);
 
 	//add this for nil socket obj protect.
 	if(!mrp_istable(L, -1)){
@@ -4275,7 +4225,7 @@ static int MRF_closeNet(mrp_State* L)
 #endif
 
 #ifdef SDK_MOD
-int mr_sdk(int code, int param)
+                                                                                                                        int mr_sdk(int code, int param)
 {
 	int ret = 0;
 	switch(code)
@@ -4302,225 +4252,220 @@ int mr_sdk(int code, int param)
 }
 #endif
 
-static int _mr_TestCom(mrp_State* L, int input0, int input1)
-{
-	int ret = 0;
+static int _mr_TestCom(mrp_State *L, int input0, int input1) {
+    int ret = 0;
 
-	switch(input0)
-	{
-	case 1:
-		ret = mr_getTime();
-		break;
-	case 2:
-		mr_event_function = (MR_EVENT_FUNCTION)input1;
-		break;
-	case 3:
-		mr_timer_function = (MR_TIMER_FUNCTION)input1;
-		break;
-	case 4:
-		mr_stop_function = (MR_STOP_FUNCTION)input1;
-		break;
-	case 5:
-		mr_pauseApp_function = (MR_PAUSEAPP_FUNCTION)input1;
-		break;
-	case 6:
-		mr_resumeApp_function = (MR_RESUMEAPP_FUNCTION)input1;
-		break;
+    switch (input0) {
+        case 1:
+            ret = mr_getTime();
+            break;
+        case 2:
+            mr_event_function = (MR_EVENT_FUNCTION) input1;
+            break;
+        case 3:
+            mr_timer_function = (MR_TIMER_FUNCTION) input1;
+            break;
+        case 4:
+            mr_stop_function = (MR_STOP_FUNCTION) input1;
+            break;
+        case 5:
+            mr_pauseApp_function = (MR_PAUSEAPP_FUNCTION) input1;
+            break;
+        case 6:
+            mr_resumeApp_function = (MR_RESUMEAPP_FUNCTION) input1;
+            break;
 
 #ifdef MR_PLAT_DRAWTEXT
-	case 7:
+        case 7:
 
-		return  input1;
+            return input1;
 #endif
 
 #ifdef MR_VIA_MOD
-	case 8:
+                                                                                                                                    case 8:
 		return input1;
 #endif
-	case 9:
-		mrc_appInfo_st.ram = input1;
-		break;
-	case 100:
-		ret = LG_mem_min;
-		break;
-	case 101:
-		ret = LG_mem_top;
-		break;
-	case 102:
-		ret = LG_mem_left;
-		break;
-	case 200:
-		if (!(mr_state == MR_STATE_RUN ) || (!mr_shakeOn))
-		{
-			ret = MR_SUCCESS;
-			break;
-		}
-		ret = mr_startShake(input1);
-		break;
-	case 201:
-		//ret = mr_stopShake();
-		break;
-	case 300:
-		mr_soundOn = input1;
-		break;
-	case 301:
-		mr_shakeOn = input1;
-		break;
-	case 302:
-		bi = bi|MR_FLAGS_RI;
-		break;
-	case 303:
-		bi = bi&(~MR_FLAGS_RI);
-		break;
-	case 304:
-		bi = bi|MR_FLAGS_EI;
-		break;
-	case 305:
-		bi = bi&(~MR_FLAGS_EI);
-		break;
-	case 306:
-		mr_sms_return_flag = 1;
-		mr_sms_return_val = input1;
-		break;
-	case 307:
-		mr_sms_return_flag = 0;
-		break;
-	case 400:
-		mr_sleep(input1);
-		break;
-	case 401:
-		ret = MR_SCREEN_MAX_W;
-		MR_SCREEN_MAX_W = input1;
-		break;
-	case 404:
-		ret = mr_newSIMInd((int16)input1, NULL);
-		break;
-	case 405:
-		ret = mr_closeNetwork();
-		break;
-	case 406:
-		ret = MR_SCREEN_H;
-		MR_SCREEN_H = input1;
-		break;
-	case 407:
-		mr_timer_run_without_pause = input1;
-		mr_plat(1202, input1);
-		break;
+        case 9:
+            mrc_appInfo_st.ram = input1;
+            break;
+        case 100:
+            ret = LG_mem_min;
+            break;
+        case 101:
+            ret = LG_mem_top;
+            break;
+        case 102:
+            ret = LG_mem_left;
+            break;
+        case 200:
+            if (!(mr_state == MR_STATE_RUN) || (!mr_shakeOn)) {
+                ret = MR_SUCCESS;
+                break;
+            }
+            ret = mr_startShake(input1);
+            break;
+        case 201:
+            //ret = mr_stopShake();
+            break;
+        case 300:
+            mr_soundOn = input1;
+            break;
+        case 301:
+            mr_shakeOn = input1;
+            break;
+        case 302:
+            bi = bi | MR_FLAGS_RI;
+            break;
+        case 303:
+            bi = bi & (~MR_FLAGS_RI);
+            break;
+        case 304:
+            bi = bi | MR_FLAGS_EI;
+            break;
+        case 305:
+            bi = bi & (~MR_FLAGS_EI);
+            break;
+        case 306:
+            mr_sms_return_flag = 1;
+            mr_sms_return_val = input1;
+            break;
+        case 307:
+            mr_sms_return_flag = 0;
+            break;
+        case 400:
+            mr_sleep(input1);
+            break;
+        case 401:
+            ret = MR_SCREEN_MAX_W;
+            MR_SCREEN_MAX_W = input1;
+            break;
+        case 404:
+            ret = mr_newSIMInd((int16) input1, NULL);
+            break;
+        case 405:
+            ret = mr_closeNetwork();
+            break;
+        case 406:
+            ret = MR_SCREEN_H;
+            MR_SCREEN_H = input1;
+            break;
+        case 407:
+            mr_timer_run_without_pause = input1;
+            mr_plat(1202, input1);
+            break;
 
-	case 408:
-		if(mr_bitmap[BITMAPMAX].type == MR_SCREEN_FIRST_BUF){
-			mr_bitmap[BITMAPMAX].p = (uint16*)MR_MALLOC(input1);
-			if (mr_bitmap[BITMAPMAX].p){
-				MR_FREE(mr_screenBuf, mr_bitmap[BITMAPMAX].buflen);
-				mr_screenBuf = mr_bitmap[BITMAPMAX].p;
-				mr_bitmap[BITMAPMAX].buflen = input1;
-				ret = MR_SUCCESS;
-			}else{
-				ret = MR_FAILED;
-			}
-		}else if(mr_bitmap[BITMAPMAX].type == MR_SCREEN_SECOND_BUF){
-			if (mr_bitmap[BITMAPMAX].buflen >= input1){
-				ret = MR_SUCCESS;
-			}else{
-				ret = MR_FAILED;
-			}
-		}
-		break;
+        case 408:
+            if (mr_bitmap[BITMAPMAX].type == MR_SCREEN_FIRST_BUF) {
+                mr_bitmap[BITMAPMAX].p = (uint16 *) MR_MALLOC(input1);
+                if (mr_bitmap[BITMAPMAX].p) {
+                    MR_FREE(mr_screenBuf, mr_bitmap[BITMAPMAX].buflen);
+                    mr_screenBuf = mr_bitmap[BITMAPMAX].p;
+                    mr_bitmap[BITMAPMAX].buflen = input1;
+                    ret = MR_SUCCESS;
+                } else {
+                    ret = MR_FAILED;
+                }
+            } else if (mr_bitmap[BITMAPMAX].type == MR_SCREEN_SECOND_BUF) {
+                if (mr_bitmap[BITMAPMAX].buflen >= input1) {
+                    ret = MR_SUCCESS;
+                } else {
+                    ret = MR_FAILED;
+                }
+            }
+            break;
 
 
-	case 500:
+        case 500:
 #ifdef MR_SM_SURPORT
-		ret = _mr_load_sms_cfg();//only for sm dsm;
-		//#ifndef ADI_MOD
-		//         if(ret != MR_FAILED){
-		//            mr_close(ret);
-		//         }
-		//#endif
+            ret = _mr_load_sms_cfg();//only for sm dsm;
+            //#ifndef ADI_MOD
+            //         if(ret != MR_FAILED){
+            //            mr_close(ret);
+            //         }
+            //#endif
 #endif
-		break;
-	case 503:
+            break;
+        case 503:
 #ifdef MR_SM_SURPORT
-		{
-			uint8 flag=0;
-			_mr_smsGetBytes(CFG_USE_UNICODE_OFFSET, (char*)&flag, 1);
-			ret = flag;
-		}
+        {
+            uint8 flag = 0;
+            _mr_smsGetBytes(CFG_USE_UNICODE_OFFSET, (char *) &flag, 1);
+            ret = flag;
+        }
 #endif
-		break;
-	case 504:
-		ret = _mr_save_sms_cfg(input1);
-		break;
-	case 3629:
-		if (input1 == 2913)
-			bi = bi|MR_FLAGS_BI;
-		break;
-	case 3921:
-		if (input1 == 98352)
-			bi = bi|MR_FLAGS_AI;
-		break;
-	case 3251:
-		if (input1 == 648826)
-			bi = bi&(~MR_FLAGS_AI);
-		break;
-	}
+            break;
+        case 504:
+            ret = _mr_save_sms_cfg(input1);
+            break;
+        case 3629:
+            if (input1 == 2913)
+                bi = bi | MR_FLAGS_BI;
+            break;
+        case 3921:
+            if (input1 == 98352)
+                bi = bi | MR_FLAGS_AI;
+            break;
+        case 3251:
+            if (input1 == 648826)
+                bi = bi & (~MR_FLAGS_AI);
+            break;
+        default:
+            MRDBGPRINTF("_mr_TestCom unknown input0: %d", input0);
+            break;
+    }
 
 
-	return ret;
+    return ret;
 }
 
-int32 _mr_c_function_new(MR_C_FUNCTION f, int32 len)
-{
-	if (mr_c_function_P){
-		MR_FREE(mr_c_function_P, mr_c_function_P_len);
-	}
-	mr_c_function_P = MR_MALLOC(len);
-	if(!mr_c_function_P)
-	{
+int32 _mr_c_function_new(MR_C_FUNCTION f, int32 len) {
+    if (mr_c_function_P) {
+        MR_FREE(mr_c_function_P, mr_c_function_P_len);
+    }
+    mr_c_function_P = MR_MALLOC(len);
+    if (!mr_c_function_P) {
 #if 0
-		mrp_pushfstring(vm_state, "c_function:No memory!");
+                                                                                                                                mrp_pushfstring(vm_state, "c_function:No memory!");
 		mrp_error(vm_state);
 #endif
-		mr_state = MR_STATE_ERROR;
-		return MR_FAILED;
-	}
-	mr_c_function_P_len = len;
-	MEMSET(mr_c_function_P, 0, mr_c_function_P_len);
-	mr_c_function = f;
+        mr_state = MR_STATE_ERROR;
+        return MR_FAILED;
+    }
+    mr_c_function_P_len = len;
+    MEMSET(mr_c_function_P, 0, mr_c_function_P_len);
+    mr_c_function = f;
 #ifdef SDK_MOD
-	*((void**)(sdk_mr_c_function_table) -1) = mr_c_function_P;
+    *((void**)(sdk_mr_c_function_table) -1) = mr_c_function_P;
 #else
-	if (mr_c_function_fix_p){
-		*((void**)(mr_c_function_fix_p) + 1) = mr_c_function_P;
-	}else{
-		*((void**)(mr_load_c_function) -1) = mr_c_function_P;
-	}
+    if (mr_c_function_fix_p) {
+        *((void **) (mr_c_function_fix_p) + 1) = mr_c_function_P;
+    } else {
+        *((void **) (mr_load_c_function) - 1) = mr_c_function_P;
+    }
 #endif
 
-	return MR_SUCCESS;
+    return MR_SUCCESS;
 }
 
 
-static int _mr_TestCom1(mrp_State* L, int input0, char* input1, int32 len)
-{
-	int ret = 0;
-	//mr_printf("strCom:%d", input0);
-	//mr_printf("strCom:%s", input1);
-	//mr_printf("strCom:%d", len);
+static int _mr_TestCom1(mrp_State *L, int input0, char *input1, int32 len) {
+    int ret = 0;
+    //mr_printf("strCom:%d", input0);
+    //mr_printf("strCom:%s", input1);
+    //mr_printf("strCom:%d", len);
 
-	switch(input0)
-	{
-	case 2:
-		if(mr_ram_file){
-			MR_FREE(mr_ram_file, mr_ram_file_len);
-			mr_ram_file = NULL;
-		}
-		mr_ram_file = input1;
-		mr_ram_file_len = len;
-		break;
-	case 3:
-		{
+    switch (input0) {
+        case 2:
+            if (mr_ram_file) {
+                MR_FREE(mr_ram_file, mr_ram_file_len);
+                mr_ram_file = NULL;
+            }
+            mr_ram_file = input1;
+            mr_ram_file_len = len;
+            break;
+        case 3: {
 #if 0
-			uint8* start_filename = ((uint8*)  mr_L_optstring(L,3,MR_START_FILE));
+                                                                                                                                    uint8* start_filename = ((uint8*)  mr_L_optstring(L,3,MR_START_FILE));
 			MEMSET(old_pack_filename,0,sizeof(old_pack_filename));
 			if(input1){
 				STRNCPY(old_pack_filename,input1, sizeof(old_pack_filename) - 1);
@@ -4529,97 +4474,95 @@ static int _mr_TestCom1(mrp_State* L, int input0, char* input1, int32 len)
 			STRNCPY(old_start_filename,start_filename,sizeof(old_start_filename)-1);
 			break;
 #else
-			MEMSET(old_pack_filename,0,sizeof(old_pack_filename));
-			if(input1){
-				STRNCPY(old_pack_filename,input1, sizeof(old_pack_filename) - 1);
-			}
-			MEMSET(old_start_filename,0,sizeof(old_start_filename));
-			STRNCPY(old_start_filename,MR_START_FILE,sizeof(old_start_filename)-1);
-			break;
+            MEMSET(old_pack_filename, 0, sizeof(old_pack_filename));
+            if (input1) {
+                STRNCPY(old_pack_filename, input1, sizeof(old_pack_filename) - 1);
+            }
+            MEMSET(old_start_filename, 0, sizeof(old_start_filename));
+            STRNCPY(old_start_filename, MR_START_FILE, sizeof(old_start_filename) - 1);
+            break;
 
 #endif
-		}
-	case 4:
-		{
-			MEMSET(start_fileparameter,0,sizeof(start_fileparameter));
-			if(input1){
-				STRNCPY(start_fileparameter,input1, sizeof(start_fileparameter) - 1);
-			}
-			break;
-		}
-		//1948 add exception set
-	case 5:
-		mr_exception_str = input1;
-		break;
-	case 6:
-		mr_exception_str = NULL;
-		break;
-		//1948 add exception set
-	case 9:
+        }
+        case 4: {
+            MEMSET(start_fileparameter, 0, sizeof(start_fileparameter));
+            if (input1) {
+                STRNCPY(start_fileparameter, input1, sizeof(start_fileparameter) - 1);
+            }
+            break;
+        }
+            //1948 add exception set
+        case 5:
+            mr_exception_str = input1;
+            break;
+        case 6:
+            mr_exception_str = NULL;
+            break;
+            //1948 add exception set
+        case 9:
 #ifdef  MR_MSTAR_MOD
-		{
+                                                                                                                                    {
 			//extern void sys_Invalidate_data_cache(void);
 
 			//sys_Invalidate_data_cache();
-			mr_cacheSync((void*)input1,len);	
+			mr_cacheSync((void*)input1,len);
 		}
-#endif            
+#endif
 
 #ifndef MR_MSTAR_MOD
 #ifndef MR_BREW_MOD
 #ifdef MTK_MOD
-		{
-			//extern int32 clean_arm9_dcache(uint32 addr, uint32 len);
-			//extern int32 invalidate_arm9_icache(int32 addr, int32 len);
+        {
+            //extern int32 clean_arm9_dcache(uint32 addr, uint32 len);
+            //extern int32 invalidate_arm9_icache(int32 addr, int32 len);
 
-			//clean_arm9_dcache((uint32)((uint32)(input1)&(~0x0000001F)), 
-			//                                          ((len+0x0000001F*3)&(~0x0000001F)));
-			//invalidate_arm9_icache((uint32)((uint32)(input1)&(~0x0000001F)), 
-			//                                          ((len+0x0000001F*3)&(~0x0000001F)));
-			mr_cacheSync((void*)((uint32)(input1)&(~0x0000001F)), 
-				((len+0x0000001F*3)&(~0x0000001F)));		   
-		}
+            //clean_arm9_dcache((uint32)((uint32)(input1)&(~0x0000001F)),
+            //                                          ((len+0x0000001F*3)&(~0x0000001F)));
+            //invalidate_arm9_icache((uint32)((uint32)(input1)&(~0x0000001F)),
+            //                                          ((len+0x0000001F*3)&(~0x0000001F)));
+            mr_cacheSync((void *) ((uint32) (input1) & (~0x0000001F)),
+                         ((len + 0x0000001F * 3) & (~0x0000001F)));
+        }
 #endif
 #endif
 #endif
 
 #ifdef MR_SPREADTRUM_MOD
-		{
+                                                                                                                                    {
 			// 移植层提供的函数， 用来同步Cache的。
 			mr_cacheSync(NULL,0);
 		}
 #endif
 
 #ifdef MR_HT_MOD
-		{
+                                                                                                                                    {
 			mr_cacheSync(NULL,0);
 		}
 #endif
 
 #ifdef MR_BREW_MOD
-		mr_cacheSync(NULL,0);
+            mr_cacheSync(NULL,0);
 #endif
 
-		return 0;
+            return 0;
 
-	case 200:
-		mr_updcrc(NULL, 0);           /* initialize crc */
-		mr_updcrc((unsigned char*)input1, len);
-		ret = mr_updcrc((unsigned char*)input1, 0);
-		break;
-	case 300:
-		{
+        case 200:
+            mr_updcrc(NULL, 0);           /* initialize crc */
+            mr_updcrc((unsigned char *) input1, len);
+            ret = mr_updcrc((unsigned char *) input1, 0);
+            break;
+        case 300: {
 #if 0
-			uint32 unzip_len;
+                                                                                                                                    uint32 unzip_len;
 			mr_gzInBuf = (uint8*)input1;
 			LG_gzoutcnt = 0;
 			LG_gzinptr = 0;
 
 			ret = mr_get_method(len);
-			if (ret < 0) 
+			if (ret < 0)
 			{
 				mrp_pushlstring(L, input1, len);
-				return 1;             
+				return 1;
 			}
 
 #ifdef MR_PKZIP_MAGIC
@@ -4666,12 +4609,12 @@ static int _mr_TestCom1(mrp_State* L, int input0, char* input1, int32 len)
 
 			mrp_pushlstring(L, (const char*)mr_gzOutBuf, unzip_len);
 			MR_FREE(mr_gzOutBuf, unzip_len);
-			return 1;             
+			return 1;
 #endif
-			break;
-		}
+            break;
+        }
 #if 0
-	case 500:
+                                                                                                                                    case 500:
 		{
 			md5_state_t state;
 			md5_byte_t digest[16];
@@ -4680,7 +4623,7 @@ static int _mr_TestCom1(mrp_State* L, int input0, char* input1, int32 len)
 			mr_md5_append(&state, (const md5_byte_t *)input1, len);
 			mr_md5_finish(&state, digest);
 			mrp_pushlstring(L, (const char*)digest, 16);
-			return 1;             
+			return 1;
 		}
 		break;
 	case 501:
@@ -4697,7 +4640,7 @@ static int _mr_TestCom1(mrp_State* L, int input0, char* input1, int32 len)
 			}
 			mrp_pushlstring(L, (const char*)buf, ret);
 			MR_FREE(buf, outlen);
-			return 1;             
+			return 1;
 		}
 		break;
 	case 502:
@@ -4713,7 +4656,7 @@ static int _mr_TestCom1(mrp_State* L, int input0, char* input1, int32 len)
 			}
 			mrp_pushlstring(L, (const char*)buf, ret);
 			MR_FREE(buf, len);
-			return 1;             
+			return 1;
 		}
 		break;
 	case 600:
@@ -4749,7 +4692,7 @@ static int _mr_TestCom1(mrp_State* L, int input0, char* input1, int32 len)
 		{
 			char* filebuf;
 			filebuf = _mr_readFile((const char *)input1, &ret, 0);
-			//MRDBGPRINTF("1base=%d,end=%d",  (int32)LG_mem_base, (int32)LG_mem_end);   
+			//MRDBGPRINTF("1base=%d,end=%d",  (int32)LG_mem_base, (int32)LG_mem_end);
 			//MRDBGPRINTF( "filebuf  =%d", filebuf);
 			if(filebuf)
 			{
@@ -4757,7 +4700,7 @@ static int _mr_TestCom1(mrp_State* L, int input0, char* input1, int32 len)
 				//MRDBGPRINTF( "filebuf  =%d", filebuf);
 				//MRDBGPRINTF( "filelen  =%d", ret);
 				MR_FREE(filebuf, ret);
-				//MRDBGPRINTF("100base=%d,end=%d",  (int32)LG_mem_base, (int32)LG_mem_end);   
+				//MRDBGPRINTF("100base=%d,end=%d",  (int32)LG_mem_base, (int32)LG_mem_end);
 				//MRDBGPRINTF( "601 free ok");
 			}else{
 				mrp_pushnil(L);
@@ -4792,32 +4735,30 @@ static int _mr_TestCom1(mrp_State* L, int input0, char* input1, int32 len)
 		}
 		break;
 #endif
-	case 700:
-		{
+        case 700: {
 #if 0
-			int type = ((int)  to_mr_tonumber(L,3,0));
+                                                                                                                                    int type = ((int)  to_mr_tonumber(L,3,0));
 			ret = mr_newSIMInd(type, (uint8*)input1);
 #else
-			int type = len;
-			ret = mr_newSIMInd(type, (uint8*)input1);
+            int type = len;
+            ret = mr_newSIMInd(type, (uint8 *) input1);
 #endif
-			break;
-		}
-	case 701:
-		{
+            break;
+        }
+        case 701: {
 #if 0
-			uint8* pNum = ((uint8*)  mrp_tostring(L,3));
+                                                                                                                                    uint8* pNum = ((uint8*)  mrp_tostring(L,3));
 			int32 type = ((int32)  mr_L_optnumber(L, 4, MR_ENCODE_ASCII));
 			ret = mr_smsIndication((uint8*)input1, len, pNum, type);
 #else
-			uint8* pNum = ((uint8*)  (input1+1));
-			int32 type = *((int32*)  (input1+2));
-			ret = mr_smsIndication((uint8*)input1, len, pNum, type);
+            uint8 *pNum = ((uint8 *) (input1 + 1));
+            int32 type = *((int32 *) (input1 + 2));
+            ret = mr_smsIndication((uint8 *) input1, len, pNum, type);
 #endif
-			break;
-		}
+            break;
+        }
 #if 0
-#ifdef  SDK_MOD
+                                                                                                                                    #ifdef  SDK_MOD
 	case 800:
 		{
 			int32 input_len,output_len, ret;
@@ -4902,30 +4843,29 @@ static int _mr_TestCom1(mrp_State* L, int input0, char* input1, int32 len)
 		break;
 #endif
 #endif
-	case 900:
-		ret = mr_platEx(200001, (uint8*)_mr_c_port_table, sizeof(_mr_c_port_table), NULL, NULL, NULL);
-		break;
-	}
+        case 900:
+            ret = mr_platEx(200001, (uint8 *) _mr_c_port_table, sizeof(_mr_c_port_table), NULL,
+                            NULL, NULL);
+            break;
+    }
 
 
-	return ret;
+    return ret;
 }
 
 #ifdef SDK_MOD
 extern void mr_c_function_load(void);
 #endif
 
-static int _mr_TestComC(int input0, char* input1, int32 len, int32 code)
-{
-	int ret = 0;
-	//mr_printf("strCom:%d", input0);
-	//mr_printf("strCom:%s", input1);
-	//mr_printf("strCom:%d", len);
+static int _mr_TestComC(int input0, char *input1, int32 len, int32 code) {
+    int ret = 0;
+    //mr_printf("strCom:%d", input0);
+    //mr_printf("strCom:%s", input1);
+    //mr_printf("strCom:%d", len);
 
-	switch(input0)
-	{
+    switch (input0) {
 #ifdef  SDK_MOD
-	case 800:
+                                                                                                                                case 800:
 		{
 			int32 input_len,output_len, ret;
 			//int code = ((int)  mr_L_optint(L,3,0));
@@ -4963,15 +4903,14 @@ static int _mr_TestComC(int input0, char* input1, int32 len, int32 code)
 		}
 		break;
 #else
-	case 800:
-		{
-			int32 ret;
-			//int code = ((int)  mr_L_optint(L,3,0));
-			mr_load_c_function = (MR_LOAD_C_FUNCTION)(input1+8);
-			*((void**)(input1)) = (void*)_mr_c_function_table;
+        case 800: {
+            int32 ret;
+            //int code = ((int)  mr_L_optint(L,3,0));
+            mr_load_c_function = (MR_LOAD_C_FUNCTION) (input1 + 8);
+            *((void **) (input1)) = (void *) _mr_c_function_table;
 
 #ifdef  MR_MSTAR_MOD
-			{
+                                                                                                                                    {
 				//extern void sys_Invalidate_data_cache(void);
 
 
@@ -4980,54 +4919,54 @@ static int _mr_TestComC(int input0, char* input1, int32 len, int32 code)
 				//sys_Invalidate_data_cache();
 				mr_cacheSync((void*)input1,len);
 			}
-#endif            
+#endif
 
 #ifndef MR_MSTAR_MOD
 #ifndef MR_BREW_MOD
 #ifdef MTK_MOD
-			{
-				//extern int32 clean_arm9_dcache(uint32 addr, uint32 len);
-				//extern int32 invalidate_arm9_icache(int32 addr, int32 len);
+            {
+                //extern int32 clean_arm9_dcache(uint32 addr, uint32 len);
+                //extern int32 invalidate_arm9_icache(int32 addr, int32 len);
 
-				//clean_arm9_dcache((uint32)((uint32)(input1)&(~0x0000001F)), 
-				//                                          ((len+0x0000001F*3)&(~0x0000001F)));
-				//invalidate_arm9_icache((uint32)((uint32)(input1)&(~0x0000001F)), 
-				//                                          ((len+0x0000001F*3)&(~0x0000001F)));
-				mr_cacheSync((void*)((uint32)(input1)&(~0x0000001F)), 
-					((len+0x0000001F*3)&(~0x0000001F)));
-			}
+                //clean_arm9_dcache((uint32)((uint32)(input1)&(~0x0000001F)),
+                //                                          ((len+0x0000001F*3)&(~0x0000001F)));
+                //invalidate_arm9_icache((uint32)((uint32)(input1)&(~0x0000001F)),
+                //                                          ((len+0x0000001F*3)&(~0x0000001F)));
+                mr_cacheSync((void *) ((uint32) (input1) & (~0x0000001F)),
+                             ((len + 0x0000001F * 3) & (~0x0000001F)));
+            }
 #endif
 #endif
 #endif
 
 #ifdef MR_SPREADTRUM_MOD
-			{
+                                                                                                                                    {
 				// 移植层提供的函数， 用来同步Cache的。
 				mr_cacheSync(NULL,0);
 			}
-#endif       
+#endif
 
 #ifdef MR_BREW_MOD
-			mr_cacheSync(NULL,0);
+            mr_cacheSync(NULL,0);
 #endif
 
-			ret = mr_load_c_function(code);
+            ret = mr_load_c_function(code);
 
-		}
-		break;
-	case 801:
-		{
-			int32 output_len, ret;
-			//int code = ((int)  to_mr_tonumber(L,3,0));
-			uint8* output = NULL;
-			output_len = 0;
+        }
+            break;
+        case 801: {
+            int32 output_len, ret;
+            //int code = ((int)  to_mr_tonumber(L,3,0));
+            uint8 *output = NULL;
+            output_len = 0;
 
-			ret = mr_c_function(mr_c_function_P, code, (uint8*)input1, len, (uint8**)&output, &output_len);
-		}
-		break;
+            ret = mr_c_function(mr_c_function_P, code, (uint8 *) input1, len, (uint8 **) &output,
+                                &output_len);
+        }
+            break;
 #endif
-	}
-	return ret;
+    }
+    return ret;
 }
 
 
@@ -5035,18 +4974,18 @@ static int _mr_TestComC(int input0, char* input1, int32 len, int32 code)
 
 
 typedef enum {
-	MRP_ORICODING,//直接读取编码。只有斯凯的特权用户方可执行该类型操作。
-	MRP_FILENAME,//MRP文件名称，最大11个有效字符，不包括'\0'
-	MRP_APPNAME,//MRP应用名称，用户可见的应用名，最大23个有效字符，不包括'\0'，例如"雷电1944"。
-	MRP_APPID,//每个应用对应一个唯一的ID，uint32类型。
-	MRP_APPVER,//uint32类型   
-	MRP_VENDER,//开发商信息，最大39个有效字符，不包括'\0'。
-	MRP_DESCRIPTION,   //应用描述信息 ，最大63个有效字符
-	MRP_VERSION,//计费通道版本编号,uint16类型，两个字节。
-	MRP_CHANNEL,//计费通道编号,两个字节，低地址的RecBuf[0]是移动，高地址的RecBuf[1]是联通。
-	MRP_RAM,//MRP启动需要的RAM大小
-	MRP_NONE
-}E_MRP_INFOID;
+    MRP_ORICODING,//直接读取编码。只有斯凯的特权用户方可执行该类型操作。
+    MRP_FILENAME,//MRP文件名称，最大11个有效字符，不包括'\0'
+    MRP_APPNAME,//MRP应用名称，用户可见的应用名，最大23个有效字符，不包括'\0'，例如"雷电1944"。
+    MRP_APPID,//每个应用对应一个唯一的ID，uint32类型。
+    MRP_APPVER,//uint32类型
+    MRP_VENDER,//开发商信息，最大39个有效字符，不包括'\0'。
+    MRP_DESCRIPTION,   //应用描述信息 ，最大63个有效字符
+    MRP_VERSION,//计费通道版本编号,uint16类型，两个字节。
+    MRP_CHANNEL,//计费通道编号,两个字节，低地址的RecBuf[0]是移动，高地址的RecBuf[1]是联通。
+    MRP_RAM,//MRP启动需要的RAM大小
+    MRP_NONE
+} E_MRP_INFOID;
 
 /*
 函数名称:		mrc_GetMrpInfo
@@ -5074,179 +5013,169 @@ BufLen，接收返回数据的缓冲区字节数；
 返回值:			当操作不支持、操作失败等情况时，函数返回值小于等于0；
 若操作成功，函数返回值为RecBuf中实际填写的字节数。
 */
-#define MRP_FILENAME_LEN	12
-static int32 mrc_GetMrpInfoClose(int32 IsFixed,int32 handle)
-{
-	if(!handle)
-		return MR_FAILED;
-	if(IsFixed)
-		return MR_SUCCESS;
-	else
-		return mr_close(handle);
+#define MRP_FILENAME_LEN    12
+
+static int32 mrc_GetMrpInfoClose(int32 IsFixed, int32 handle) {
+    if (!handle)
+        return MR_FAILED;
+    if (IsFixed)
+        return MR_SUCCESS;
+    else
+        return mr_close(handle);
 }
 
-static int32 mrc_GetMrpInfoOpen(char *MrpName,int32 *IsFixed)
-{
-	uint32 Handle=0;
-	//LIB_EXB_LOG(("mrc_GetMrpInfoOpen:开始入参检查。"));
-	if(!IsFixed||!MrpName)
-		return 0;
-	//LIB_EXB_LOG(("mrc_GetMrpInfoOpen:Open file %s",MrpName));
-	if (MrpName[0] == '*')
-	{/*m0 file?*/
-		*IsFixed=1;     
-		Handle=(uint32)mr_m0_files[MrpName[1]-0x41];
-		//LIB_EXB_LOG(("mrc_GetMrpInfoOpen:Open * file %s,Handle=%0x",MrpName,Handle));
-	}else if(MrpName[0]=='$')
-	{
-		*IsFixed=1;     
-		Handle=(uint32)mr_ram_file;
-		//LIB_EXB_LOG(("mrc_GetMrpInfoOpen:Open $ file %s,Handle=%0x",MrpName,Handle));
-	}
-	else
-	{
-		*IsFixed=0; 
-		Handle=mr_open(MrpName,MR_FILE_RDONLY);
-		//LIB_EXB_LOG(("mrc_GetMrpInfoOpen:Open normal file %s,Handle=%0x",MrpName,Handle));
-	}
-	//LIB_EXB_LOG(("mrc_GetMrpInfoOpen:ret Handle %d",Handle));    
-	return Handle;
+static int32 mrc_GetMrpInfoOpen(char *MrpName, int32 *IsFixed) {
+    uint32 Handle = 0;
+    //LIB_EXB_LOG(("mrc_GetMrpInfoOpen:开始入参检查。"));
+    if (!IsFixed || !MrpName)
+        return 0;
+    //LIB_EXB_LOG(("mrc_GetMrpInfoOpen:Open file %s",MrpName));
+    if (MrpName[0] == '*') {/*m0 file?*/
+        *IsFixed = 1;
+        Handle = (uint32) mr_m0_files[MrpName[1] - 0x41];
+        //LIB_EXB_LOG(("mrc_GetMrpInfoOpen:Open * file %s,Handle=%0x",MrpName,Handle));
+    } else if (MrpName[0] == '$') {
+        *IsFixed = 1;
+        Handle = (uint32) mr_ram_file;
+        //LIB_EXB_LOG(("mrc_GetMrpInfoOpen:Open $ file %s,Handle=%0x",MrpName,Handle));
+    } else {
+        *IsFixed = 0;
+        Handle = mr_open(MrpName, MR_FILE_RDONLY);
+        //LIB_EXB_LOG(("mrc_GetMrpInfoOpen:Open normal file %s,Handle=%0x",MrpName,Handle));
+    }
+    //LIB_EXB_LOG(("mrc_GetMrpInfoOpen:ret Handle %d",Handle));
+    return Handle;
 }
 
-static int32 mrc_GetMrpInfoRead(int32 IsFixed,int32 Handle,int32 Offset,uint8 *RecBuf,int32 BufLen)
-{
-	int32 ret;
-	//LIB_EXB_LOG(("mrc_GetMrpInfoRead:入参检查。"));  				
-	if(!RecBuf)
-		return MR_FAILED;
+static int32
+mrc_GetMrpInfoRead(int32 IsFixed, int32 Handle, int32 Offset, uint8 *RecBuf, int32 BufLen) {
+    int32 ret;
+    //LIB_EXB_LOG(("mrc_GetMrpInfoRead:入参检查。"));
+    if (!RecBuf)
+        return MR_FAILED;
 
-	if(IsFixed)
-	{
-		memcpy(RecBuf,(uint8 *)Handle+Offset,BufLen);
-		ret=BufLen;
-		//LIB_EXB_LOG(("mrc_GetMrpInfoRead:从固化读取到。"));  			
-	}else
-	{
-		ret=mr_seek(Handle,Offset,MR_SEEK_SET);
-		if(MR_SUCCESS!=ret)
-			return MR_FAILED;
-		ret=mr_read(Handle,RecBuf,BufLen);
-		if(ret!=BufLen)
-			return MR_FAILED;
-		//LIB_EXB_LOG(("mrc_GetMrpInfoRead:从文件读取到%d个字节。",ret));  			
-	}
-	return ret;		
+    if (IsFixed) {
+        memcpy(RecBuf, (uint8 *) Handle + Offset, BufLen);
+        ret = BufLen;
+        //LIB_EXB_LOG(("mrc_GetMrpInfoRead:从固化读取到。"));
+    } else {
+        ret = mr_seek(Handle, Offset, MR_SEEK_SET);
+        if (MR_SUCCESS != ret)
+            return MR_FAILED;
+        ret = mr_read(Handle, RecBuf, BufLen);
+        if (ret != BufLen)
+            return MR_FAILED;
+        //LIB_EXB_LOG(("mrc_GetMrpInfoRead:从文件读取到%d个字节。",ret));
+    }
+    return ret;
 }
 
 
-int32 mrc_GetMrpInfoEx(int32 IsFixed, int32 Handle, E_MRP_INFOID CMD,uint8 *RecBuf,int32 BufLen)
-{
-	int32 ret=MR_FAILED,DotOffset=0;
-	uint32 temp,*p32;
-	//LIB_EXB_LOG(("mrc_GetMrpInfo:开始入参检查。"));
-	memset(RecBuf,0,BufLen);
-	switch(CMD)
-	{
+int32 mrc_GetMrpInfoEx(int32 IsFixed, int32 Handle, E_MRP_INFOID CMD, uint8 *RecBuf, int32 BufLen) {
+    int32 ret = MR_FAILED, DotOffset = 0;
+    uint32 temp, *p32;
+    //LIB_EXB_LOG(("mrc_GetMrpInfo:开始入参检查。"));
+    memset(RecBuf, 0, BufLen);
+    switch (CMD) {
 #if 0
-	case MRP_FILENAME://MRP文件名称，最大11个有效字符，不包括'\0'
+                                                                                                                                case MRP_FILENAME://MRP文件名称，最大11个有效字符，不包括'\0'
 		if(BufLen<12)
-			break;	
+			break;
 		ret=mrc_GetMrpInfoRead(IsFixed,Handle,16,RecBuf,12);
 		pDot= (char*)strrchr((char *)RecBuf,'.');
 		DotOffset = (int32)pDot -(int32)RecBuf ;
-		memset(RecBuf+DotOffset,0,BufLen-DotOffset);			
-		break;		
+		memset(RecBuf+DotOffset,0,BufLen-DotOffset);
+		break;
 	case MRP_APPNAME://MRP应用名称，用户可见的应用名，最大23个有效字符，不包括'\0'。
 		if(BufLen<24)
-			break;	
+			break;
 		ret=mrc_GetMrpInfoRead(IsFixed,Handle,28,RecBuf,24);
-		break;		
+		break;
 #endif
-	case MRP_APPID://每个应用对应一个唯一的ID，uint32类型。
-		if(BufLen<4)
-			break;	
-		ret=mrc_GetMrpInfoRead(IsFixed,Handle,192,RecBuf,4);
-		p32=(uint32 *)RecBuf;
-		temp=*p32;
+        case MRP_APPID://每个应用对应一个唯一的ID，uint32类型。
+            if (BufLen < 4)
+                break;
+            ret = mrc_GetMrpInfoRead(IsFixed, Handle, 192, RecBuf, 4);
+            p32 = (uint32 *) RecBuf;
+            temp = *p32;
 #ifndef MR_SPREADTRUM_MOD//LIB_SPREADTRUM_MOD
-		//MTK平台，需要转为网络字节序
-		temp=htonl(temp);
-		//LIB_DBG(("MTK平台，转换为网络字节序后temp=%0x",temp));
-#endif			
-		memcpy(RecBuf,&temp,4);
-		break;		
-	case MRP_APPVER://uint32类型   
-		if(BufLen<4)
-			break;	
-		ret=mrc_GetMrpInfoRead(IsFixed,Handle,196,RecBuf,4);
-		p32=(uint32 *)RecBuf;
-		temp=*p32;
+            //MTK平台，需要转为网络字节序
+            temp = htonl(temp);
+            //LIB_DBG(("MTK平台，转换为网络字节序后temp=%0x",temp));
+#endif
+            memcpy(RecBuf, &temp, 4);
+            break;
+        case MRP_APPVER://uint32类型
+            if (BufLen < 4)
+                break;
+            ret = mrc_GetMrpInfoRead(IsFixed, Handle, 196, RecBuf, 4);
+            p32 = (uint32 *) RecBuf;
+            temp = *p32;
 #ifndef MR_SPREADTRUM_MOD//LIB_SPREADTRUM_MOD
-		//MTK平台，需要转为网络字节序
-		temp=htonl(temp);
-		//LIB_DBG(("MTK平台，转换为网络字节序后temp=%0x",temp));
-#endif	
-		memcpy(RecBuf,&temp,4);			
-		break;		
-	case MRP_RAM://uint32类型   
-		{
-			uint16 ram,ram_check;
-			if(BufLen<4)
-				break;	
-			ret=mrc_GetMrpInfoRead(IsFixed,Handle,228,(uint8*)&ram,2);
-			ret=mrc_GetMrpInfoRead(IsFixed,Handle,230,(uint8*)&ram_check,2);
+            //MTK平台，需要转为网络字节序
+            temp = htonl(temp);
+            //LIB_DBG(("MTK平台，转换为网络字节序后temp=%0x",temp));
+#endif
+            memcpy(RecBuf, &temp, 4);
+            break;
+        case MRP_RAM://uint32类型
+        {
+            uint16 ram, ram_check;
+            if (BufLen < 4)
+                break;
+            ret = mrc_GetMrpInfoRead(IsFixed, Handle, 228, (uint8 *) &ram, 2);
+            ret = mrc_GetMrpInfoRead(IsFixed, Handle, 230, (uint8 *) &ram_check, 2);
 #ifndef MR_SPREADTRUM_MOD//LIB_SPREADTRUM_MOD
-			//MTK平台，需要转为网络字节序
-			ram=htonl(ram);
-			ram_check=htonl(ram_check);
-			//LIB_DBG(("MTK平台，转换为网络字节序后temp=%0x",temp));
-#endif	
-			mr_updcrc(NULL, 0);           /* initialize crc */
-			mr_updcrc((unsigned char*)&ram, 2);
-			mr_updcrc((unsigned char*)&ram, 2);
-			if(ram_check == (mr_updcrc((unsigned char*)&ram, 0)&0xFF)){
-				*(uint32 *)RecBuf = ram;
-			}
-			break;		
-		}
+            //MTK平台，需要转为网络字节序
+            ram = htonl(ram);
+            ram_check = htonl(ram_check);
+            //LIB_DBG(("MTK平台，转换为网络字节序后temp=%0x",temp));
+#endif
+            mr_updcrc(NULL, 0);           /* initialize crc */
+            mr_updcrc((unsigned char *) &ram, 2);
+            mr_updcrc((unsigned char *) &ram, 2);
+            if (ram_check == (mr_updcrc((unsigned char *) &ram, 0) & 0xFF)) {
+                *(uint32 *) RecBuf = ram;
+            }
+            break;
+        }
 #if 0
-	case MRP_VENDER://开发商信息，最大39个有效字符，不包括'\0'。
+                                                                                                                                    case MRP_VENDER://开发商信息，最大39个有效字符，不包括'\0'。
 		if(BufLen<40)
-			break;	
+			break;
 		ret=mrc_GetMrpInfoRead(IsFixed,Handle,88,RecBuf,40);
-		break;		
+		break;
 	case MRP_DESCRIPTION:  //应用描述信息 ，最大63个有效字符
 		if(BufLen<64)
-			break;	
-		ret=mrc_GetMrpInfoRead(IsFixed,Handle,128,RecBuf,64);	
+			break;
+		ret=mrc_GetMrpInfoRead(IsFixed,Handle,128,RecBuf,64);
 		break;
 	case MRP_VERSION://
-		//200:char[2]  =   计费通道版本号，网络字节序				
+		//200:char[2]  =   计费通道版本号，网络字节序
 		if(BufLen<2)
-			break;	
+			break;
 		ret=mrc_GetMrpInfoRead(IsFixed,Handle,200,RecBuf,2);
 		data=RecBuf[0]*256+RecBuf[1];
-		memcpy(RecBuf,&data,sizeof(data));	
-		break;	
-	case MRP_CHANNEL:			
+		memcpy(RecBuf,&data,sizeof(data));
+		break;
+	case MRP_CHANNEL:
 		if(BufLen<2)
-			break;	
-		//在原有方案中，202:char[2]  =   计费通道编号，网络字节序								
+			break;
+		//在原有方案中，202:char[2]  =   计费通道编号，网络字节序
 		//ret=mrc_GetMrpInfoRead(IsFixed,Handle,202,RecBuf,2);
 		//data=RecBuf[0]*256+RecBuf[1];
-		//MR_MEMCPY(RecBuf,&data,sizeof(data));				
-		//在自动切换方案中，计费通道编号,两个字节，低地址的RecBuf[0]是移动，高地址的RecBuf[1]是联通。				
+		//MR_MEMCPY(RecBuf,&data,sizeof(data));
+		//在自动切换方案中，计费通道编号,两个字节，低地址的RecBuf[0]是移动，高地址的RecBuf[1]是联通。
 		RecBuf[0]=0;
 		RecBuf[1]=0;
 		ret=2;
 		mrc_GetMrpInfoRead(IsFixed,Handle,203,RecBuf,1);
 		mrc_GetMrpInfoRead(IsFixed,Handle,209,RecBuf+1,1);
-		break;	
+		break;
 #endif
-	default:
-		;
-	}
-	return ret;	
+        default:;
+    }
+    return ret;
 }
 
 
@@ -5263,13 +5192,13 @@ else
 local f = file.open(mrpfilename, 1)
 if f then
 f:seek(0, 68)
-sId = f:read(4) 
+sId = f:read(4)
 f:seek(0, 192)
-appId = f:read(4) 
+appId = f:read(4)
 f:seek(0, 196)
-appVer = f:read(4) 
+appVer = f:read(4)
 f:close()
-end       
+end
 end
 if sId then
 return sId,appId,appVer
@@ -5279,57 +5208,52 @@ end
 end
 */
 
-static int32 getAppInfo()
-{
-	int32 IsFixed=0,Handle=0;
+static int32 getAppInfo() {
+    int32 IsFixed = 0, Handle = 0;
 
-	Handle=mrc_GetMrpInfoOpen(pack_filename,&IsFixed);
-	if(Handle==0)
-	{
-		//LIB_EXB_LOG(("mrc_GetMrpInfo:mrc_GetMrpInfoOpen返回NULL。"));
-		return MR_FAILED;
-	}
-	//LIB_EXB_LOG(("mrc_GetMrpInfoOpen:成功返回句柄"));   
-	mrc_GetMrpInfoEx(IsFixed, Handle, MRP_APPID, (uint8 *)&mrc_appInfo_st.id, 4);
-	mrc_GetMrpInfoEx(IsFixed, Handle, MRP_APPVER, (uint8 *)&mrc_appInfo_st.ver, 4);
-	if (mrc_appInfo_st.ram==0){
-		mrc_GetMrpInfoEx(IsFixed, Handle, MRP_RAM, (uint8 *)&mrc_appInfo_st.ram, 4);
-	}
-	//mrc_GetMrpInfo(IsFixed, Handle, MRP_FILENAME, (uint8 *)&mrc_appInfo_st.sidName[0], 12);
-	mrc_appInfo_st.sidName = NULL;
-	mrc_GetMrpInfoClose(IsFixed,Handle);
-	return MR_SUCCESS;
+    Handle = mrc_GetMrpInfoOpen(pack_filename, &IsFixed);
+    if (Handle == 0) {
+        //LIB_EXB_LOG(("mrc_GetMrpInfo:mrc_GetMrpInfoOpen返回NULL。"));
+        return MR_FAILED;
+    }
+    //LIB_EXB_LOG(("mrc_GetMrpInfoOpen:成功返回句柄"));
+    mrc_GetMrpInfoEx(IsFixed, Handle, MRP_APPID, (uint8 *) &mrc_appInfo_st.id, 4);
+    mrc_GetMrpInfoEx(IsFixed, Handle, MRP_APPVER, (uint8 *) &mrc_appInfo_st.ver, 4);
+    if (mrc_appInfo_st.ram == 0) {
+        mrc_GetMrpInfoEx(IsFixed, Handle, MRP_RAM, (uint8 *) &mrc_appInfo_st.ram, 4);
+    }
+    //mrc_GetMrpInfo(IsFixed, Handle, MRP_FILENAME, (uint8 *)&mrc_appInfo_st.sidName[0], 12);
+    mrc_appInfo_st.sidName = NULL;
+    mrc_GetMrpInfoClose(IsFixed, Handle);
+    return MR_SUCCESS;
 }
 
-uint32 mrp_version (void) {
-	return MR_VERSION;
+uint32 mrp_version(void) {
+    return MR_VERSION;
 }
 
 //main
+int32 mr_doExt(char *extName) {
+    char *filebuf;
+    int32 filelen, ret;
 
-int32 mr_doExt(char* extName)
-{
-	char* filebuf;
-	int32 filelen, ret;
-
-	filebuf = _mr_readFile((const char*)extName, (int*)&filelen, 0);
-	if(!filebuf)
-	{
-		MRDBGPRINTF("err:%d",11001);
-		return MR_FAILED;
-	}
-	_mr_TestCom(NULL, 3629,2913);
+    filebuf = _mr_readFile((const char *) extName, (int *) &filelen, 0);
+    if (!filebuf) {
+        MRDBGPRINTF("err:%d", 11001);
+        return MR_FAILED;
+    }
+    _mr_TestCom(NULL, 3629, 2913);
 
 
-	if (_mr_TestComC( 800, filebuf, filelen, 0) == 0){
-		_mr_TestComC( 801, filebuf, MR_VERSION, 6);
-		_mr_TestComC( 801, (char*)&mrc_appInfo_st, sizeof(mrc_appInfo_st), 8);
-		ret = _mr_TestComC( 801, filebuf, MR_VERSION, 0);
-	}else{
-		MRDBGPRINTF("err:%d",11002);
-		return MR_FAILED;
-	}
-	return MR_SUCCESS;
+    if (_mr_TestComC(800, filebuf, filelen, 0) == 0) {
+        _mr_TestComC(801, filebuf, MR_VERSION, 6);
+        _mr_TestComC(801, (char *) &mrc_appInfo_st, sizeof(mrc_appInfo_st), 8);
+        ret = _mr_TestComC(801, filebuf, MR_VERSION, 0);
+    } else {
+        MRDBGPRINTF("err:%d", 11002);
+        return MR_FAILED;
+    }
+    return MR_SUCCESS;
 }
 
 /**
@@ -5338,303 +5262,287 @@ int32 mr_doExt(char* extName)
 * @param entry MRP文件
 * @return
 */
-static int32 _mr_intra_start(char* appExName, const char* entry)
-{
-	int i,ret;
+static int32 _mr_intra_start(char *appExName, const char *entry) {
+    int i, ret;
 
 #ifdef MR_PLAT_READFILE
-	mr_flagReadFileForPlat = FALSE;
+    mr_flagReadFileForPlat = FALSE;
 #endif
 
-	// MRDBGPRINTF("restart timer15");
-	// mr_sleep(50);
+    // MRDBGPRINTF("restart timer15");
+    // mr_sleep(50);
 
 #if defined(MR_BREW_OTA_MOD)
-	{
+                                                                                                                            {
 		extern int32 __rt_lib_init(char* heapbase, char* heaptop);
 		static char buf[96];
 		__rt_lib_init(buf, buf+96);
 	}
 #endif
 
-	getAppInfo();
-	//ret = mr_plat(1250, mrc_appInfo_st.ram);
+    getAppInfo();
+    //ret = mr_plat(1250, mrc_appInfo_st.ram);
 
-	Origin_LG_mem_len = _mr_getMetaMemLimit();
+    Origin_LG_mem_len = _mr_getMetaMemLimit();
 
-	if (_mr_mem_init_ex(mrc_appInfo_st.ram) != MR_SUCCESS)
-	{
-		return MR_FAILED;
-	}
+    if (_mr_mem_init_ex(mrc_appInfo_st.ram) != MR_SUCCESS) {
+        return MR_FAILED;
+    }
 
-	mr_event_function = NULL;
-	mr_timer_function = NULL;
-	mr_stop_function = NULL;
-	mr_pauseApp_function = NULL;
-	mr_resumeApp_function = NULL;
+    mr_event_function = NULL;
+    mr_timer_function = NULL;
+    mr_stop_function = NULL;
+    mr_pauseApp_function = NULL;
+    mr_resumeApp_function = NULL;
 
-	mr_ram_file=NULL;
+    mr_ram_file = NULL;
 
-	mr_c_function_P = NULL;
-	mr_c_function_P_len  = 0;
-	mr_c_function_fix_p = NULL;
+    mr_c_function_P = NULL;
+    mr_c_function_P_len = 0;
+    mr_c_function_fix_p = NULL;
 
-	mr_exception_str = NULL;
-
-#ifdef SDK_MOD
-	MRDBGPRINTF("Total memory:%d", LG_mem_len);
-#endif
-
-	{
-		int32 len = 0;
-		mr_screenBuf = NULL;
-		if(mr_platEx(1001, NULL, 0, (uint8**)&mr_screenBuf, &len, NULL) == MR_SUCCESS){
-			if((mr_screenBuf != NULL) && (len >= MR_SCREEN_MAX_W*MR_SCREEN_H*MR_SCREEN_DEEP)){
-				mr_bitmap[BITMAPMAX].type = MR_SCREEN_SECOND_BUF;
-				mr_bitmap[BITMAPMAX].buflen = len;
-			}else if(mr_screenBuf != NULL){
-				mr_platEx(1002, (uint8*)mr_screenBuf, len, (uint8**)NULL, NULL, NULL);
-				mr_screenBuf = NULL;
-			}
-		}
-		if(mr_screenBuf == NULL){
-			mr_screenBuf = (uint16*)MR_MALLOC(MR_SCREEN_MAX_W*MR_SCREEN_H*MR_SCREEN_DEEP);
-			mr_bitmap[BITMAPMAX].type = MR_SCREEN_FIRST_BUF;
-			mr_bitmap[BITMAPMAX].buflen = MR_SCREEN_MAX_W*MR_SCREEN_H*MR_SCREEN_DEEP;
-		}
-	}
-
-	mr_bitmap[BITMAPMAX].p = mr_screenBuf;
-	mr_bitmap[BITMAPMAX].h = mr_screen_h;
-	mr_bitmap[BITMAPMAX].w = mr_screen_w;
-
-	vm_state = NULL;
-	mr_timer_state = MR_TIMER_STATE_IDLE;
-	mr_timer_run_without_pause = FALSE;
-	bi = bi&MR_FLAGS_AI;
-	MEMSET(mr_bitmap, 0, sizeof(mr_bitmapSt)*BITMAPMAX);
-	MEMSET(mr_sound, 0, sizeof(mr_sound));
-
-	MEMSET(mr_sprite, 0, sizeof(mr_sprite));
-	MEMSET(mr_tile, 0, sizeof(mr_tile));
-	MEMSET(mr_map, 0, sizeof(mr_map));
-
-	for(i=0;i<TILEMAX;i++)
-	{
-		mr_tile[i].x1 = 0;
-		mr_tile[i].y1 = 0;
-		mr_tile[i].x2 = (int16)MR_SCREEN_W;
-		mr_tile[i].y2 = (int16)MR_SCREEN_H;
-	}
-
-	//入口变量
-	if(!entry)
-	{
-		entry = "_dsm";
-	}
-	STRNCPY(mr_entry, entry, sizeof(mr_entry)-1);
-	//入口变量
+    mr_exception_str = NULL;
 
 #ifdef SDK_MOD
-	MRDBGPRINTF("Used by VM(include screen buffer):%d bytes", LG_mem_len - LG_mem_left);
+    MRDBGPRINTF("Total memory:%d", LG_mem_len);
 #endif
 
-	mr_state = MR_STATE_RUN;
+    {
+        int32 len = 0;
+        mr_screenBuf = NULL;
+        if (mr_platEx(1001, NULL, 0, (uint8 **) &mr_screenBuf, &len, NULL) == MR_SUCCESS) {
+            if ((mr_screenBuf != NULL) && (len >= MR_SCREEN_MAX_W * MR_SCREEN_H * MR_SCREEN_DEEP)) {
+                mr_bitmap[BITMAPMAX].type = MR_SCREEN_SECOND_BUF;
+                mr_bitmap[BITMAPMAX].buflen = len;
+            } else if (mr_screenBuf != NULL) {
+                mr_platEx(1002, (uint8 *) mr_screenBuf, len, (uint8 **) NULL, NULL, NULL);
+                mr_screenBuf = NULL;
+            }
+        }
+        if (mr_screenBuf == NULL) {
+            mr_screenBuf = (uint16 *) MR_MALLOC(MR_SCREEN_MAX_W * MR_SCREEN_H * MR_SCREEN_DEEP);
+            mr_bitmap[BITMAPMAX].type = MR_SCREEN_FIRST_BUF;
+            mr_bitmap[BITMAPMAX].buflen = MR_SCREEN_MAX_W * MR_SCREEN_H * MR_SCREEN_DEEP;
+        }
+    }
+
+    mr_bitmap[BITMAPMAX].p = mr_screenBuf;
+    mr_bitmap[BITMAPMAX].h = mr_screen_h;
+    mr_bitmap[BITMAPMAX].w = mr_screen_w;
+
+    vm_state = NULL;
+    mr_timer_state = MR_TIMER_STATE_IDLE;
+    mr_timer_run_without_pause = FALSE;
+    bi = bi & MR_FLAGS_AI;
+    MEMSET(mr_bitmap, 0, sizeof(mr_bitmapSt) * BITMAPMAX);
+    MEMSET(mr_sound, 0, sizeof(mr_sound));
+
+    MEMSET(mr_sprite, 0, sizeof(mr_sprite));
+    MEMSET(mr_tile, 0, sizeof(mr_tile));
+    MEMSET(mr_map, 0, sizeof(mr_map));
+
+    for (i = 0; i < TILEMAX; i++) {
+        mr_tile[i].x1 = 0;
+        mr_tile[i].y1 = 0;
+        mr_tile[i].x2 = (int16) MR_SCREEN_W;
+        mr_tile[i].y2 = (int16) MR_SCREEN_H;
+    }
+
+    //入口变量
+    if (!entry) {
+        entry = "_dsm";
+    }
+    STRNCPY(mr_entry, entry, sizeof(mr_entry) - 1);
+    //入口变量
+
+#ifdef SDK_MOD
+    MRDBGPRINTF("Used by VM(include screen buffer):%d bytes", LG_mem_len - LG_mem_left);
+#endif
+
+    mr_state = MR_STATE_RUN;
 
 
+    //ret = mrp_dofile(vm_state, appExName);
+    // 尝试加载自定义的 启动入口
+    ret = mr_doExt(appExName);
+    if (0 != ret)
+        ret = mr_doExt("logo.ext"); //尝试加载 logo.ext
 
+    //这里需要完善
+    if (ret != 0) {
+        mr_state = MR_STATE_ERROR;
+        mr_stop();
+        MRDBGPRINTF("init failed");
+        mr_connectWAP(MR_ERROR_WAP);
+        return MR_FAILED;
+    }
 
-	//ret = mrp_dofile(vm_state, appExName);
-	// 尝试加载自定义的 启动入口
-	ret = mr_doExt(appExName);
-	if (0 != ret)
-		ret = mr_doExt("logo.ext"); //尝试加载 logo.ext
-
-	//这里需要完善
-	if(ret != 0)
-	{
-		mr_state = MR_STATE_ERROR;
-		mr_stop();
-		MRDBGPRINTF("init failed");
-		mr_connectWAP(MR_ERROR_WAP);
-		return MR_FAILED;
-	}
-
-	return MR_SUCCESS;
+    return MR_SUCCESS;
 }
 
-int32 mr_start_dsm_ex(const char* filename, const char* entry)
-{
-	mr_screeninfo screeninfo;
-	if (mr_getScreenInfo(&screeninfo) != MR_SUCCESS)
-	{
-		return MR_FAILED;
-	}
-	mr_screen_w = screeninfo.width;
-	mr_screen_h = screeninfo.height;
-	mr_screen_bit = screeninfo.bit;
+int32 mr_start_dsm_ex(const char *filename, const char *entry) {
+    mr_screeninfo screeninfo;
+    if (mr_getScreenInfo(&screeninfo) != MR_SUCCESS) {
+        return MR_FAILED;
+    }
+    mr_screen_w = screeninfo.width;
+    mr_screen_h = screeninfo.height;
+    mr_screen_bit = screeninfo.bit;
 
-	MEMSET(pack_filename,0,sizeof(pack_filename));
-	if(filename && (*filename == '*')){
-		STRCPY(pack_filename,filename);
-	}else if(filename && (*filename == '%')){
-		STRCPY(pack_filename,filename+1);
-	}else if(filename && (*filename == '#') && (*(filename+1) == '<')){
-		STRCPY(pack_filename,filename+2);
-	}else{
-		STRCPY(pack_filename,MR_DEFAULT_PACK_NAME);
-	}
+    MEMSET(pack_filename, 0, sizeof(pack_filename));
+    if (filename && (*filename == '*')) {
+        STRCPY(pack_filename, filename);
+    } else if (filename && (*filename == '%')) {
+        STRCPY(pack_filename, filename + 1);
+    } else if (filename && (*filename == '#') && (*(filename + 1) == '<')) {
+        STRCPY(pack_filename, filename + 2);
+    } else {
+        STRCPY(pack_filename, MR_DEFAULT_PACK_NAME);
+    }
 
-	MEMSET(old_pack_filename, 0, sizeof(old_pack_filename));
-	MEMSET(old_start_filename, 0, sizeof(old_start_filename));
+    MEMSET(old_pack_filename, 0, sizeof(old_pack_filename));
+    MEMSET(old_start_filename, 0, sizeof(old_start_filename));
 
-	MEMSET(start_fileparameter, 0, sizeof(start_fileparameter));
-	mrc_appInfo_st.ram = 0;
+    MEMSET(start_fileparameter, 0, sizeof(start_fileparameter));
+    mrc_appInfo_st.ram = 0;
 
 #ifdef SDK_MOD
-	return _mr_intra_start("cfunction.ext", entry);
+    return _mr_intra_start("cfunction.ext", entry);
 #else
-	//#if defined(MR_BREW_MOD)
-	//   return _mr_intra_start("cfunction.ext", entry);
-	//#else
-	return _mr_intra_start("logo.ext", entry);
-	//#endif
+    //#if defined(MR_BREW_MOD)
+    //   return _mr_intra_start("cfunction.ext", entry);
+    //#else
+    return _mr_intra_start("logo.ext", entry);
+    //#endif
 #endif
 }
 
-int32 mr_start_dsmB(const char* entry)
-{
-	mr_screeninfo screeninfo;
-	if (mr_getScreenInfo(&screeninfo) != MR_SUCCESS)
-	{
-		return MR_FAILED;
-	}
-	mr_screen_w = screeninfo.width;
-	mr_screen_h = screeninfo.height;
-	mr_screen_bit = screeninfo.bit;
+int32 mr_start_dsmB(const char *entry) {
+    mr_screeninfo screeninfo;
+    if (mr_getScreenInfo(&screeninfo) != MR_SUCCESS) {
+        return MR_FAILED;
+    }
+    mr_screen_w = screeninfo.width;
+    mr_screen_h = screeninfo.height;
+    mr_screen_bit = screeninfo.bit;
 
-	MEMSET(pack_filename,0,sizeof(pack_filename));
-	if(entry && (*entry == '*')){
-		STRCPY(pack_filename,entry);
-		//以后%的方式要从VM 中去掉
-	}else if(entry && (*entry == '%')){
-		char *loc;
-		loc=(char*)strchr(entry, ',');
-		if(loc!=NULL){
-			*loc=0;
-			STRCPY(pack_filename,entry+1);
-			*loc=',';
-		}else{
-			STRCPY(pack_filename,entry+1);
-		}
-	}else if(entry && (*entry == '#') && (*(entry+1) == '<')){
-		STRCPY(pack_filename,entry+2);
-	}else{
-		STRCPY(pack_filename,MR_DEFAULT_PACK_NAME);
-	}
-	//strcpy(pack_filename,"*A");
-	MRDBGPRINTF(pack_filename);
+    MEMSET(pack_filename, 0, sizeof(pack_filename));
+    if (entry && (*entry == '*')) {
+        STRCPY(pack_filename, entry);
+        //以后%的方式要从VM 中去掉
+    } else if (entry && (*entry == '%')) {
+        char *loc;
+        loc = (char *) strchr(entry, ',');
+        if (loc != NULL) {
+            *loc = 0;
+            STRCPY(pack_filename, entry + 1);
+            *loc = ',';
+        } else {
+            STRCPY(pack_filename, entry + 1);
+        }
+    } else if (entry && (*entry == '#') && (*(entry + 1) == '<')) {
+        STRCPY(pack_filename, entry + 2);
+    } else {
+        STRCPY(pack_filename, MR_DEFAULT_PACK_NAME);
+    }
+    //strcpy(pack_filename,"*A");
+    MRDBGPRINTF(pack_filename);
 
 
-	MEMSET(old_pack_filename, 0, sizeof(old_pack_filename));
-	MEMSET(old_start_filename, 0, sizeof(old_start_filename));
+    MEMSET(old_pack_filename, 0, sizeof(old_pack_filename));
+    MEMSET(old_start_filename, 0, sizeof(old_start_filename));
 
-	MEMSET(start_fileparameter, 0, sizeof(start_fileparameter));
+    MEMSET(start_fileparameter, 0, sizeof(start_fileparameter));
 
-	mrc_appInfo_st.ram = 0;
+    mrc_appInfo_st.ram = 0;
 
 #ifdef SDK_MOD
-	return _mr_intra_start("cfunction.ext", entry);
+    return _mr_intra_start("cfunction.ext", entry);
 #else
-	return _mr_intra_start("logo.ext", entry);
+    return _mr_intra_start("logo.ext", entry);
 #endif
 
 }
 
-int32 mr_start_dsm(const char* entry)
-{
-	mr_screeninfo screeninfo;
-	if (mr_getScreenInfo(&screeninfo) != MR_SUCCESS)
-	{
-		return MR_FAILED;
-	}
-	mr_screen_w = screeninfo.width;
-	mr_screen_h = screeninfo.height;
-	mr_screen_bit = screeninfo.bit;
+int32 mr_start_dsm(const char *entry) {
+    mr_screeninfo screeninfo;
+    if (mr_getScreenInfo(&screeninfo) != MR_SUCCESS) {
+        return MR_FAILED;
+    }
+    mr_screen_w = screeninfo.width;
+    mr_screen_h = screeninfo.height;
+    mr_screen_bit = screeninfo.bit;
 
-	MEMSET(pack_filename,0,sizeof(pack_filename));
-	if(entry && (*entry == '*')){
-		STRCPY(pack_filename,entry);
-		//以后%的方式要从VM 中去掉
-	}else if(entry && (*entry == '%')){
-		STRCPY(pack_filename,entry+1);
-	}else if(entry && (*entry == '#') && (*(entry+1) == '<')){
-		STRCPY(pack_filename,entry+2);
-	}else{
-		STRCPY(pack_filename,MR_DEFAULT_PACK_NAME);
-	}
-	MRDBGPRINTF(pack_filename);
+    MEMSET(pack_filename, 0, sizeof(pack_filename));
+    if (entry && (*entry == '*')) {
+        STRCPY(pack_filename, entry);
+        //以后%的方式要从VM 中去掉
+    } else if (entry && (*entry == '%')) {
+        STRCPY(pack_filename, entry + 1);
+    } else if (entry && (*entry == '#') && (*(entry + 1) == '<')) {
+        STRCPY(pack_filename, entry + 2);
+    } else {
+        STRCPY(pack_filename, MR_DEFAULT_PACK_NAME);
+    }
+    MRDBGPRINTF(pack_filename);
 
 
-	MEMSET(old_pack_filename, 0, sizeof(old_pack_filename));
-	MEMSET(old_start_filename, 0, sizeof(old_start_filename));
+    MEMSET(old_pack_filename, 0, sizeof(old_pack_filename));
+    MEMSET(old_start_filename, 0, sizeof(old_start_filename));
 
-	MEMSET(start_fileparameter, 0, sizeof(start_fileparameter));
+    MEMSET(start_fileparameter, 0, sizeof(start_fileparameter));
 
-	mrc_appInfo_st.ram = 0;
+    mrc_appInfo_st.ram = 0;
 #ifdef SDK_MOD
-	return _mr_intra_start("cfunction.ext", entry);
+    return _mr_intra_start("cfunction.ext", entry);
 #else
-	return _mr_intra_start("logo.ext", entry);
+    return _mr_intra_start("logo.ext", entry);
 #endif
 }
 
-int32 mr_start_dsmC(char* start_file, const char* entry)
-{
-	mr_screeninfo screeninfo;
-	if (mr_getScreenInfo(&screeninfo) != MR_SUCCESS)
-	{
-		return MR_FAILED;
-	}
-	mr_screen_w = screeninfo.width;
-	mr_screen_h = screeninfo.height;
-	mr_screen_bit = screeninfo.bit;
+int32 mr_start_dsmC(char *start_file, const char *entry) {
+    mr_screeninfo screeninfo;
+    if (mr_getScreenInfo(&screeninfo) != MR_SUCCESS) {
+        return MR_FAILED;
+    }
+    mr_screen_w = screeninfo.width;
+    mr_screen_h = screeninfo.height;
+    mr_screen_bit = screeninfo.bit;
 
-	MEMSET(pack_filename,0,sizeof(pack_filename));
-	if(entry && (*entry == '*')){
-		STRCPY(pack_filename,entry);
-		//以后%的方式要从VM 中去掉
-	}else if(entry && (*entry == '%')){
-		STRCPY(pack_filename,entry+1);
-	}else if(entry && (*entry == '#') && (*(entry+1) == '<')){
-		STRCPY(pack_filename,entry+2);
-	}else{
-		STRCPY(pack_filename,MR_DEFAULT_PACK_NAME);
-	}
-	MRDBGPRINTF(pack_filename);
+    MEMSET(pack_filename, 0, sizeof(pack_filename));
+    if (entry && (*entry == '*')) {
+        STRCPY(pack_filename, entry);
+        //以后%的方式要从VM 中去掉
+    } else if (entry && (*entry == '%')) {
+        STRCPY(pack_filename, entry + 1);
+    } else if (entry && (*entry == '#') && (*(entry + 1) == '<')) {
+        STRCPY(pack_filename, entry + 2);
+    } else {
+        STRCPY(pack_filename, MR_DEFAULT_PACK_NAME);
+    }
+    MRDBGPRINTF(pack_filename);
 
 
-	MEMSET(old_pack_filename, 0, sizeof(old_pack_filename));
-	MEMSET(old_start_filename, 0, sizeof(old_start_filename));
+    MEMSET(old_pack_filename, 0, sizeof(old_pack_filename));
+    MEMSET(old_start_filename, 0, sizeof(old_start_filename));
 
-	MEMSET(start_fileparameter, 0, sizeof(start_fileparameter));
-	mrc_appInfo_st.ram = 0;
+    MEMSET(start_fileparameter, 0, sizeof(start_fileparameter));
+    mrc_appInfo_st.ram = 0;
 
-	return _mr_intra_start(start_file, entry);
+    // 准备完毕，开始启动处理
+    return _mr_intra_start(start_file, entry);
 }
 
 
-int32 mr_stop_ex(int16 freemem)
-{
-	//int i;
-	if (mr_state == MR_STATE_IDLE){
-		return MR_IGNORE;
-	}
+int32 mr_stop_ex(int16 freemem) {
+    //int i;
+    if (mr_state == MR_STATE_IDLE) {
+        return MR_IGNORE;
+    }
 
-	if ((mr_state == MR_STATE_RUN) || (mr_state == MR_STATE_PAUSE))
-	{
+    if ((mr_state == MR_STATE_RUN) || (mr_state == MR_STATE_PAUSE)) {
 #if 0
-		mrp_getglobal(vm_state, "dealevent");
+                                                                                                                                mrp_getglobal(vm_state, "dealevent");
 		if (mrp_isfunction(vm_state, -1)) {
 			mrp_pushnumber(vm_state, MR_EXIT_EVENT);
 			_mr_pcall(1,0);
@@ -5644,43 +5552,44 @@ int32 mr_stop_ex(int16 freemem)
 			mrp_pop(vm_state, 1);  /* remove dealevent */
 		}
 #else
-		c_event_st.code = MR_EXIT_EVENT;
-		c_event_st.param0 = 0;
-		c_event_st.param1 = 0;
+        c_event_st.code = MR_EXIT_EVENT;
+        c_event_st.param0 = 0;
+        c_event_st.param1 = 0;
 
-		_mr_TestComC( 801, (char*)&c_event_st, sizeof(c_event_st), 1);
+        _mr_TestComC(801, (char *) &c_event_st, sizeof(c_event_st), 1);
 #endif
-	}
+    }
 
 
-	//MRDBGPRINTF("restart timer12");
-	//mr_sleep(50);
+    //MRDBGPRINTF("restart timer12");
+    //mr_sleep(50);
 
-	mr_state = MR_STATE_IDLE;
-	mr_timer_state = MR_TIMER_STATE_IDLE;
-	mr_timer_run_without_pause = FALSE;
+    mr_state = MR_STATE_IDLE;
+    mr_timer_state = MR_TIMER_STATE_IDLE;
+    mr_timer_run_without_pause = FALSE;
 
 
-	if (freemem){
+    if (freemem) {
 #ifdef MR_SCREEN_CACHE
 #ifdef MR_SCREEN_CACHE_BITMAP
-		//MR_FREE(mr_screenBMP, MR_SCREEN_W * MR_SCREEN_H * 2 + MR_BMP_FILE_HEADER_LEN);
+                                                                                                                                //MR_FREE(mr_screenBMP, MR_SCREEN_W * MR_SCREEN_H * 2 + MR_BMP_FILE_HEADER_LEN);
 		mr_screenBMP = NULL;
 #else
-		if(mr_bitmap[BITMAPMAX].type == MR_SCREEN_FIRST_BUF){
-			//MR_FREE(mr_screenBuf, mr_bitmap[BITMAPMAX].buflen);
-		}else if(mr_bitmap[BITMAPMAX].type == MR_SCREEN_SECOND_BUF){
-			mr_platEx(1002, (uint8*)mr_screenBuf, mr_bitmap[BITMAPMAX].buflen, (uint8**)NULL, NULL, NULL);
-		}
+        if (mr_bitmap[BITMAPMAX].type == MR_SCREEN_FIRST_BUF) {
+            //MR_FREE(mr_screenBuf, mr_bitmap[BITMAPMAX].buflen);
+        } else if (mr_bitmap[BITMAPMAX].type == MR_SCREEN_SECOND_BUF) {
+            mr_platEx(1002, (uint8 *) mr_screenBuf, mr_bitmap[BITMAPMAX].buflen, (uint8 **) NULL,
+                      NULL, NULL);
+        }
 #endif
 #else
-		//MR_FREE(mr_screenBuf, MR_SCREEN_W * MR_SCREEN_H * 2);
+        //MR_FREE(mr_screenBuf, MR_SCREEN_W * MR_SCREEN_H * 2);
 #endif
-		mr_screenBuf = NULL;
-	}
+        mr_screenBuf = NULL;
+    }
 
 #if 0
-	for(i=0;i<BITMAPMAX;i++)
+                                                                                                                            for(i=0;i<BITMAPMAX;i++)
 	{
 		if(mr_bitmap[i].p)
 		{
@@ -5713,131 +5622,128 @@ int32 mr_stop_ex(int16 freemem)
 	}
 #endif
 
-	//MRDBGPRINTF("restart timer13");
-	//mr_sleep(50);
+    //MRDBGPRINTF("restart timer13");
+    //mr_sleep(50);
 
-	if (freemem){
-		mr_mem_free(Origin_LG_mem_base, Origin_LG_mem_len);
-	}
-	//mr_timerStop();
-	return MR_SUCCESS;
+    if (freemem) {
+        mr_mem_free(Origin_LG_mem_base, Origin_LG_mem_len);
+    }
+    //mr_timerStop();
+    return MR_SUCCESS;
 }
 
 int32 mr_stop(void) //int16 freemem)
 {
-	if (mr_stop_function){
-		int status = mr_stop_function();
-		mr_stop_function = NULL;   //1943
-		if(status!=MR_IGNORE)
-			return status;
-	}
-	return mr_stop_ex(TRUE);
+    if (mr_stop_function) {
+        int status = mr_stop_function();
+        mr_stop_function = NULL;   //1943
+        if (status != MR_IGNORE)
+            return status;
+    }
+    return mr_stop_ex(TRUE);
 }
 
 /*暂停应用*/
-int32 mr_pauseApp(void)
-{
-	// mr_initOk = FALSE;
-	if (mr_state == MR_STATE_RUN){
-		mr_state = MR_STATE_PAUSE;
-	}else if  ( mr_state == MR_STATE_RESTART){
-		MR_TIME_STOP();  
-		//mr_timer_state = MR_TIMER_STATE_IDLE;
-		return MR_SUCCESS;
-	}else{
-		return MR_IGNORE;
-	};
+int32 mr_pauseApp(void) {
+    // mr_initOk = FALSE;
+    if (mr_state == MR_STATE_RUN) {
+        mr_state = MR_STATE_PAUSE;
+    } else if (mr_state == MR_STATE_RESTART) {
+        MR_TIME_STOP();
+        //mr_timer_state = MR_TIMER_STATE_IDLE;
+        return MR_SUCCESS;
+    } else {
+        return MR_IGNORE;
+    };
 
-	if (mr_pauseApp_function){
-		int status = mr_pauseApp_function();
-		if(status!=MR_IGNORE)
-			return status;
-	}
+    if (mr_pauseApp_function) {
+        int status = mr_pauseApp_function();
+        if (status != MR_IGNORE)
+            return status;
+    }
 
-	_mr_TestComC( 801, NULL, 1, 4);
+    _mr_TestComC(801, NULL, 1, 4);
 
-	if(!mr_timer_run_without_pause){
-		if(mr_timer_state == MR_TIMER_STATE_RUNNING){
-			MR_TIME_STOP();
-			mr_timer_state = MR_TIMER_STATE_SUSPENDED;
-		}
-	}
-	return MR_SUCCESS;
+    if (!mr_timer_run_without_pause) {
+        if (mr_timer_state == MR_TIMER_STATE_RUNNING) {
+            MR_TIME_STOP();
+            mr_timer_state = MR_TIMER_STATE_SUSPENDED;
+        }
+    }
+    return MR_SUCCESS;
 }
 
 /*恢复应用*/
-int32 mr_resumeApp(void)
-{
-	if (mr_state == MR_STATE_PAUSE){
-		mr_state = MR_STATE_RUN;
-	}else if  ( mr_state == MR_STATE_RESTART){
-		mr_timer_p = (void*)"restart";
-		MR_TIME_START(100);
-		//mr_timer_state = MR_TIMER_STATE_RUNNING;
-		return MR_SUCCESS;
-	}else{
-		return MR_IGNORE;
-	};
+int32 mr_resumeApp(void) {
+    if (mr_state == MR_STATE_PAUSE) {
+        mr_state = MR_STATE_RUN;
+    } else if (mr_state == MR_STATE_RESTART) {
+        mr_timer_p = (void *) "restart";
+        MR_TIME_START(100);
+        //mr_timer_state = MR_TIMER_STATE_RUNNING;
+        return MR_SUCCESS;
+    } else {
+        return MR_IGNORE;
+    };
 
-	if (mr_resumeApp_function){
-		int status = mr_resumeApp_function();
-		if(status!= MR_IGNORE)
-			return status;
-	}
+    if (mr_resumeApp_function) {
+        int status = mr_resumeApp_function();
+        if (status != MR_IGNORE)
+            return status;
+    }
 
-	_mr_TestComC( 801, NULL, 1, 5);
+    _mr_TestComC(801, NULL, 1, 5);
 
-	if(mr_timer_state == MR_TIMER_STATE_SUSPENDED){
-		MR_TIME_START(300);
-		//mr_timer_state = MR_TIMER_STATE_RUNNING;
-	}
-	return MR_SUCCESS;
+    if (mr_timer_state == MR_TIMER_STATE_SUSPENDED) {
+        MR_TIME_START(300);
+        //mr_timer_state = MR_TIMER_STATE_RUNNING;
+    }
+    return MR_SUCCESS;
 }
 
-int32 mr_event(int16 type, int32 param1, int32 param2)
-{
+int32 mr_event(int16 type, int32 param1, int32 param2) {
 
-	if ((mr_state == MR_STATE_RUN) || ((mr_timer_run_without_pause) && (mr_state == MR_STATE_PAUSE)))
-	{
-		if (mr_event_function){
-			int status = mr_event_function(type, param1, param2);
-			if(status!= MR_IGNORE)
-				return status;
-		}
+    if ((mr_state == MR_STATE_RUN) ||
+        ((mr_timer_run_without_pause) && (mr_state == MR_STATE_PAUSE))) {
+        if (mr_event_function) {
+            int status = mr_event_function(type, param1, param2);
+            if (status != MR_IGNORE)
+                return status;
+        }
 
 
-		c_event_st.code = type;
-		c_event_st.param0 = param1;
-		c_event_st.param1 = param2;
+        c_event_st.code = type;
+        c_event_st.param0 = param1;
+        c_event_st.param1 = param2;
 
-		_mr_TestComC( 801, (char*)&c_event_st, sizeof(c_event_st), 1);
+        _mr_TestComC(801, (char *) &c_event_st, sizeof(c_event_st), 1);
 
-		//MRDBGPRINTF("after event");
+        //MRDBGPRINTF("after event");
 
-		return MR_SUCCESS;  //deal
-	}
+        return MR_SUCCESS;  //deal
+    }
 
-	return MR_IGNORE;  //didnot deal
+    return MR_IGNORE;  //didnot deal
 
 }
 
-int32 mr_timer(void)
-{
-	//MRDBGPRINTF("timer %d,%d",mr_state, mr_timer_state);
-	if (mr_timer_state != MR_TIMER_STATE_RUNNING){
-		MRDBGPRINTF("warning:mr_timer event unexpected!");
-		return MR_IGNORE;
-	}
-	mr_timer_state = MR_TIMER_STATE_IDLE;
+int32 mr_timer(void) {
+    //MRDBGPRINTF("timer %d,%d",mr_state, mr_timer_state);
+    if (mr_timer_state != MR_TIMER_STATE_RUNNING) {
+        MRDBGPRINTF("warning:mr_timer event unexpected!");
+        return MR_IGNORE;
+    }
+    mr_timer_state = MR_TIMER_STATE_IDLE;
 
-	if ((mr_state == MR_STATE_RUN) || ((mr_timer_run_without_pause) && (mr_state == MR_STATE_PAUSE))){
-	}else if  ( mr_state == MR_STATE_RESTART){
-		//MRDBGPRINTF("restart timer1");
-		//mr_sleep(50);
+    if ((mr_state == MR_STATE_RUN) ||
+        ((mr_timer_run_without_pause) && (mr_state == MR_STATE_PAUSE))) {
+    } else if (mr_state == MR_STATE_RESTART) {
+        //MRDBGPRINTF("restart timer1");
+        //mr_sleep(50);
 
-		mr_stop();                     //1943 修改为mr_stop
-		//mr_stop_ex(TRUE);      //1943
-		/* 不重新初始化内存
+        mr_stop();                     //1943 修改为mr_stop
+        //mr_stop_ex(TRUE);      //1943
+        /* 不重新初始化内存
 		_mr_mem_init();
 		#ifdef MR_SCREEN_CACHE
 		mr_screenBuf = (uint16*)MR_MALLOC(MR_SCREEN_MAX_W*MR_SCREEN_H*2);
@@ -5845,71 +5751,67 @@ int32 mr_timer(void)
 		mr_screenBuf = (uint16*)mr_getScreenBuf();
 		#endif
 		*/
-		//MRDBGPRINTF("restart timer11");
-		//mr_sleep(50);
+        //MRDBGPRINTF("restart timer11");
+        //mr_sleep(50);
 
-		_mr_intra_start(start_filename, NULL);
+        _mr_intra_start(start_filename, NULL);
 
-		//MRDBGPRINTF("restart timer2");
-		//mr_sleep(50);
+        //MRDBGPRINTF("restart timer2");
+        //mr_sleep(50);
 
-		return MR_SUCCESS;
-	}else{
-		return MR_IGNORE;
-	};
+        return MR_SUCCESS;
+    } else {
+        return MR_IGNORE;
+    };
 
 
-	//MRDBGPRINTF("before timer");
+    //MRDBGPRINTF("before timer");
 
-	if (mr_timer_function){
-		int status = mr_timer_function();
-		if(status!=MR_IGNORE)
-			return status;
-	}
+    if (mr_timer_function) {
+        int status = mr_timer_function();
+        if (status != MR_IGNORE)
+            return status;
+    }
 
-	_mr_TestComC( 801, NULL, 1, 2);
+    _mr_TestComC(801, NULL, 1, 2);
 
-	//MRDBGPRINTF("after timer");
-	//mrp_setgcthreshold(vm_state, 0);
-	return MR_SUCCESS;
+    //MRDBGPRINTF("after timer");
+    //mrp_setgcthreshold(vm_state, 0);
+    return MR_SUCCESS;
 }
 
-int32 mr_registerAPP(uint8 *p, int32 len, int32 index)
-{
-	MRDBGPRINTF("mr_registerAPP:%d p:%d",index,p);		
-	if( index < (sizeof(mr_m0_files)/sizeof(uint8*)) ){
-		mr_m0_files[index] = p;
-	}else{
-		MRDBGPRINTF("mr_registerAPP err!");
-		return MR_FAILED;
-	}
+int32 mr_registerAPP(uint8 *p, int32 len, int32 index) {
+    MRDBGPRINTF("mr_registerAPP:%d p:%d", index, p);
+    if (index < (sizeof(mr_m0_files) / sizeof(uint8 *))) {
+        mr_m0_files[index] = p;
+    } else {
+        MRDBGPRINTF("mr_registerAPP err!");
+        return MR_FAILED;
+    }
 
-	MRDBGPRINTF("mr_registerAPP mr_m0_files[%d]:%d ",index,mr_m0_files[index]);
+    MRDBGPRINTF("mr_registerAPP mr_m0_files[%d]:%d ", index, mr_m0_files[index]);
 
-	return MR_SUCCESS;
+    return MR_SUCCESS;
 }
 
-int mr_wstrlen(char * txt)
-{
-	int lenth=0;
-	unsigned char * ss=(unsigned char*)txt;
+int mr_wstrlen(char *txt) {
+    int lenth = 0;
+    unsigned char *ss = (unsigned char *) txt;
 
-	while((*ss<<8)+*(ss+1)!=0)
-	{
-		lenth+=2;
-		ss+=2;
-	}
-	return lenth;
+    while ((*ss << 8) + *(ss + 1) != 0) {
+        lenth += 2;
+        ss += 2;
+    }
+    return lenth;
 }
 
-int mr_transBMP(int check)
-{
-	return (check * 11)+0x1234abc;
+int mr_transBMP(int check) {
+    return (check * 11) + 0x1234abc;
 }
 
 #ifdef SDK_MOD
 
-uint32 *mr_get_helper(void)
+                                                                                                                        uint32 *mr_get_helper(void)
 {
 	return (*(((uint32 **)sdk_mr_c_function_table) - 2));
 }
@@ -5947,30 +5849,27 @@ chunk:取得的数据包指针
 chunklen:取得的数据包长度
 
 */
-int32 _mr_getChunk(uint8 **in, int32 *inlen, uint8 **chunk, int32 *chunklen)
-{
-	if (*inlen <= 1)
-	{                   // 数据包已经读完
-		*chunk = *in;
-		*chunklen = *inlen;
-		return MR_IGNORE;
-	}
-	*chunklen = **in;
-	if((*chunklen >= *inlen)||(*chunklen <= 0))
-	{                      // 数据包比数据缓冲还长，出错
-		*chunk = *in;
-		*chunklen = *inlen;
-		return MR_FAILED;
-	}
+int32 _mr_getChunk(uint8 **in, int32 *inlen, uint8 **chunk, int32 *chunklen) {
+    if (*inlen <= 1) {                   // 数据包已经读完
+        *chunk = *in;
+        *chunklen = *inlen;
+        return MR_IGNORE;
+    }
+    *chunklen = **in;
+    if ((*chunklen >= *inlen) || (*chunklen <= 0)) {                      // 数据包比数据缓冲还长，出错
+        *chunk = *in;
+        *chunklen = *inlen;
+        return MR_FAILED;
+    }
 
-	*chunk = *in+1;
-	*in = *in + *chunklen+1;
-	*inlen = *inlen - *chunklen - 1;
-	return MR_SUCCESS;
+    *chunk = *in + 1;
+    *in = *in + *chunklen + 1;
+    *inlen = *inlen - *chunklen - 1;
+    return MR_SUCCESS;
 }
 
 #ifdef MR_CFG_USE_A_DISK
-static int32 _mr_change_to_root(void)
+                                                                                                                        static int32 _mr_change_to_root(void)
 {
 	char* root;
 	uint8* output;
@@ -6005,150 +5904,138 @@ static int32 _mr_change_to_current(void)
 }
 #endif
 
-static int32 _mr_save_sms_cfg(MR_FILE_HANDLE f)
-{
-	int32 ret;
+static int32 _mr_save_sms_cfg(MR_FILE_HANDLE f) {
+    int32 ret;
 
 
-	//MRDBGPRINTF("mr_save_sms_cfg before check!");
-	if(mr_sms_cfg_need_save){
-		mr_sms_cfg_need_save = FALSE;
-		//MRDBGPRINTF("mr_save_sms_cfg before mr_seek!");
+    //MRDBGPRINTF("mr_save_sms_cfg before check!");
+    if (mr_sms_cfg_need_save) {
+        mr_sms_cfg_need_save = FALSE;
+        //MRDBGPRINTF("mr_save_sms_cfg before mr_seek!");
 
 #ifdef MR_CFG_USE_A_DISK
-		_mr_change_to_root();
+        _mr_change_to_root();
 #endif
-		f = mr_open(DSM_CFG_FILE_NAME, MR_FILE_WRONLY |MR_FILE_CREATE);
+        f = mr_open(DSM_CFG_FILE_NAME, MR_FILE_WRONLY | MR_FILE_CREATE);
 #ifdef MR_CFG_USE_A_DISK
-		_mr_change_to_current();
+        _mr_change_to_current();
 #endif
-		if(f == 0)
-		{
-			return MR_FAILED;
-		}
-		ret = mr_seek(f, 0, MR_SEEK_SET);
-		if(ret == MR_FAILED)
-		{
-			//MRDBGPRINTF("mr_save_sms_cfg mr_seek err!");
-			mr_close(f);
-			return MR_FAILED;
-		}
-		//MRDBGPRINTF("mr_save_sms_cfg before mr_write!");
-		ret = mr_write(f, mr_sms_cfg_buf, MR_SMS_CFG_BUF_LEN);
-		if(ret == MR_FAILED)
-		{
-			//MRDBGPRINTF("mr_save_sms_cfg mr_write err!");
-			mr_close(f);
-			return MR_FAILED;
-		}
-		mr_close(f);
-	}
-	//MRDBGPRINTF("mr_save_sms_cfg end!");
-	return MR_SUCCESS;
+        if (f == 0) {
+            return MR_FAILED;
+        }
+        ret = mr_seek(f, 0, MR_SEEK_SET);
+        if (ret == MR_FAILED) {
+            //MRDBGPRINTF("mr_save_sms_cfg mr_seek err!");
+            mr_close(f);
+            return MR_FAILED;
+        }
+        //MRDBGPRINTF("mr_save_sms_cfg before mr_write!");
+        ret = mr_write(f, mr_sms_cfg_buf, MR_SMS_CFG_BUF_LEN);
+        if (ret == MR_FAILED) {
+            //MRDBGPRINTF("mr_save_sms_cfg mr_write err!");
+            mr_close(f);
+            return MR_FAILED;
+        }
+        mr_close(f);
+    }
+    //MRDBGPRINTF("mr_save_sms_cfg end!");
+    return MR_SUCCESS;
 }
 
 //#endif
 
 
 //查看DSM配置文件是否存在，不存在则创建之
-static int32 _mr_load_sms_cfg(void)
-{
-	MR_FILE_HANDLE f;
-	int32 ret;
+static int32 _mr_load_sms_cfg(void) {
+    MR_FILE_HANDLE f;
+    int32 ret;
 
-	mr_sms_cfg_need_save = FALSE;
+    mr_sms_cfg_need_save = FALSE;
 
-	MEMSET(mr_sms_cfg_buf, 0, MR_SMS_CFG_BUF_LEN);
-
-#ifdef MR_CFG_USE_A_DISK
-	_mr_change_to_root();
-#endif
-
-	if(mr_info(DSM_CFG_FILE_NAME) == MR_IS_FILE)
-	{
-		f = mr_open(DSM_CFG_FILE_NAME, MR_FILE_RDONLY);
-		if(f == 0)
-		{
-#ifdef MR_CFG_USE_A_DISK
-			_mr_change_to_current();
-#endif
-			return MR_FAILED;
-		}
-		ret = mr_read(f, mr_sms_cfg_buf, MR_SMS_CFG_BUF_LEN);
-		mr_close(f);
-		if (ret != MR_SMS_CFG_BUF_LEN){
-			f = mr_open(DSM_CFG_FILE_NAME, MR_FILE_WRONLY|MR_FILE_CREATE);
-			if(f == 0)
-			{
-#ifdef MR_CFG_USE_A_DISK
-				_mr_change_to_current();
-#endif
-				return MR_FAILED;
-			}
-			mr_close(f);
-			_mr_smsAddNum(0, "518869058");
-			_mr_smsAddNum(1, "918869058");
-			_mr_smsAddNum(3, "aa");
-		}
-		//#endif
-	}else{
-
-		_mr_smsAddNum(0, "518869058");
-		_mr_smsAddNum(1, "918869058");
-		_mr_smsAddNum(3, "aa");
-
-	}
+    MEMSET(mr_sms_cfg_buf, 0, MR_SMS_CFG_BUF_LEN);
 
 #ifdef MR_CFG_USE_A_DISK
-	_mr_change_to_current();
+    _mr_change_to_root();
 #endif
-	return MR_SUCCESS;
+
+    if (mr_info(DSM_CFG_FILE_NAME) == MR_IS_FILE) {
+        f = mr_open(DSM_CFG_FILE_NAME, MR_FILE_RDONLY);
+        if (f == 0) {
+#ifdef MR_CFG_USE_A_DISK
+            _mr_change_to_current();
+#endif
+            return MR_FAILED;
+        }
+        ret = mr_read(f, mr_sms_cfg_buf, MR_SMS_CFG_BUF_LEN);
+        mr_close(f);
+        if (ret != MR_SMS_CFG_BUF_LEN) {
+            f = mr_open(DSM_CFG_FILE_NAME, MR_FILE_WRONLY | MR_FILE_CREATE);
+            if (f == 0) {
+#ifdef MR_CFG_USE_A_DISK
+                _mr_change_to_current();
+#endif
+                return MR_FAILED;
+            }
+            mr_close(f);
+            _mr_smsAddNum(0, "518869058");
+            _mr_smsAddNum(1, "918869058");
+            _mr_smsAddNum(3, "aa");
+        }
+        //#endif
+    } else {
+
+        _mr_smsAddNum(0, "518869058");
+        _mr_smsAddNum(1, "918869058");
+        _mr_smsAddNum(3, "aa");
+
+    }
+
+#ifdef MR_CFG_USE_A_DISK
+    _mr_change_to_current();
+#endif
+    return MR_SUCCESS;
 }
 
-int32 _mr_smsGetBytes(int32 pos, char* p, int32 len)
-{
-	//MRDBGPRINTF("_mr_smsGetBytes");
+int32 _mr_smsGetBytes(int32 pos, char *p, int32 len) {
+    //MRDBGPRINTF("_mr_smsGetBytes");
 
-	if((pos>=MR_SMS_CFG_BUF_LEN)||(pos < 0)||( (pos + len) >= MR_SMS_CFG_BUF_LEN)){
-		return MR_FAILED;
-	}
-	MEMCPY(p, mr_sms_cfg_buf+pos, len);
-	return MR_SUCCESS;
+    if ((pos >= MR_SMS_CFG_BUF_LEN) || (pos < 0) || ((pos + len) >= MR_SMS_CFG_BUF_LEN)) {
+        return MR_FAILED;
+    }
+    MEMCPY(p, mr_sms_cfg_buf + pos, len);
+    return MR_SUCCESS;
 
 }
 
-static int32 _mr_smsSetBytes(int32 pos, char* p, int32 len)
-{
-	//MRDBGPRINTF("_mr_smsGetBytes");
+static int32 _mr_smsSetBytes(int32 pos, char *p, int32 len) {
+    //MRDBGPRINTF("_mr_smsGetBytes");
 
 
-	if((pos>=MR_SMS_CFG_BUF_LEN)||(pos < 0)||( (pos + len) >= MR_SMS_CFG_BUF_LEN)){
-		return MR_FAILED;
-	}
-	mr_sms_cfg_need_save = TRUE;
-	MEMCPY(mr_sms_cfg_buf+pos, p, len);
-	//MRDBGPRINTF("mr_smsSetBytes %d", *p);
-	return MR_SUCCESS;
+    if ((pos >= MR_SMS_CFG_BUF_LEN) || (pos < 0) || ((pos + len) >= MR_SMS_CFG_BUF_LEN)) {
+        return MR_FAILED;
+    }
+    mr_sms_cfg_need_save = TRUE;
+    MEMCPY(mr_sms_cfg_buf + pos, p, len);
+    //MRDBGPRINTF("mr_smsSetBytes %d", *p);
+    return MR_SUCCESS;
 
 }
 
-int32 _mr_smsGetNum(int32 index, char* pNum)
-{
-	char num[MR_MAX_NUM_LEN];
-	uint32 len;
+int32 _mr_smsGetNum(int32 index, char *pNum) {
+    char num[MR_MAX_NUM_LEN];
+    uint32 len;
 
 
-	//MRDBGPRINTF("_mr_smsGetNum");
-	_mr_smsGetBytes(MR_MAX_NUM_LEN * index + MR_SECTION_LEN, num, MR_MAX_NUM_LEN);
-	len = _mr_decode((uint8*)num, STRNLEN(num, MR_MAX_NUM_LEN-1), (uint8*)pNum);
-	if ((len == 0)||(len >= MR_MAX_NUM_LEN))
-	{
-		pNum[0] = 0;
-		return MR_FAILED;
-	}
-	pNum[len] = 0;
+    //MRDBGPRINTF("_mr_smsGetNum");
+    _mr_smsGetBytes(MR_MAX_NUM_LEN * index + MR_SECTION_LEN, num, MR_MAX_NUM_LEN);
+    len = _mr_decode((uint8 *) num, STRNLEN(num, MR_MAX_NUM_LEN - 1), (uint8 *) pNum);
+    if ((len == 0) || (len >= MR_MAX_NUM_LEN)) {
+        pNum[0] = 0;
+        return MR_FAILED;
+    }
+    pNum[len] = 0;
 
-	return MR_SUCCESS;
+    return MR_SUCCESS;
 
 }
 
@@ -6178,30 +6065,28 @@ a)   120×32个字节，每120个字节存放一条DSM更新短消息的全部�
 *input:
 *                  index---Num index
 *                  pNum---pointer to the Num address
-*return:     
-*                  MR_SUCCESS---success, 
+*return:
+*                  MR_SUCCESS---success,
 *                  MR_FAILED--failed
 *                  MR_IGNORE--already exist
-*Note: 
+*Note:
 ***********************************************/
-static int32 _mr_smsAddNum(int32 index, char* pNum)
-{
-	int32 len = STRLEN(pNum);
-	char num[MR_MAX_NUM_LEN];
-	if(len > (((MR_MAX_NUM_LEN-1)/4 * 3)))
-	{
-		MRDBGPRINTF("num too long");
-		return MR_FAILED;
-	}
+static int32 _mr_smsAddNum(int32 index, char *pNum) {
+    int32 len = STRLEN(pNum);
+    char num[MR_MAX_NUM_LEN];
+    if (len > (((MR_MAX_NUM_LEN - 1) / 4 * 3))) {
+        MRDBGPRINTF("num too long");
+        return MR_FAILED;
+    }
 
-	//   MRDBGPRINTF("_mr_smsAddNum");
-	MEMSET(num, 0, MR_MAX_NUM_LEN);
+    //   MRDBGPRINTF("_mr_smsAddNum");
+    MEMSET(num, 0, MR_MAX_NUM_LEN);
 
-	_mr_encode((uint8 *)pNum, len, (uint8 *)num);
+    _mr_encode((uint8 *) pNum, len, (uint8 *) num);
 
-	_mr_smsSetBytes(MR_MAX_NUM_LEN * index + MR_SECTION_LEN, num, MR_MAX_NUM_LEN);
+    _mr_smsSetBytes(MR_MAX_NUM_LEN * index + MR_SECTION_LEN, num, MR_MAX_NUM_LEN);
 
-	return MR_SUCCESS;
+    return MR_SUCCESS;
 
 }
 
@@ -6211,24 +6096,23 @@ static int32 _mr_smsAddNum(int32 index, char* pNum)
 *description: del a cmd num form the ffs
 *input:
 *                  index---Num index
-*return:     
-*                  MR_SUCCESS---success, 
+*return:
+*                  MR_SUCCESS---success,
 *                  MR_FAILED--failed
 *                  MR_IGNORE--already exist
-*Note: 
+*Note:
 ***********************************************/
-int32 _mr_smsDelNum(int32 index)
-{
-	char num[MR_MAX_NUM_LEN];
+int32 _mr_smsDelNum(int32 index) {
+    char num[MR_MAX_NUM_LEN];
 
 
-	//MRDBGPRINTF("_mr_smsDelNum");
+    //MRDBGPRINTF("_mr_smsDelNum");
 
-	MEMSET(num, 0, MR_MAX_NUM_LEN);
+    MEMSET(num, 0, MR_MAX_NUM_LEN);
 
-	_mr_smsSetBytes(MR_MAX_NUM_LEN * index + MR_SECTION_LEN, num, MR_MAX_NUM_LEN);
+    _mr_smsSetBytes(MR_MAX_NUM_LEN * index + MR_SECTION_LEN, num, MR_MAX_NUM_LEN);
 
-	return MR_SUCCESS;
+    return MR_SUCCESS;
 
 }
 
@@ -6237,32 +6121,30 @@ int32 _mr_smsDelNum(int32 index)
 *description: update URL form the ffs
 *input:
 *                  pURL---pointer to the URL
-*return:     
-*                  MR_SUCCESS---success, 
+*return:
+*                  MR_SUCCESS---success,
 *                  MR_FAILED--failed
 *                  MR_IGNORE--already exist
-*Note: 
+*Note:
 ***********************************************/
-int32 _mr_smsUpdateURL(uint8* pURL, uint8 len)
-{
-	uint8 flag=128;
-	uint8 out[MR_SECTION_LEN];
+int32 _mr_smsUpdateURL(uint8 *pURL, uint8 len) {
+    uint8 flag = 128;
+    uint8 out[MR_SECTION_LEN];
 
-	//MRDBGPRINTF("_mr_smsUpdateURL");
-	if(len > (((MR_SECTION_LEN-1)/4 * 3)))
-	{
-		MRDBGPRINTF("url too long");
-		return MR_FAILED;
-	}
+    //MRDBGPRINTF("_mr_smsUpdateURL");
+    if (len > (((MR_SECTION_LEN - 1) / 4 * 3))) {
+        MRDBGPRINTF("url too long");
+        return MR_FAILED;
+    }
 
 
-	_mr_smsSetBytes(CFG_USE_URL_UPDATE_OFFSET, (char*)&flag , 1);
+    _mr_smsSetBytes(CFG_USE_URL_UPDATE_OFFSET, (char *) &flag, 1);
 
-	MEMSET(out, 0, sizeof(out));
-	len = _mr_encode(pURL, len, out);
-	_mr_smsSetBytes(MR_SECTION_LEN*3, (char*)out, MR_SECTION_LEN);
+    MEMSET(out, 0, sizeof(out));
+    len = _mr_encode(pURL, len, out);
+    _mr_smsSetBytes(MR_SECTION_LEN * 3, (char *) out, MR_SECTION_LEN);
 
-	return MR_SUCCESS;
+    return MR_SUCCESS;
 
 }
 
@@ -6271,37 +6153,35 @@ int32 _mr_smsUpdateURL(uint8* pURL, uint8 len)
 *description: save a sms content to the ffs
 *input:
 *                  pSMSContent---pointer to the input sms content buf
-*                  
-*return:     
+*
+*return:
 *                  MR_SUCCESS---save success
 *                  MR_FAILED--save failed
-*Note: 
+*Note:
 ***********************************************/
-int32 _mr_smsDsmSave(char*  pSMSContent, int32 len)
-{
-	uint8 contnet[MR_SECTION_LEN];
-	uint8 flag=128;
-	int32 index;
+int32 _mr_smsDsmSave(char *pSMSContent, int32 len) {
+    uint8 contnet[MR_SECTION_LEN];
+    uint8 flag = 128;
+    int32 index;
 
-	MRDBGPRINTF("_mr_smsDsmSave");
+    MRDBGPRINTF("_mr_smsDsmSave");
 
-	MEMSET(contnet, 0, MR_SECTION_LEN);
+    MEMSET(contnet, 0, MR_SECTION_LEN);
 
-	MEMCPY((char *)contnet, (char *)pSMSContent, len);
-	index = contnet[2]; //取得消息的位置号
+    MEMCPY((char *) contnet, (char *) pSMSContent, len);
+    index = contnet[2]; //取得消息的位置号
 
-	if((index > 31))
-	{
-		return MR_FAILED;
-	}
+    if ((index > 31)) {
+        return MR_FAILED;
+    }
 
-	_mr_smsSetBytes(CFG_USE_SM_UPDATE_OFFSET, (char*)&flag , 1);
+    _mr_smsSetBytes(CFG_USE_SM_UPDATE_OFFSET, (char *) &flag, 1);
 
-	_mr_smsSetBytes(CFG_SM_FLAG_OFFSET+index, (char*)&flag , 1);
+    _mr_smsSetBytes(CFG_SM_FLAG_OFFSET + index, (char *) &flag, 1);
 
-	_mr_smsSetBytes(MR_SECTION_LEN * (index+4), (char*)contnet , MR_SECTION_LEN);
+    _mr_smsSetBytes(MR_SECTION_LEN * (index + 4), (char *) contnet, MR_SECTION_LEN);
 
-	return MR_SUCCESS;
+    return MR_SUCCESS;
 }
 
 /**********************************************
@@ -6309,155 +6189,157 @@ int32 _mr_smsDsmSave(char*  pSMSContent, int32 len)
 *description: send a sms back to server
 *input:
 *                  pNum---pointer to the input number address
-*                  
-*return:     
+*
+*return:
 *                  MR_SUCCESS---send sms success
 *                  MR_FAILED--send sms failed
-*Note: 
+*Note:
 ***********************************************/
-int32 _mr_smsReplyServer(char *pNum, uint8* old_IMSI)
+int32 _mr_smsReplyServer(char *pNum, uint8 *old_IMSI) {
+    uint8 sms[MR_SECTION_LEN];
+    uint8 smsstring[MR_MAX_SM_LEN];
+    mr_userinfo info;
+    uint32 offset = 0;
+    //MR_FILE_HANDLE f;
+
+    if (mr_getUserInfo(&info) != MR_SUCCESS) {
+        return MR_FAILED;
+    }
+
+    MEMSET(smsstring, 0, sizeof(smsstring));
+
+
+    sms[0] = 0xFA;
+    sms[1] = 0xF1;
+    offset = offset + 2;
+
+    if (old_IMSI) {
+        //长度16+1
+        sms[offset] = 17;
+        offset = offset + 1;
+        //旧IMSI
+        sms[offset] = 6;
+        offset = offset + 1;
+        MEMCPY(&sms[offset], old_IMSI, 16);
+        offset = offset + 16;
+    }
+
+    //长度16+1
+    sms[offset] = 17;
+    offset = offset + 1;
+    //IMEI
+    sms[offset] = 2;
+    offset = offset + 1;
+    MEMCPY(&sms[offset], &info.IMEI, sizeof(info.IMEI));
+    offset = offset + 16;
+
+    //长度16+1
+    sms[offset] = 17;
+    offset = offset + 1;
+    //IMSI
+    sms[offset] = 3;
+    offset = offset + 1;
+    MEMCPY(&sms[offset], &info.IMSI, sizeof(info.IMSI));
+    offset = offset + 16;
+
+    //长度20+1
+    sms[offset] = 21;
+    offset = offset + 1;
+    //手机信息
+    sms[offset] = 4;
+    offset = offset + 1;
+    info.ver = htonl(info.ver);
+    MEMCPY(&sms[offset], &info.manufactory, 20);
+    offset = offset + 20;
+
+    _mr_encode(sms, offset, smsstring);
+    mr_sendSms((char *) pNum, (char *) smsstring,
+               MR_ENCODE_ASCII | MR_SMS_REPORT_FLAG | MR_SMS_RESULT_FLAG);
+
+    //MRDBGPRINTF("Debug:send sms content=");
+    //MRDBGPRINTF((char*)smsstring);
+    //MRDBGPRINTF("Debug:send sms num=");
+    //MRDBGPRINTF((char*)pNum);
+
+    return MR_SUCCESS;
+}
+
+
+static int32 _mr_u2c_c(char *input, int32 inlen, char *output, int32 outlen) {
+    int32 pos = 0;
+    int32 upos = 0;
+    MEMSET(output, 0, outlen);
+    while ((upos < (inlen - 1)) && ((*(input + upos) + *(input + upos + 1)) != 0) &&
+           (pos < outlen)) {
+        if (*(input + upos) == 0) {
+            output[pos] = *(input + upos + 1);
+            pos = pos + 1;
+            upos = upos + 2;
+        } else {
+            break;
+        }
+    }
+    return pos;
+}
+
+static const char *_mr_memfind_c(const char *s1, size_t l1,
+                                 const char *s2, size_t l2) {
+    if (l2 == 0) return s1;  /* empty strings are everywhere */
+    else if (l2 > l1) return NULL;  /* avoids a negative `l1' */
+    else {
+        const char *init;  /* to search for a `*s2' inside `s1' */
+        l2--;  /* 1st char will be checked by `memchr' */
+        l1 = l1 - l2;  /* `s2' cannot be found after that */
+        while (l1 > 0 && (init = (const char *) MEMCHR(s1, *s2, l1)) != NULL) {
+            init++;   /* 1st char is already checked */
+            if (MEMCMP(init, s2 + 1, l2) == 0)
+                return init - 1;
+            else {  /* correct `l1' and `s1' to try again */
+                l1 -= init - s1;
+                s1 = init;
+            }
+        }
+        return NULL;  /* not found */
+    }
+}
+
+
+static int32
+_mr_smsIndication(uint8 *pContent, int32 nLen, uint8 *pNum, int32 type)//nLen 变为 int32，方便以后扩展
 {
-	uint8 sms[MR_SECTION_LEN];
-	uint8 smsstring[MR_MAX_SM_LEN];
-	mr_userinfo info;
-	uint32 offset = 0;
-	//MR_FILE_HANDLE f;
+    uint8 outbuf[160];
+    int32 memlen;
 
-	if(mr_getUserInfo(&info) != MR_SUCCESS)
-	{
-		return MR_FAILED;
-	}
+    if ((mr_state == MR_STATE_RUN) ||
+        ((mr_timer_run_without_pause) && (mr_state == MR_STATE_PAUSE))) {
+        c_event_st.code = MR_SMS_INDICATION;
+        c_event_st.param0 = (int32) pContent;
+        c_event_st.param1 = (int32) pNum;
+        c_event_st.param2 = type;
+        c_event_st.param3 = nLen;
 
-	MEMSET(smsstring, 0, sizeof(smsstring));
-
-
-	sms[0] = 0xFA;sms[1] = 0xF1;
-	offset = offset + 2;
-
-	if (old_IMSI){
-		//长度16+1
-		sms[offset] = 17;
-		offset = offset + 1;
-		//旧IMSI
-		sms[offset] = 6;
-		offset = offset + 1;
-		MEMCPY(&sms[offset], old_IMSI, 16);
-		offset = offset + 16;
-	}
-
-	//长度16+1
-	sms[offset] = 17;
-	offset = offset + 1;
-	//IMEI
-	sms[offset] = 2;
-	offset = offset + 1;
-	MEMCPY(&sms[offset], &info.IMEI, sizeof(info.IMEI));
-	offset = offset + 16;
-
-	//长度16+1
-	sms[offset] = 17;
-	offset = offset + 1;
-	//IMSI
-	sms[offset] = 3;
-	offset = offset + 1;
-	MEMCPY(&sms[offset], &info.IMSI, sizeof(info.IMSI));
-	offset = offset + 16;
-
-	//长度20+1
-	sms[offset] = 21;
-	offset = offset + 1;
-	//手机信息
-	sms[offset] = 4;
-	offset = offset + 1;
-	info.ver= htonl(info.ver);
-	MEMCPY(&sms[offset], &info.manufactory, 20);
-	offset = offset + 20;
-
-	_mr_encode(sms, offset, smsstring);
-	mr_sendSms((char*)pNum, (char*)smsstring, MR_ENCODE_ASCII | MR_SMS_REPORT_FLAG |MR_SMS_RESULT_FLAG);
-
-	//MRDBGPRINTF("Debug:send sms content=");
-	//MRDBGPRINTF((char*)smsstring);
-	//MRDBGPRINTF("Debug:send sms num=");
-	//MRDBGPRINTF((char*)pNum);
-
-	return MR_SUCCESS;
-}
-
-
-static int32 _mr_u2c_c(char * input, int32 inlen, char* output, int32 outlen){
-	int32 pos=0;
-	int32 upos=0;
-	MEMSET(output, 0, outlen);
-	while((upos<(inlen-1))&&((*(input+upos)+*(input+upos+1))!=0)&&(pos<outlen)){
-		if(*(input+upos) == 0){
-			output[pos] = *(input+upos+1);
-			pos = pos + 1;
-			upos = upos + 2;
-		}else{
-			break;
-		}
-	}
-	return pos;
-}
-
-static const char *_mr_memfind_c (const char *s1, size_t l1,
-								  const  char *s2, size_t l2) {
-									  if (l2 == 0) return s1;  /* empty strings are everywhere */
-									  else if (l2 > l1) return NULL;  /* avoids a negative `l1' */
-									  else {
-										  const char *init;  /* to search for a `*s2' inside `s1' */
-										  l2--;  /* 1st char will be checked by `memchr' */
-										  l1 = l1-l2;  /* `s2' cannot be found after that */
-										  while (l1 > 0 && (init = (const char *)MEMCHR(s1, *s2, l1)) != NULL) {
-											  init++;   /* 1st char is already checked */
-											  if (MEMCMP(init, s2+1, l2) == 0)
-												  return init-1;
-											  else {  /* correct `l1' and `s1' to try again */
-												  l1 -= init-s1;
-												  s1 = init;
-											  }
-										  }
-										  return NULL;  /* not found */
-									  }
-}
+        _mr_TestComC(801, (char *) &c_event_st, sizeof(c_event_st), 1);
+    }
 
 
 
-static int32 _mr_smsIndication(uint8 *pContent, int32 nLen, uint8 *pNum, int32 type)//nLen 变为 int32，方便以后扩展
-{
-	uint8   outbuf[160];
-	int32   memlen;
-
-	if((mr_state == MR_STATE_RUN) || ((mr_timer_run_without_pause) && (mr_state == MR_STATE_PAUSE))){
-		c_event_st.code = MR_SMS_INDICATION;
-		c_event_st.param0 = (int32)pContent;
-		c_event_st.param1 = (int32)pNum;
-		c_event_st.param2 = type;
-		c_event_st.param3 = nLen;
-
-		_mr_TestComC( 801, (char*)&c_event_st, sizeof(c_event_st), 1);
-	}
+    //decode the content
+    if ((nLen < 12) || (nLen > 160)) {
+        return MR_IGNORE;
+    }
 
 
-
-	//decode the content
-	if((nLen < 12) || (nLen > 160)){
-		return MR_IGNORE;
-	}
-
-
-	/*
+    /*
 	短信接口说明：
 	1、   每条短信内容120个字节。
-	2、   网络发往手机的短消息；前两个字节作为本条短信内容指示： 
+	2、   网络发往手机的短消息；前两个字节作为本条短信内容指示：
 	a)   FA  F1：DSM配置短信；内容：如"DSM配置短信格式说明"。
 	b)   FA  F2：DSM更新短信；内容：如前面（"DSM更新短信格式说明"）。
 	3、   手机发往网络的短消息；前两个字节作为本条短信内容指示：
 	a)   FA  F1：手机上发消息；内容：如"手机上发消息格式说明"。
 	*/
 
-	/*
+    /*
 	DSM配置短信格式说明：
 	1、   一个DSM配置短信内容由若干个包构成。
 	2、   包的内容：操作码（一个字节）＋操作码对应的操作数据。
@@ -6469,123 +6351,123 @@ static int32 _mr_smsIndication(uint8 *pContent, int32 nLen, uint8 *pNum, int32 t
 
 	*/
 
-	MEMSET(outbuf, 0, sizeof(outbuf));
-	switch(type)
-	{
-	case MR_ENCODE_ASCII:
-		if ((pContent[0] == 'M') && (pContent[1] == 'R')
-			&&(pContent[2] == 'P') && (pContent[3] == 'G')){
-				//这里放宽了要求
-				memlen = _mr_decode(pContent+4, nLen-4, outbuf);
-		}else{
-			//mr_printf("mr_sms not  cmd num");
-			const char *s1 = _mr_memfind_c((const char *)pContent, nLen, (const char *)"~#^~", 4);
-			const char *s2;
-			if (s1) {
-				s2 = _mr_memfind_c((const char *)s1, nLen - ((uint8*)s1-pContent), (const char *)"&^", 2);
-				if (s2){
-					memlen = _mr_decode((uint8*)s1+4, (s2-s1-4), outbuf);
-				}else{
-					return MR_IGNORE;
-				}
-			}else{
-				return MR_IGNORE;
-			}
-		}
-		break;
-	case MR_ENCODE_UNICODE:
-		{
-			const char *s1 = _mr_memfind_c((const char *)pContent, nLen, (const char *)"\0~\0#\0^\0~", 8);
-			const char *s2;
-			if (s1) {
-				s2 = _mr_memfind_c((const char *)s1, nLen - ((uint8*)s1-pContent), (const char *)"\0&\0^", 4);
-				if (s2){
-					char   inbuf[70];
-					int32 inlen;
-					inlen = _mr_u2c_c((char*)s1+8, (s2-s1-8), inbuf, sizeof(inbuf));
-					memlen = _mr_decode((uint8*)inbuf, inlen, outbuf);
-				}else{
-					return MR_IGNORE;
-				}
-			}else{
-				return MR_IGNORE;
-			}
-			break;
-		}
-	default:
-		return MR_IGNORE;
-		break;
-	}
+    MEMSET(outbuf, 0, sizeof(outbuf));
+    switch (type) {
+        case MR_ENCODE_ASCII:
+            if ((pContent[0] == 'M') && (pContent[1] == 'R')
+                && (pContent[2] == 'P') && (pContent[3] == 'G')) {
+                //这里放宽了要求
+                memlen = _mr_decode(pContent + 4, nLen - 4, outbuf);
+            } else {
+                //mr_printf("mr_sms not  cmd num");
+                const char *s1 = _mr_memfind_c((const char *) pContent, nLen, (const char *) "~#^~",
+                                               4);
+                const char *s2;
+                if (s1) {
+                    s2 = _mr_memfind_c((const char *) s1, nLen - ((uint8 *) s1 - pContent),
+                                       (const char *) "&^", 2);
+                    if (s2) {
+                        memlen = _mr_decode((uint8 *) s1 + 4, (s2 - s1 - 4), outbuf);
+                    } else {
+                        return MR_IGNORE;
+                    }
+                } else {
+                    return MR_IGNORE;
+                }
+            }
+            break;
+        case MR_ENCODE_UNICODE: {
+            const char *s1 = _mr_memfind_c((const char *) pContent, nLen,
+                                           (const char *) "\0~\0#\0^\0~", 8);
+            const char *s2;
+            if (s1) {
+                s2 = _mr_memfind_c((const char *) s1, nLen - ((uint8 *) s1 - pContent),
+                                   (const char *) "\0&\0^", 4);
+                if (s2) {
+                    char inbuf[70];
+                    int32 inlen;
+                    inlen = _mr_u2c_c((char *) s1 + 8, (s2 - s1 - 8), inbuf, sizeof(inbuf));
+                    memlen = _mr_decode((uint8 *) inbuf, inlen, outbuf);
+                } else {
+                    return MR_IGNORE;
+                }
+            } else {
+                return MR_IGNORE;
+            }
+            break;
+        }
+        default:
+            return MR_IGNORE;
+            break;
+    }
 
 
-	if (memlen < 0)
-	{
-		//mr_printf("_mr_decode failed");
-		return MR_IGNORE;
-	}
+    if (memlen < 0) {
+        //mr_printf("_mr_decode failed");
+        return MR_IGNORE;
+    }
 
-	MRDBGPRINTF("mr_smsIndication check ok!");
-	{
-		int32 f;
-		f = _mr_load_sms_cfg();
-		if ((outbuf[0] == 0xfc) && (outbuf[1] == 0xfc)) {
-			uint8 *in;
-			int32 inlen;
-			uint8 *chunk;
-			int32 chunklen;
-			int32 ret;
-			in = (uint8 *)outbuf + 2;
-			inlen = memlen - 2;
+    MRDBGPRINTF("mr_smsIndication check ok!");
+    {
+        int32 f;
+        f = _mr_load_sms_cfg();
+        if ((outbuf[0] == 0xfc) && (outbuf[1] == 0xfc)) {
+            uint8 *in;
+            int32 inlen;
+            uint8 *chunk;
+            int32 chunklen;
+            int32 ret;
+            in = (uint8 *) outbuf + 2;
+            inlen = memlen - 2;
 
-			ret = _mr_getChunk(&in, &inlen, &chunk, &chunklen);    //取得一个Chunk
-			while(ret == MR_SUCCESS)
-			{
-				int32 code = *chunk;
-				int32 tempret = MR_FAILED;
-				//uint8 flag=128;
-				switch(code)
-				{
-				case 1:
-					tempret = _mr_smsAddNum(*(chunk+1),  (char*)(chunk+2));
-					break;
-				case 2:
-					tempret = _mr_smsDelNum(*(chunk+1));
-					break;
-				case 3:
-					tempret = _mr_smsUpdateURL((chunk+1), (uint8)(chunklen-1));
-					break;
-				case 4:
-					tempret = _mr_smsReplyServer((char*)pNum, NULL);
-					break;
-				case 5:
-					tempret = _mr_smsSetBytes(CFG_USE_UNICODE_OFFSET, (char*)(chunk+1), 1);
-					//MRDBGPRINTF("mr_smsIndication UNICODE!");
-					break;
-				case 6:
-					tempret = _mr_smsSetBytes( ( (*(chunk+1)) * 256 )+ (*(chunk+2) ) , (char*)(chunk+4), *(chunk+3));
-					break;
-				case 7:
-				case 17:
-				case 27:
-				case 37:
-					tempret = MR_SUCCESS;
-					break;
-				default:
-					_mr_save_sms_cfg(f);
-					return MR_FAILED;
-				}   //switch
-				if (tempret != MR_SUCCESS){
-					_mr_save_sms_cfg(f);
-					return MR_FAILED;
-				}
-				ret = _mr_getChunk(&in, &inlen, &chunk, &chunklen);    //取得下一个Chunk
-			}     //while
-		}else if((outbuf[0] == 0xfa) && (outbuf[1] == 0xf2)) {
-			_mr_smsDsmSave((char *)outbuf, memlen);      
-		}
-		_mr_save_sms_cfg(f);
-		return MR_SUCCESS;
-	}
+            ret = _mr_getChunk(&in, &inlen, &chunk, &chunklen);    //取得一个Chunk
+            while (ret == MR_SUCCESS) {
+                int32 code = *chunk;
+                int32 tempret = MR_FAILED;
+                //uint8 flag=128;
+                switch (code) {
+                    case 1:
+                        tempret = _mr_smsAddNum(*(chunk + 1), (char *) (chunk + 2));
+                        break;
+                    case 2:
+                        tempret = _mr_smsDelNum(*(chunk + 1));
+                        break;
+                    case 3:
+                        tempret = _mr_smsUpdateURL((chunk + 1), (uint8) (chunklen - 1));
+                        break;
+                    case 4:
+                        tempret = _mr_smsReplyServer((char *) pNum, NULL);
+                        break;
+                    case 5:
+                        tempret = _mr_smsSetBytes(CFG_USE_UNICODE_OFFSET, (char *) (chunk + 1), 1);
+                        //MRDBGPRINTF("mr_smsIndication UNICODE!");
+                        break;
+                    case 6:
+                        tempret = _mr_smsSetBytes(((*(chunk + 1)) * 256) + (*(chunk + 2)),
+                                                  (char *) (chunk + 4), *(chunk + 3));
+                        break;
+                    case 7:
+                    case 17:
+                    case 27:
+                    case 37:
+                        tempret = MR_SUCCESS;
+                        break;
+                    default:
+                        _mr_save_sms_cfg(f);
+                        return MR_FAILED;
+                }   //switch
+                if (tempret != MR_SUCCESS) {
+                    _mr_save_sms_cfg(f);
+                    return MR_FAILED;
+                }
+                ret = _mr_getChunk(&in, &inlen, &chunk, &chunklen);    //取得下一个Chunk
+            }     //while
+        } else if ((outbuf[0] == 0xfa) && (outbuf[1] == 0xf2)) {
+            _mr_smsDsmSave((char *) outbuf, memlen);
+        }
+        _mr_save_sms_cfg(f);
+        return MR_SUCCESS;
+    }
 }
 
 /**********************************************
@@ -6595,172 +6477,155 @@ static int32 _mr_smsIndication(uint8 *pContent, int32 nLen, uint8 *pNum, int32 t
 *                  pNum---pointer to the Num address
 *                  pContent---pointer to the sms content
 *            nLen   ---
-*return:     
+*return:
 *                  MR_SUCCESS---packet ok
 *                  MR_FAILED--something error when doing the sending action
 *            MR_IGNORE--- normal sms , do not do mr treating.
-*Note: 
+*Note:
 ***********************************************/
 int32 mr_smsIndication(uint8 *pContent, int32 nLen, uint8 *pNum, int32 type)//nLen 变为 int32，方便以后扩展
 {
-	int32 ret;
-	mr_sms_return_flag=0;
-	ret = _mr_smsIndication(pContent, nLen, pNum, type);
-	if (mr_sms_return_flag==1)
-		ret =  mr_sms_return_val;
-	return ret;
+    int32 ret;
+    mr_sms_return_flag = 0;
+    ret = _mr_smsIndication(pContent, nLen, pNum, type);
+    if (mr_sms_return_flag == 1)
+        ret = mr_sms_return_val;
+    return ret;
 }
 
-static int32 _mr_newSIMInd(int16  type, uint8* old_IMSI)
-{
-	int32 id = mr_getNetworkID();
-	uint8 flag;
-	char num[MR_MAX_NUM_LEN];
-	int32 f;
+static int32 _mr_newSIMInd(int16 type, uint8 *old_IMSI) {
+    int32 id = mr_getNetworkID();
+    uint8 flag;
+    char num[MR_MAX_NUM_LEN];
+    int32 f;
 
-	if( (MR_SIM_NEW == type) || (MR_SIM_CHANGE == type) )
-	{
-		f = _mr_load_sms_cfg();
-		_mr_save_sms_cfg(f);
+    if ((MR_SIM_NEW == type) || (MR_SIM_CHANGE == type)) {
+        f = _mr_load_sms_cfg();
+        _mr_save_sms_cfg(f);
 
-		_mr_smsGetBytes(5, (char*)&flag, 1);
-		if(flag >= 128)
-		{
-			_mr_smsGetNum(3, num);
-		}else
-		{
-			switch(id)
-			{
-			case MR_NET_ID_MOBILE:
-				if (_mr_smsGetNum(MR_NET_ID_MOBILE, num) == MR_FAILED)
-					return MR_FAILED;
-				break;
-			case MR_NET_ID_CN:
-			case MR_NET_ID_CDMA:
-				if (_mr_smsGetNum(MR_NET_ID_CN, num) == MR_FAILED)
-					return MR_FAILED;
-				break;
-			default:
-				return MR_FAILED;
-				break;
-			}
-		}
-		_mr_smsReplyServer(num, old_IMSI);
-	}
-	return MR_SUCCESS;
+        _mr_smsGetBytes(5, (char *) &flag, 1);
+        if (flag >= 128) {
+            _mr_smsGetNum(3, num);
+        } else {
+            switch (id) {
+                case MR_NET_ID_MOBILE:
+                    if (_mr_smsGetNum(MR_NET_ID_MOBILE, num) == MR_FAILED)
+                        return MR_FAILED;
+                    break;
+                case MR_NET_ID_CN:
+                case MR_NET_ID_CDMA:
+                    if (_mr_smsGetNum(MR_NET_ID_CN, num) == MR_FAILED)
+                        return MR_FAILED;
+                    break;
+                default:
+                    return MR_FAILED;
+                    break;
+            }
+        }
+        _mr_smsReplyServer(num, old_IMSI);
+    }
+    return MR_SUCCESS;
 }
 
-int32 mr_newSIMInd(int16  type, uint8* old_IMSI)
-{
-	int32 ret;
-	ret = _mr_newSIMInd(type, old_IMSI);
-	return ret;
+int32 mr_newSIMInd(int16 type, uint8 *old_IMSI) {
+    int32 ret;
+    ret = _mr_newSIMInd(type, old_IMSI);
+    return ret;
 }
 
 //****************************短信
 
-int32 mr_save_mrp(void *p,uint32 l)
-{
-	char filename[15];
-	MR_FILE_HANDLE f;
+int32 mr_save_mrp(void *p, uint32 l) {
+    char filename[15];
+    MR_FILE_HANDLE f;
 
-	if(p == NULL || l == 0)
-	{
-		return MR_FAILED;
-	}
+    if (p == NULL || l == 0) {
+        return MR_FAILED;
+    }
 
-	if((*(char*)p == 'M') && (*((char*)p + 1) == 'R') && (*((char*)p + 2) == 'P') && (*((char*)p + 3) == 'G'))
-	{
+    if ((*(char *) p == 'M') && (*((char *) p + 1) == 'R') && (*((char *) p + 2) == 'P') &&
+        (*((char *) p + 3) == 'G')) {
 
-		MEMSET(filename, 0, sizeof(filename));
-		MEMCPY(filename , (char*)p + MR_OFFSET_FORM_FILEHEAD, 12);
+        MEMSET(filename, 0, sizeof(filename));
+        MEMCPY(filename, (char *) p + MR_OFFSET_FORM_FILEHEAD, 12);
 
-		/*if the same name file is exist, cover it*/
-		//if(mr_ffsStat(fileName, fsize))
-		{
-			mr_remove(filename);
-		}
+        /*if the same name file is exist, cover it*/
+        //if(mr_ffsStat(fileName, fsize))
+        {
+            mr_remove(filename);
+        }
 
-		f = mr_open(filename,  MR_FILE_WRONLY | MR_FILE_CREATE);
+        f = mr_open(filename, MR_FILE_WRONLY | MR_FILE_CREATE);
 
-		if(f != 0)
-		{
-			if(mr_write(f, (void *)p, l) != (int32)l)
-			{
-				mr_close(f);
-				return MR_FAILED;
-			}
-		}
+        if (f != 0) {
+            if (mr_write(f, (void *) p, l) != (int32) l) {
+                mr_close(f);
+                return MR_FAILED;
+            }
+        }
 
-		mr_close(f);
-		return MR_SUCCESS;
-	}
-	else
-	{
-		return MR_IGNORE;
-	}
+        mr_close(f);
+        return MR_SUCCESS;
+    } else {
+        return MR_IGNORE;
+    }
 }
 
 
-static void encode02(char *  value, int len, unsigned char cBgnInit, unsigned char cEndInit)//简单加密
+static void encode02(char *value, int len, unsigned char cBgnInit, unsigned char cEndInit)//简单加密
 {
-	int iLeft;
-	int iRight;
+    int iLeft;
+    int iRight;
 
-	for(iLeft = 0; iLeft < len; iLeft++)
-	{
-		if( iLeft==0) value[0] ^= cBgnInit;
-		else
-		{
-			if(value[iLeft] != value[iLeft-1])
-				value[iLeft] ^=value[iLeft-1];
-		}
-	}
-	for(iRight = len -1 ; iRight >= 0 ; iRight--)
-	{
-		if(iRight == len -1 ) value[ iRight ] ^= cEndInit;
-		else
-		{
-			if(value[iRight] != value[iRight+1])
-				value[iRight] ^= value[iRight+1];
-		}
-	}
+    for (iLeft = 0; iLeft < len; iLeft++) {
+        if (iLeft == 0) value[0] ^= cBgnInit;
+        else {
+            if (value[iLeft] != value[iLeft - 1])
+                value[iLeft] ^= value[iLeft - 1];
+        }
+    }
+    for (iRight = len - 1; iRight >= 0; iRight--) {
+        if (iRight == len - 1) value[iRight] ^= cEndInit;
+        else {
+            if (value[iRight] != value[iRight + 1])
+                value[iRight] ^= value[iRight + 1];
+        }
+    }
 }
 
-static int _mr_isMr(char*  input)
-{
-	mr_userinfo info;
-	char enc[16];
-	int appid, appver;
-	int ret = MR_FAILED;
+static int _mr_isMr(char *input) {
+    mr_userinfo info;
+    char enc[16];
+    int appid, appver;
+    int ret = MR_FAILED;
 
-	if (mr_getUserInfo(&info) == MR_SUCCESS){
-		appid = htonl(*((int*)&input[16]));
-		appver = htonl(*((int*)&input[20]));
-		enc[0] = info.IMEI[1];
-		enc[1] = info.IMEI[2];
-		enc[2] = info.IMEI[3];
-		enc[3] = info.IMEI[4];
-		enc[4] = info.IMEI[5];
-		enc[5] = info.IMEI[7];
-		enc[6] = info.IMEI[8];
-		enc[7] = appid % 239;
-		enc[8] = appver % 237;
-		enc[9] = info.manufactory[0];
-		enc[10] = info.type[0];
-		enc[11] = STRLEN(info.manufactory);
-		enc[12] = MR_VERSION % 251;
-		enc[13] = MR_VERSION % 247;
-		enc[14] = info.ver % 253;
-		enc[15] = info.ver % 241;
-		encode02(enc, 16, (info.IMEI[0] % 10)*21+info.IMEI[6], 
-			((info.IMEI[11] + info.IMEI[12]) % 10)*21+info.IMEI[14]);
-		if (MEMCMP(enc, input, 16) == 0){
-			ret = MR_SUCCESS;
-		}
-	}else{
-	}
-	return ret;
+    if (mr_getUserInfo(&info) == MR_SUCCESS) {
+        appid = htonl(*((int *) &input[16]));
+        appver = htonl(*((int *) &input[20]));
+        enc[0] = info.IMEI[1];
+        enc[1] = info.IMEI[2];
+        enc[2] = info.IMEI[3];
+        enc[3] = info.IMEI[4];
+        enc[4] = info.IMEI[5];
+        enc[5] = info.IMEI[7];
+        enc[6] = info.IMEI[8];
+        enc[7] = appid % 239;
+        enc[8] = appver % 237;
+        enc[9] = info.manufactory[0];
+        enc[10] = info.type[0];
+        enc[11] = STRLEN(info.manufactory);
+        enc[12] = MR_VERSION % 251;
+        enc[13] = MR_VERSION % 247;
+        enc[14] = info.ver % 253;
+        enc[15] = info.ver % 241;
+        encode02(enc, 16, (info.IMEI[0] % 10) * 21 + info.IMEI[6],
+                 ((info.IMEI[11] + info.IMEI[12]) % 10) * 21 + info.IMEI[14]);
+        if (MEMCMP(enc, input, 16) == 0) {
+            ret = MR_SUCCESS;
+        }
+    } else {
+    }
+    return ret;
 }
 
 
@@ -6832,21 +6697,20 @@ static int _mr_isMr(char*  input)
 #define T63 0x2ad7d2bb
 #define T64 0xeb86d391
 
-static void md5_process(md5_state_t *pms, const md5_byte_t *data /*[64]*/)
-{
-	md5_word_t
-		a = pms->abcd[0], b = pms->abcd[1],
-		c = pms->abcd[2], d = pms->abcd[3];
-	md5_word_t t;
+static void md5_process(md5_state_t *pms, const md5_byte_t *data /*[64]*/) {
+    md5_word_t
+            a = pms->abcd[0], b = pms->abcd[1],
+            c = pms->abcd[2], d = pms->abcd[3];
+    md5_word_t t;
 
-	//#ifndef ARCH_IS_BIG_ENDIAN
-	//#define ARCH_IS_BIG_ENDIAN 1	/* slower, default implementation */
-	//#endif
+    //#ifndef ARCH_IS_BIG_ENDIAN
+    //#define ARCH_IS_BIG_ENDIAN 1	/* slower, default implementation */
+    //#endif
 
 
 #ifdef MR_BIG_ENDIAN
 
-	/*
+                                                                                                                            /*
 	* On big-endian machines, we must arrange the bytes in the right
 	* order.  (This also works on machines of unknown byte order.)
 	*/
@@ -6859,273 +6723,264 @@ static void md5_process(md5_state_t *pms, const md5_byte_t *data /*[64]*/)
 
 #else  /* !MR_BIG_ENDIAN */
 
-	/*
+    /*
 	* On little-endian machines, we can process properly aligned data
 	* without copying it.
 	*/
-	md5_word_t xbuf[16];
-	const md5_word_t *X;
+    md5_word_t xbuf[16];
+    const md5_word_t *X;
 
-	if (!((data - (const md5_byte_t *)0) & 3)) 
-	{
-		/* data are properly aligned */
-		X = (const md5_word_t *)data;
-	} 
-	else 
-	{
-		/* not aligned */
-		MEMCPY(xbuf, data, 64);
-		X = xbuf;
-	}
+    if (!((data - (const md5_byte_t *) 0) & 3)) {
+        /* data are properly aligned */
+        X = (const md5_word_t *) data;
+    } else {
+        /* not aligned */
+        MEMCPY(xbuf, data, 64);
+        X = xbuf;
+    }
 #endif
 
 #define ROTATE_LEFT(x, n) (((x) << (n)) | ((x) >> (32 - (n))))
 
-	/* Round 1. */
-	/* Let [abcd k s i] denote the operation
+    /* Round 1. */
+    /* Let [abcd k s i] denote the operation
 	a = b + ((a + F(b,c,d) + X[k] + T[i]) <<< s). */
 #define F(x, y, z) (((x) & (y)) | (~(x) & (z)))
 #define SET(a, b, c, d, k, s, Ti)\
-	t = a + F(b,c,d) + X[k] + Ti;\
-	a = ROTATE_LEFT(t, s) + b
-	/* Do the following 16 operations. */
-	SET(a, b, c, d,  0,  7,  T1);
-	SET(d, a, b, c,  1, 12,  T2);
-	SET(c, d, a, b,  2, 17,  T3);
-	SET(b, c, d, a,  3, 22,  T4);
-	SET(a, b, c, d,  4,  7,  T5);
-	SET(d, a, b, c,  5, 12,  T6);
-	SET(c, d, a, b,  6, 17,  T7);
-	SET(b, c, d, a,  7, 22,  T8);
-	SET(a, b, c, d,  8,  7,  T9);
-	SET(d, a, b, c,  9, 12, T10);
-	SET(c, d, a, b, 10, 17, T11);
-	SET(b, c, d, a, 11, 22, T12);
-	SET(a, b, c, d, 12,  7, T13);
-	SET(d, a, b, c, 13, 12, T14);
-	SET(c, d, a, b, 14, 17, T15);
-	SET(b, c, d, a, 15, 22, T16);
+    t = a + F(b,c,d) + X[k] + Ti;\
+    a = ROTATE_LEFT(t, s) + b
+    /* Do the following 16 operations. */
+    SET(a, b, c, d, 0, 7, T1);
+    SET(d, a, b, c, 1, 12, T2);
+    SET(c, d, a, b, 2, 17, T3);
+    SET(b, c, d, a, 3, 22, T4);
+    SET(a, b, c, d, 4, 7, T5);
+    SET(d, a, b, c, 5, 12, T6);
+    SET(c, d, a, b, 6, 17, T7);
+    SET(b, c, d, a, 7, 22, T8);
+    SET(a, b, c, d, 8, 7, T9);
+    SET(d, a, b, c, 9, 12, T10);
+    SET(c, d, a, b, 10, 17, T11);
+    SET(b, c, d, a, 11, 22, T12);
+    SET(a, b, c, d, 12, 7, T13);
+    SET(d, a, b, c, 13, 12, T14);
+    SET(c, d, a, b, 14, 17, T15);
+    SET(b, c, d, a, 15, 22, T16);
 #undef SET
 
-	/* Round 2. */
-	/* Let [abcd k s i] denote the operation
+    /* Round 2. */
+    /* Let [abcd k s i] denote the operation
 	a = b + ((a + G(b,c,d) + X[k] + T[i]) <<< s). */
 #define G(x, y, z) (((x) & (z)) | ((y) & ~(z)))
 #define SET(a, b, c, d, k, s, Ti)\
-	t = a + G(b,c,d) + X[k] + Ti;\
-	a = ROTATE_LEFT(t, s) + b
-	/* Do the following 16 operations. */
-	SET(a, b, c, d,  1,  5, T17);
-	SET(d, a, b, c,  6,  9, T18);
-	SET(c, d, a, b, 11, 14, T19);
-	SET(b, c, d, a,  0, 20, T20);
-	SET(a, b, c, d,  5,  5, T21);
-	SET(d, a, b, c, 10,  9, T22);
-	SET(c, d, a, b, 15, 14, T23);
-	SET(b, c, d, a,  4, 20, T24);
-	SET(a, b, c, d,  9,  5, T25);
-	SET(d, a, b, c, 14,  9, T26);
-	SET(c, d, a, b,  3, 14, T27);
-	SET(b, c, d, a,  8, 20, T28);
-	SET(a, b, c, d, 13,  5, T29);
-	SET(d, a, b, c,  2,  9, T30);
-	SET(c, d, a, b,  7, 14, T31);
-	SET(b, c, d, a, 12, 20, T32);
+    t = a + G(b,c,d) + X[k] + Ti;\
+    a = ROTATE_LEFT(t, s) + b
+    /* Do the following 16 operations. */
+    SET(a, b, c, d, 1, 5, T17);
+    SET(d, a, b, c, 6, 9, T18);
+    SET(c, d, a, b, 11, 14, T19);
+    SET(b, c, d, a, 0, 20, T20);
+    SET(a, b, c, d, 5, 5, T21);
+    SET(d, a, b, c, 10, 9, T22);
+    SET(c, d, a, b, 15, 14, T23);
+    SET(b, c, d, a, 4, 20, T24);
+    SET(a, b, c, d, 9, 5, T25);
+    SET(d, a, b, c, 14, 9, T26);
+    SET(c, d, a, b, 3, 14, T27);
+    SET(b, c, d, a, 8, 20, T28);
+    SET(a, b, c, d, 13, 5, T29);
+    SET(d, a, b, c, 2, 9, T30);
+    SET(c, d, a, b, 7, 14, T31);
+    SET(b, c, d, a, 12, 20, T32);
 #undef SET
 
-	/* Round 3. */
-	/* Let [abcd k s t] denote the operation
+    /* Round 3. */
+    /* Let [abcd k s t] denote the operation
 	a = b + ((a + H(b,c,d) + X[k] + T[i]) <<< s). */
 #define H(x, y, z) ((x) ^ (y) ^ (z))
 #define SET(a, b, c, d, k, s, Ti)\
-	t = a + H(b,c,d) + X[k] + Ti;\
-	a = ROTATE_LEFT(t, s) + b
-	/* Do the following 16 operations. */
-	SET(a, b, c, d,  5,  4, T33);
-	SET(d, a, b, c,  8, 11, T34);
-	SET(c, d, a, b, 11, 16, T35);
-	SET(b, c, d, a, 14, 23, T36);
-	SET(a, b, c, d,  1,  4, T37);
-	SET(d, a, b, c,  4, 11, T38);
-	SET(c, d, a, b,  7, 16, T39);
-	SET(b, c, d, a, 10, 23, T40);
-	SET(a, b, c, d, 13,  4, T41);
-	SET(d, a, b, c,  0, 11, T42);
-	SET(c, d, a, b,  3, 16, T43);
-	SET(b, c, d, a,  6, 23, T44);
-	SET(a, b, c, d,  9,  4, T45);
-	SET(d, a, b, c, 12, 11, T46);
-	SET(c, d, a, b, 15, 16, T47);
-	SET(b, c, d, a,  2, 23, T48);
+    t = a + H(b,c,d) + X[k] + Ti;\
+    a = ROTATE_LEFT(t, s) + b
+    /* Do the following 16 operations. */
+    SET(a, b, c, d, 5, 4, T33);
+    SET(d, a, b, c, 8, 11, T34);
+    SET(c, d, a, b, 11, 16, T35);
+    SET(b, c, d, a, 14, 23, T36);
+    SET(a, b, c, d, 1, 4, T37);
+    SET(d, a, b, c, 4, 11, T38);
+    SET(c, d, a, b, 7, 16, T39);
+    SET(b, c, d, a, 10, 23, T40);
+    SET(a, b, c, d, 13, 4, T41);
+    SET(d, a, b, c, 0, 11, T42);
+    SET(c, d, a, b, 3, 16, T43);
+    SET(b, c, d, a, 6, 23, T44);
+    SET(a, b, c, d, 9, 4, T45);
+    SET(d, a, b, c, 12, 11, T46);
+    SET(c, d, a, b, 15, 16, T47);
+    SET(b, c, d, a, 2, 23, T48);
 #undef SET
 
-	/* Round 4. */
-	/* Let [abcd k s t] denote the operation
+    /* Round 4. */
+    /* Let [abcd k s t] denote the operation
 	a = b + ((a + I(b,c,d) + X[k] + T[i]) <<< s). */
 #define I(x, y, z) ((y) ^ ((x) | ~(z)))
 #define SET(a, b, c, d, k, s, Ti)\
-	t = a + I(b,c,d) + X[k] + Ti;\
-	a = ROTATE_LEFT(t, s) + b
-	/* Do the following 16 operations. */
-	SET(a, b, c, d,  0,  6, T49);
-	SET(d, a, b, c,  7, 10, T50);
-	SET(c, d, a, b, 14, 15, T51);
-	SET(b, c, d, a,  5, 21, T52);
-	SET(a, b, c, d, 12,  6, T53);
-	SET(d, a, b, c,  3, 10, T54);
-	SET(c, d, a, b, 10, 15, T55);
-	SET(b, c, d, a,  1, 21, T56);
-	SET(a, b, c, d,  8,  6, T57);
-	SET(d, a, b, c, 15, 10, T58);
-	SET(c, d, a, b,  6, 15, T59);
-	SET(b, c, d, a, 13, 21, T60);
-	SET(a, b, c, d,  4,  6, T61);
-	SET(d, a, b, c, 11, 10, T62);
-	SET(c, d, a, b,  2, 15, T63);
-	SET(b, c, d, a,  9, 21, T64);
+    t = a + I(b,c,d) + X[k] + Ti;\
+    a = ROTATE_LEFT(t, s) + b
+    /* Do the following 16 operations. */
+    SET(a, b, c, d, 0, 6, T49);
+    SET(d, a, b, c, 7, 10, T50);
+    SET(c, d, a, b, 14, 15, T51);
+    SET(b, c, d, a, 5, 21, T52);
+    SET(a, b, c, d, 12, 6, T53);
+    SET(d, a, b, c, 3, 10, T54);
+    SET(c, d, a, b, 10, 15, T55);
+    SET(b, c, d, a, 1, 21, T56);
+    SET(a, b, c, d, 8, 6, T57);
+    SET(d, a, b, c, 15, 10, T58);
+    SET(c, d, a, b, 6, 15, T59);
+    SET(b, c, d, a, 13, 21, T60);
+    SET(a, b, c, d, 4, 6, T61);
+    SET(d, a, b, c, 11, 10, T62);
+    SET(c, d, a, b, 2, 15, T63);
+    SET(b, c, d, a, 9, 21, T64);
 #undef SET
 
-	/* Then perform the following additions. (That is increment each
+    /* Then perform the following additions. (That is increment each
 	of the four registers by the value it had before this block
 	was started.) */
-	pms->abcd[0] += a;
-	pms->abcd[1] += b;
-	pms->abcd[2] += c;
-	pms->abcd[3] += d;
+    pms->abcd[0] += a;
+    pms->abcd[1] += b;
+    pms->abcd[2] += c;
+    pms->abcd[3] += d;
 }
 
-void mr_md5_init(md5_state_t *pms)
-{
-	pms->count[0] = pms->count[1] = 0;
-	pms->abcd[0] = 0x67452301;
-	pms->abcd[1] = 0xefcdab89;
-	pms->abcd[2] = 0x98badcfe;
-	pms->abcd[3] = 0x10325476;
+void mr_md5_init(md5_state_t *pms) {
+    pms->count[0] = pms->count[1] = 0;
+    pms->abcd[0] = 0x67452301;
+    pms->abcd[1] = 0xefcdab89;
+    pms->abcd[2] = 0x98badcfe;
+    pms->abcd[3] = 0x10325476;
 }
 
-void mr_md5_append(md5_state_t *pms, const md5_byte_t *data, int nbytes)
-{
-	const md5_byte_t *p = data;
-	int left = nbytes;
-	int offset = (pms->count[0] >> 3) & 63;
-	md5_word_t nbits = (md5_word_t)(nbytes << 3);
+void mr_md5_append(md5_state_t *pms, const md5_byte_t *data, int nbytes) {
+    const md5_byte_t *p = data;
+    int left = nbytes;
+    int offset = (pms->count[0] >> 3) & 63;
+    md5_word_t nbits = (md5_word_t) (nbytes << 3);
 
-	if (nbytes <= 0)
-		return;
+    if (nbytes <= 0)
+        return;
 
-	/* Update the message length. */
-	pms->count[1] += nbytes >> 29;
-	pms->count[0] += nbits;
+    /* Update the message length. */
+    pms->count[1] += nbytes >> 29;
+    pms->count[0] += nbits;
 
-	if (pms->count[0] < nbits)
-		pms->count[1]++;
+    if (pms->count[0] < nbits)
+        pms->count[1]++;
 
-	/* Process an initial partial block. */
-	if (offset) 
-	{
-		int copy = (offset + nbytes > 64 ? 64 - offset : nbytes);
+    /* Process an initial partial block. */
+    if (offset) {
+        int copy = (offset + nbytes > 64 ? 64 - offset : nbytes);
 
-		MEMCPY(pms->buf + offset, p, copy);
+        MEMCPY(pms->buf + offset, p, copy);
 
-		if (offset + copy < 64)
-			return;
+        if (offset + copy < 64)
+            return;
 
-		p += copy;
-		left -= copy;
-		md5_process(pms, pms->buf);
-	}
+        p += copy;
+        left -= copy;
+        md5_process(pms, pms->buf);
+    }
 
-	/* Process full blocks. */
-	for (; left >= 64; p += 64, left -= 64)
-		md5_process(pms, p);
+    /* Process full blocks. */
+    for (; left >= 64; p += 64, left -= 64)
+        md5_process(pms, p);
 
-	/* Process a final partial block. */
-	if (left)
-		MEMCPY(pms->buf, p, left);
+    /* Process a final partial block. */
+    if (left)
+        MEMCPY(pms->buf, p, left);
 }
 
-void mr_md5_finish(md5_state_t *pms, md5_byte_t digest[16])
-{
-	static const md5_byte_t pad[64] = 
-	{
-		0x80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-	};
+void mr_md5_finish(md5_state_t *pms, md5_byte_t digest[16]) {
+    static const md5_byte_t pad[64] =
+            {
+                    0x80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            };
 
-	md5_byte_t data[8];
-	int i;
+    md5_byte_t data[8];
+    int i;
 
-	/* Save the length before padding. */
-	for (i = 0; i < 8; ++i)
-		data[i] = (md5_byte_t)(pms->count[i >> 2] >> ((i & 3) << 3));
+    /* Save the length before padding. */
+    for (i = 0; i < 8; ++i)
+        data[i] = (md5_byte_t) (pms->count[i >> 2] >> ((i & 3) << 3));
 
-	/* Pad to 56 bytes mod 64. */
-	mr_md5_append(pms, pad, ((55 - (pms->count[0] >> 3)) & 63) + 1);
+    /* Pad to 56 bytes mod 64. */
+    mr_md5_append(pms, pad, ((55 - (pms->count[0] >> 3)) & 63) + 1);
 
-	/* Append the length. */
+    /* Append the length. */
 
-	mr_md5_append(pms, data, 8);
-	for (i = 0; i < 16; ++i)
-		digest[i] = (md5_byte_t)(pms->abcd[i >> 2] >> ((i & 3) << 3));
+    mr_md5_append(pms, data, 8);
+    for (i = 0; i < 16; ++i)
+        digest[i] = (md5_byte_t) (pms->abcd[i >> 2] >> ((i & 3) << 3));
 }
 
 //////////////////////////////////////////md5
 
 
 
-int FF_Divide( int dividend, int divisor )
-{
-	int i;
-	int remainder1,remainder2,div;
-	int temp;
-	int result=0;
-	int flag;
+int FF_Divide(int dividend, int divisor) {
+    int i;
+    int remainder1, remainder2, div;
+    int temp;
+    int result = 0;
+    int flag;
 
-	if (divisor==0)
-		return 0x7fFFFFFF;		
+    if (divisor == 0)
+        return 0x7fFFFFFF;
 
-	remainder2=dividend;
-	if(remainder2<0)remainder2 =-remainder2;
-	div=divisor;
-	if(div < 0)div = -div;
+    remainder2 = dividend;
+    if (remainder2 < 0)remainder2 = -remainder2;
+    div = divisor;
+    if (div < 0)div = -div;
 
-	result=(int)(remainder2/div);
-	result=(result<<15);		//INT fraction
+    result = (int) (remainder2 / div);
+    result = (result << 15);        //INT fraction
 
-	//FLOAT fraction
-	remainder1=(int)(remainder2%div);
-	remainder1=(remainder1<<1);
-	remainder2=0;
+    //FLOAT fraction
+    remainder1 = (int) (remainder2 % div);
+    remainder1 = (remainder1 << 1);
+    remainder2 = 0;
 
-	for (i=0;i<15;i++)
-	{
-		temp=remainder1;
-		remainder1-=div;
-		flag=1;
-		if(remainder1<0){
-			remainder1=temp;
-			flag=0;
-		}
-		remainder1=(remainder1<<1);
-		remainder2=(remainder2<<1);
-		if (flag)
-			remainder2=remainder2+1;
-	}
+    for (i = 0; i < 15; i++) {
+        temp = remainder1;
+        remainder1 -= div;
+        flag = 1;
+        if (remainder1 < 0) {
+            remainder1 = temp;
+            flag = 0;
+        }
+        remainder1 = (remainder1 << 1);
+        remainder2 = (remainder2 << 1);
+        if (flag)
+            remainder2 = remainder2 + 1;
+    }
 
-	result+=remainder2;
+    result += remainder2;
 
-	if(((dividend>0) && (divisor<0)) || ((dividend<0) && (divisor>0)))
-		result=-result;
+    if (((dividend > 0) && (divisor < 0)) || ((dividend < 0) && (divisor > 0)))
+        result = -result;
 
-	return result;
+    return result;
 }
 
 
 #ifdef MR_MSTAR_MOD
 
-#undef strncpy
+                                                                                                                        #undef strncpy
 //extern char *strncpy(char * s1, const char * s2, int n);
 
 char *mr_strncpy(char * s1, const char * s2, int n)
@@ -7142,7 +6997,7 @@ char *mr_strncpy(char * s1, const char * s2, int n)
 
 
 #if defined(MR_BREW_OTA_MOD)
-int mrp_sprintf(char * s,const char * format, ...)
+                                                                                                                        int mrp_sprintf(char * s,const char * format, ...)
 {
 	int ret;
 	va_list ap;
@@ -7154,256 +7009,231 @@ int mrp_sprintf(char * s,const char * format, ...)
 }
 #endif
 
-uint32 mr_ltoh(char * startAddr)
-{
-	return  (startAddr[3] << 24) | ((startAddr[2] & 0xff)<< 16)  | ((startAddr[1] & 0xff) << 8) | (startAddr[0] & 0xff);
+uint32 mr_ltoh(char *startAddr) {
+    return (startAddr[3] << 24) | ((startAddr[2] & 0xff) << 16) | ((startAddr[1] & 0xff) << 8) |
+           (startAddr[0] & 0xff);
 }
 
-uint32 mr_ntohl(char * startAddr)
-{
-	return  ((startAddr[0] & 0xff)<< 24) | ((startAddr[1] & 0xff)<< 16) | ((startAddr[2] & 0xff) << 8) | (startAddr[3] & 0xFF);
+uint32 mr_ntohl(char *startAddr) {
+    return ((startAddr[0] & 0xff) << 24) | ((startAddr[1] & 0xff) << 16) |
+           ((startAddr[2] & 0xff) << 8) | (startAddr[3] & 0xFF);
 }
 
 
 #define CFG_FILENAME  "#807022#*"
 
-int32 _mr_getMetaMemLimit()
-{
-	int32 nTmp;
-	int32 len = 0,file_len = 0;
-	void* workbuffer = NULL;
+int32 _mr_getMetaMemLimit() {
+    int32 nTmp;
+    int32 len = 0, file_len = 0;
+    void *workbuffer = NULL;
 
-	int32 f;
+    int32 f;
 
-	char TempName[MR_MAX_FILENAME_SIZE];
-	int is_rom_file = FALSE;
-	uint32 headbuf[4];
-	char* this_packname;
-	char* mr_m0_file;
-	char _v[4];	
-	int32 memValue;
-
-
-	this_packname = pack_filename;
+    char TempName[MR_MAX_FILENAME_SIZE];
+    int is_rom_file = FALSE;
+    uint32 headbuf[4];
+    char *this_packname;
+    char *mr_m0_file;
+    char _v[4];
+    int32 memValue;
 
 
-	if ((this_packname[0] == '*')||(this_packname[0] == '$'))
-	{
-		/*read file from m0*/
-		uint32 pos = 0;
-		uint32 m0file_len;
+    this_packname = pack_filename;
 
 
-		if (this_packname[0] == '*'){/*m0 file?*/
-			mr_m0_file = (char*)mr_m0_files[this_packname[1]-0x41]; //这里定义文件名为*A即是第一个m0文件
-			//*B是第二个.........
-		}else{
-			mr_m0_file = mr_ram_file;
-		}
+    if ((this_packname[0] == '*') || (this_packname[0] == '$')) {
+        /*read file from m0*/
+        uint32 pos = 0;
+        uint32 m0file_len;
 
 
-		if (mr_m0_file == NULL){
-
-			return 0;
-		}
-
-		pos = pos + 4;
-		MEMCPY(&_v[0], &mr_m0_file[pos], 4);
-
-		len =  mr_ltoh((char*)_v);
-
-		pos = pos + 4;
-
-		if(this_packname[0] == '$'){
-			m0file_len = mr_ram_file_len;
-		}else{
-			MEMCPY(&_v[0], &mr_m0_file[pos], 4);
-
-			m0file_len = mr_ltoh((char*)_v);
-		}
-
-		pos = pos + len;
-
-		if (((pos+4) >= m0file_len)||(len<1)||(len>=MR_MAX_FILE_SIZE))
-		{
-			return 0;
-		}
-		MEMCPY(&_v[0], &mr_m0_file[pos], 4);
-
-		len = mr_ltoh((char*)_v);
-
-		pos = pos + 4;
-		if (((len + pos) >= m0file_len)||(len<1)||(len>=MR_MAX_FILENAME_SIZE))
-		{
-			return 0;
-		}
-
-		MEMCPY(TempName, &mr_m0_file[pos], len);
-		TempName[len] = 0;
-
-		pos = pos + len;
-		if (STRCMP(CFG_FILENAME, TempName)==0)
-		{
-			MEMCPY(&_v[0], &mr_m0_file[pos], 4);
-
-			len = mr_ltoh((char*)_v);
-
-			pos = pos + 4;
-
-			if (((len + pos) > m0file_len)||(len<1)||(len>=MR_MAX_FILE_SIZE))
-			{
-				return 0;
-			}
-		}else
-		{
-			return 0;
-		}
-
-		file_len = len;
-		if (file_len <= 0 )
-		{
-			return 0;
-		}
-
-		pos += 3*4;	
-		MEMCPY(&_v[0],&mr_m0_file[pos],4);
-	}else   /*read file from efs , EFS 中的文件*/
-	{
-		f =  mr_open(this_packname, MR_FILE_RDONLY );
+        if (this_packname[0] == '*') {/*m0 file?*/
+            mr_m0_file = (char *) mr_m0_files[this_packname[1] - 0x41]; //这里定义文件名为*A即是第一个m0文件
+            //*B是第二个.........
+        } else {
+            mr_m0_file = mr_ram_file;
+        }
 
 
-		MEMSET(headbuf, 0, sizeof(headbuf));
-		nTmp = mr_read(f, &headbuf, sizeof(headbuf));
+        if (mr_m0_file == NULL) {
+
+            return 0;
+        }
+
+        pos = pos + 4;
+        MEMCPY(&_v[0], &mr_m0_file[pos], 4);
+
+        len = mr_ltoh((char *) _v);
+
+        pos = pos + 4;
+
+        if (this_packname[0] == '$') {
+            m0file_len = mr_ram_file_len;
+        } else {
+            MEMCPY(&_v[0], &mr_m0_file[pos], 4);
+
+            m0file_len = mr_ltoh((char *) _v);
+        }
+
+        pos = pos + len;
+
+        if (((pos + 4) >= m0file_len) || (len < 1) || (len >= MR_MAX_FILE_SIZE)) {
+            return 0;
+        }
+        MEMCPY(&_v[0], &mr_m0_file[pos], 4);
+
+        len = mr_ltoh((char *) _v);
+
+        pos = pos + 4;
+        if (((len + pos) >= m0file_len) || (len < 1) || (len >= MR_MAX_FILENAME_SIZE)) {
+            return 0;
+        }
+
+        MEMCPY(TempName, &mr_m0_file[pos], len);
+        TempName[len] = 0;
+
+        pos = pos + len;
+        if (STRCMP(CFG_FILENAME, TempName) == 0) {
+            MEMCPY(&_v[0], &mr_m0_file[pos], 4);
+
+            len = mr_ltoh((char *) _v);
+
+            pos = pos + 4;
+
+            if (((len + pos) > m0file_len) || (len < 1) || (len >= MR_MAX_FILE_SIZE)) {
+                return 0;
+            }
+        } else {
+            return 0;
+        }
+
+        file_len = len;
+        if (file_len <= 0) {
+            return 0;
+        }
+
+        pos += 3 * 4;
+        MEMCPY(&_v[0], &mr_m0_file[pos], 4);
+    } else   /*read file from efs , EFS 中的文件*/
+    {
+        f = mr_open(this_packname, MR_FILE_RDONLY);
 
 
-		headbuf[0] = mr_ltoh((char*)&headbuf[0]);
-		headbuf[1] = mr_ltoh((char*)&headbuf[1]);
-		headbuf[2] = mr_ltoh((char*)&headbuf[2]);
-		headbuf[3] = mr_ltoh((char*)&headbuf[3]);
-
-		if( (nTmp != 16)||(headbuf[0] != 1196446285) ||(headbuf[1] <= 232))
-		{
-			mr_close(f);
-			return 0;
-		}
-		{                             //新版mrp 
-			uint32 indexlen = headbuf[1] + 8 - headbuf[3];
-			uint32 pos = 0;
-			uint32 file_pos = 0;
-
-			nTmp = mr_seek(f, headbuf[3] - 16, MR_SEEK_CUR);
-			if (nTmp < 0)
-			{
-				mr_close(f);
-				return 0;
-			}
+        MEMSET(headbuf, 0, sizeof(headbuf));
+        nTmp = mr_read(f, &headbuf, sizeof(headbuf));
 
 
+        headbuf[0] = mr_ltoh((char *) &headbuf[0]);
+        headbuf[1] = mr_ltoh((char *) &headbuf[1]);
+        headbuf[2] = mr_ltoh((char *) &headbuf[2]);
+        headbuf[3] = mr_ltoh((char *) &headbuf[3]);
 
-			nTmp = mr_read(f,&_v[0],4);
-			if (nTmp!=4)
-			{
-				mr_close(f);
-				return 0;
-			}
+        if ((nTmp != 16) || (headbuf[0] != 1196446285) || (headbuf[1] <= 232)) {
+            mr_close(f);
+            return 0;
+        }
+        {                             //新版mrp
+            uint32 indexlen = headbuf[1] + 8 - headbuf[3];
+            uint32 pos = 0;
+            uint32 file_pos = 0;
 
-			len = mr_ltoh((char*)_v);
-
-			pos = pos + 4;
-			if (((len + pos) > indexlen)||(len<1)||(len>=MR_MAX_FILENAME_SIZE))
-			{
-				mr_close(f);
-
-				return 0;
-			}
-
-			nTmp = mr_read(f,&TempName[0],len);	
-			if (nTmp!=len)
-			{
-				mr_close(f);
-				return 0;
-			}
-
-			TempName[len] = 0;
-
-			pos = pos + len;
-			if (STRCMP(CFG_FILENAME, TempName)==0)
-			{
-				nTmp = mr_read(f,&_v[0],4);
-				pos = pos + 4;
-				file_pos = mr_ltoh((char*)_v);
-
-				nTmp = mr_read(f,&_v[0],4);
-				pos = pos + 4;
-				file_len = mr_ltoh((char*)_v);
+            nTmp = mr_seek(f, headbuf[3] - 16, MR_SEEK_CUR);
+            if (nTmp < 0) {
+                mr_close(f);
+                return 0;
+            }
 
 
-				if ((file_pos + file_len) > headbuf[2])
-				{
-					mr_close(f);
+            nTmp = mr_read(f, &_v[0], 4);
+            if (nTmp != 4) {
+                mr_close(f);
+                return 0;
+            }
 
-					return 0;
-				}
-			}else
-			{
-				mr_close(f);
-				MRDBGPRINTF("can not found %s",CFG_FILENAME);
-				return 0; 
-			}
+            len = mr_ltoh((char *) _v);
+
+            pos = pos + 4;
+            if (((len + pos) > indexlen) || (len < 1) || (len >= MR_MAX_FILENAME_SIZE)) {
+                mr_close(f);
+
+                return 0;
+            }
+
+            nTmp = mr_read(f, &TempName[0], len);
+            if (nTmp != len) {
+                mr_close(f);
+                return 0;
+            }
+
+            TempName[len] = 0;
+
+            pos = pos + len;
+            if (STRCMP(CFG_FILENAME, TempName) == 0) {
+                nTmp = mr_read(f, &_v[0], 4);
+                pos = pos + 4;
+                file_pos = mr_ltoh((char *) _v);
+
+                nTmp = mr_read(f, &_v[0], 4);
+                pos = pos + 4;
+                file_len = mr_ltoh((char *) _v);
 
 
+                if ((file_pos + file_len) > headbuf[2]) {
+                    mr_close(f);
 
-			nTmp = mr_seek(f,file_pos + 3*4,MR_SEEK_SET); /*精简虚拟器读取第四个int32*/
-			if (nTmp<0)
-			{
-				mr_close(f);
-				return 0;
-			}
+                    return 0;
+                }
+            } else {
+                mr_close(f);
+                MRDBGPRINTF("can not found %s", CFG_FILENAME);
+                return 0;
+            }
+
+
+            nTmp = mr_seek(f, file_pos + 3 * 4, MR_SEEK_SET); /*精简虚拟器读取第四个int32*/
+            if (nTmp < 0) {
+                mr_close(f);
+                return 0;
+            }
 
 
 #ifdef MR_SPREADTRUM_MOD
-			if ((file_len < 0)){
+                                                                                                                                    if ((file_len < 0)){
 				mr_close(f);
 
 				return 0;
 			}
 #endif
 
-			nTmp = mr_read(f,&_v[0],4);
+            nTmp = mr_read(f, &_v[0], 4);
 
-			mr_close(f);
-			if (nTmp!=4)
-			{
-				return nTmp;	
-			}
+            mr_close(f);
+            if (nTmp != 4) {
+                return nTmp;
+            }
 
-		}
-	}
+        }
+    }
 
-	memValue = mr_ntohl((char*)_v);
+    memValue = mr_ntohl((char *) _v);
 
 
-	return memValue;
+    return memValue;
 }
 
 
-
-
-void mr_getScrBuf(uint16** buf,int32 *width,int32 *height)
-{
-	if (buf)     *buf    = mr_screenBuf;
-	if (width)   *width  = mr_screen_w;
-	if (height)  *height = mr_screen_h;
+void mr_getScrBuf(uint16 **buf, int32 *width, int32 *height) {
+    if (buf) *buf = mr_screenBuf;
+    if (width) *width = mr_screen_w;
+    if (height) *height = mr_screen_h;
 }
 
-void mr_getMemoryInfo(uint32 *total, uint32 *free, uint32 *top)
-{
-	if(total) *total = LG_mem_len;
-	if(free) *free = LG_mem_left;
-	if(top) *top = LG_mem_top;
+void mr_getMemoryInfo(uint32 *total, uint32 *free, uint32 *top) {
+    if (total) *total = LG_mem_len;
+    if (free) *free = LG_mem_left;
+    if (top) *top = LG_mem_top;
 }
 
-void mr_setScrBuf(uint16* buf)
-{
-	mr_screenBuf = buf;
+void mr_setScrBuf(uint16 *buf) {
+    mr_screenBuf = buf;
 }
