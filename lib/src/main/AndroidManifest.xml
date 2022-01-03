@@ -1,4 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.mrpoid"
     android:versionCode="1826"
     android:versionName="1.8.0726" >
@@ -74,9 +75,9 @@
             android:exported="true"
             android:launchMode="standard"
             android:multiprocess="true">
-            <intent-filter>
-<!--                下一行被jiye注释掉了-->
-<!--                <action android:name="android.intent.action.VIEW" />-->
+            <intent-filter android:scheme="http"
+                tools:ignore="AppLinkUrlError">
+                <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.EDIT" />
 
                 <category android:name="android.intent.category.DEFAULT" />

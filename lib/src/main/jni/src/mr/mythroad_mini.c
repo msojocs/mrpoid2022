@@ -1867,11 +1867,12 @@ void *_mr_readFile(const char *filename, int *filelen, int lookfor) {
 
 
     if ((pack_filename[0] == '*') || (pack_filename[0] == '$'))/*m0 file or ram file?*/
-    {/*read file from m0*/
+    {
+        // read file from m0
         uint32 pos = 0;
         uint32 m0file_len;
 
-        if (pack_filename[0] == '*') {/*m0 file?*/
+        if (pack_filename[0] == '*') {// m0 file?
             mr_m0_file = (char *) mr_m0_files[pack_filename[1] - 0x41]; //这里定义文件名为*A即是第一个m0文件
             //*B是第二个.........
         } else {

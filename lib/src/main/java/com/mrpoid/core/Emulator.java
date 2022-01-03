@@ -961,5 +961,4 @@ public class Emulator implements Callback {
     public static native String native_getAppName(String path);
 
 	///////////////////////////////////
-	public native void hello();
 }

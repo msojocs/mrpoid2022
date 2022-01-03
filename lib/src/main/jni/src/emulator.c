@@ -1251,8 +1251,3 @@ void emu_stopShake()
 	(*jniEnv)->CallVoidMethod(jniEnv, obj_emuAudio, id_stopShake);
 	(*jniEnv)->ExceptionClear(jniEnv);
 }
-
-JNIEXPORT void JNICALL
-Java_com_mrpoid_core_Emulator_hello(JNIEnv *env, jobject thiz) {
-	LOGI("你好我好大家好");
-}

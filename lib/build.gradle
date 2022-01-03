@@ -2,7 +2,8 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 29
-    buildToolsVersion '29.0.3'
+    buildToolsVersion '30.0.3'
+    publishNonDefault true
 
     defaultConfig {
         minSdkVersion 17
@@ -14,27 +15,63 @@ android {
              abiFilters 'x86', 'armeabi-v7a'
 //            , 'arm64-v8a', 'x86_64'
         }
+        externalNativeBuild {
+            cmake {
+                // explicitly build libs
+                targets  'mrpoid', 'mr_vm_mini', 'mrpoid2', 'mr_vm_full'
+            }
+
+        }
     }
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+
+            ndk {
+                // Specifies the ABI configurations of your native
+                // libraries Gradle should build and package with your APK.
+                abiFilters 'x86', 'armeabi-v7a'
+//            , 'arm64-v8a', 'x86_64'
+            }
+        }
+        customDebug {
+            minifyEnabled false
+            debuggable true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            // 添加编译宏，在C 或者 C++源码中添加 LOG_DEBUG 的编译宏
+            externalNativeBuild {
+                cmake {
+                    cppFlags "-DLOG_DEBUG"
+                    cFlags "-DLOG_DEBUG"
+                }
+                ndkBuild {
+                    cppFlags '-DLOG_DEBUG'
+                    cFlags "-DLOG_DEBUG"
+                }
+            }
+            ndk {
+                // Specifies the ABI configurations of your native
+                // libraries Gradle should build and package with your APK.
+                abiFilters 'x86', 'armeabi-v7a'
+//            , 'arm64-v8a', 'x86_64'
+            }
         }
     }
-
     // Encapsulates your external native build configurations.
     externalNativeBuild {
 
         // Encapsulates your CMake build configurations.
         cmake {
             // Provides a relative path to your CMake build script.
-           // path "src/main/jni/CMakeLists.txt"
+            path "src/main/jni/CMakeLists.txt"
+            version '3.10.2'
         }
 
-        ndkBuild {
-            path 'src/main/jni/Android.mk'
-        }
+//        ndkBuild {
+//            path 'src/main/jni/Android.mk'
+//        }
     }
 }
 

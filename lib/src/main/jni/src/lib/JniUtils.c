@@ -6,7 +6,7 @@
  */
 
 
-#include <lib/JniUtils.h>
+#include <JniUtils.h>
 #include <mr_types.h>
 #include <malloc.h>
 #include <string.h>
