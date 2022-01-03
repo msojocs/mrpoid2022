@@ -15,4 +15,7 @@
 
     <dimen name="default_padding">9dp</dimen>
 
+    <dimen name="text_size">16sp</dimen>
+    <dimen name="dp5">5dp</dimen>
+    <dimen name="sp1">1sp</dimen>
 </resources>

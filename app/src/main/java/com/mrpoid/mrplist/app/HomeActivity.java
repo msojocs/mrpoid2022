@@ -56,11 +56,13 @@ import com.edroid.common.utils.UmengUtils;
 import com.mrpoid.MrpoidMain;
 import com.mrpoid.app.HelpActivity;
 import com.mrpoid.app.MrpoidSettingsActivity;
+import com.mrpoid.core.Emulator;
 import com.mrpoid.mrplist.R;
 import com.mrpoid.mrplist.moduls.MrpInfo;
 import com.mrpoid.mrplist.moduls.MyFavoriteManager;
 import com.mrpoid.mrplist.moduls.PreferencesProvider;
 import com.mrpoid.mrplist.utils.MrpUtils;
+import com.mrpoid.mrplist.utils.Test;
 import com.mrpoid.mrplist.view.BaseFileFragment;
 import com.mrpoid.mrplist.view.ExplorerFragment;
 import com.mrpoid.mrplist.view.MyFavoriteFragment;
@@ -102,6 +104,8 @@ public class HomeActivity extends AppCompatActivity implements OnClickListener,
 
     @Override
     protected void onCreate(Bundle arg0) {
+        Test.hello();
+        Emulator.hello();
         Log.d(TAG, "home create");
 //		int themeColor = PreferencesProvider.Interface.General.getThemeColor(0);
 //		if(themeColor == 1) {
