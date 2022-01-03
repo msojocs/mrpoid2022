@@ -2,12 +2,11 @@ cmake_minimum_required(VERSION 3.4.1)
 
 set(CMAKE_VERBOSE_MAKEFILE on)
 
-set(LOCAL_PATH ${CMAKE_CURRENT_SOURCE_DIR})
 set(MINI_VM_VERSION 2011)
 set(VM_VERSION 1968)
-set(MINI_TARGETDIR  )
 
-add_definitions(-c -littleend -O2 -DTARGET_MOD -DMTK_MOD -DMR_VERSION=${MINI_VM_VERSION} -DMR_PLAT_DRAWTEXT -DMR_PLAT_U2C)
+# 公共definitions
+add_definitions(-c -littleend -O2 -DTARGET_MOD -DMTK_MOD -DMR_PLAT_DRAWTEXT -DMR_PLAT_U2C)
 
 include_directories(include .)
 
@@ -26,6 +25,9 @@ add_library( # Sets the name of the library.
         mr_inflate.c
         mr_graphics.c
         )
+# 私有definitions
+target_compile_definitions(mr_vm_mini PRIVATE -DMR_VERSION=${MINI_VM_VERSION})
+
 # copy out the lib binary... need to leave the static lib around to pass gradle check
 set(distribution_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../../../../distribution)
 set_target_properties(mr_vm_mini
@@ -45,8 +47,7 @@ add_custom_command(TARGET mr_vm_mini POST_BUILD
 
 
 #完全版
-
-add_definitions(-c -littleend -O2 -DTARGET_MOD -DMTK_MOD -DMR_VERSION=${VM_VERSION} -DMR_PLAT_DRAWTEXT -DMR_PLAT_U2C)
+#add_definitions(-c -littleend -O2 -DTARGET_MOD -DMTK_MOD -DMR_VERSION=${VM_VERSION} -DMR_PLAT_DRAWTEXT -DMR_PLAT_U2C)
 
 include_directories(include . src tomr/include)
 
@@ -112,6 +113,8 @@ add_library( # Sets the name of the library.
         tomr/src/tomr_push.c
         tomr/src/tomr_to.c
         )
+
+target_compile_definitions(mr_vm_full PRIVATE -DMR_VERSION=${VM_VERSION})
 # copy out the lib binary... need to leave the static lib around to pass gradle check
 set(distribution_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../../../../distribution)
 set_target_properties(mr_vm_full

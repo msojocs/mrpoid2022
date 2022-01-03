@@ -9,7 +9,6 @@ include_directories(
         .
         lib
 )
-add_definitions(-DDSM_MINI)
 
 add_library(lib_mr_vm_mini STATIC IMPORTED)
 set_target_properties(lib_mr_vm_mini PROPERTIES IMPORTED_LOCATION
@@ -34,6 +33,8 @@ add_library( # Sets the name of the library.
         lib/JniUtils.c
         #	font/tsffont.c
         )
+# 私有definitions
+target_compile_definitions(mrpoid PRIVATE -DDSM_MINI)
 target_include_directories(mrpoid PRIVATE
         ${distribution_DIR}/mr_pre/include)
 target_link_libraries( # Specifies the target library.
@@ -54,7 +55,6 @@ include_directories(
         .
         lib
 )
-add_definitions(-DDSM_FULL)
 
 add_library(lib_mr_vm_full STATIC IMPORTED)
 set_target_properties(lib_mr_vm_full PROPERTIES IMPORTED_LOCATION
@@ -79,6 +79,8 @@ add_library( # Sets the name of the library.
         font/font_sky16_2.c
         lib/JniUtils.c
         )
+# 私有definitions
+target_compile_definitions(mrpoid2 PRIVATE -DDSM_FULL)
 target_include_directories(mrpoid2 PRIVATE
         ${distribution_DIR}/mr_pre/include)
 target_link_libraries( # Specifies the target library.
