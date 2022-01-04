@@ -92,13 +92,12 @@
             android:allowTaskReparenting="true"
             android:configChanges="orientation|keyboard"
             android:label="[MRPOID]窗口0"
-            android:process=":app0"
             android:taskAffinity="com.mrpoid.apps.App0"
             android:theme="@style/emu_theme_light" />
 
         <service
             android:name="com.mrpoid.apps.AppService0"
-            android:process=":app0" />
+             />
 
         <!-- 模拟器 1 -->
         <activity

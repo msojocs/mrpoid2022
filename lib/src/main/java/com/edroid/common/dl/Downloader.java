@@ -34,11 +34,11 @@ public class Downloader implements Runnable {
 	private static final int RW_BUF_SIZE = 32 * 1024;
 	private static final int MAX_RETRY_TIMES = 5;
 
-	private String fileSavePath;
-	private String urlString;
+	private final String fileSavePath;
+	private final String urlString;
 	private IDownloadListener listener;
 	private boolean canceled = false;
-	private Context mContext;
+	private final Context mContext;
 	private Handler mUserHandler;
 	private boolean async = true; //异步下载
 	private int retryTimes = 0;

@@ -192,7 +192,7 @@ public class Emulator implements Callback {
 	 */
 	public void recycle() {
 		native_destroy();
-		audio.recyle();
+		audio.recycle();
 		screen.recyle();
 		bInited = false;
 	}
@@ -424,9 +424,9 @@ public class Emulator implements Callback {
 		N2J_timerStop();
 
 		audio.stop();
-		audio.recyle();
+		audio.recycle();
 		screen.recyle();
-		BitmapPool.recyle();
+		BitmapPool.recycle();
 
 		emulatorActivity = null;
 		emulatorView = null;

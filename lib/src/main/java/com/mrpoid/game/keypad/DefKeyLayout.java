@@ -20,7 +20,7 @@ import com.mrpoid.R;
 import com.mrpoid.core.MrDefines;
 import com.mrpoid.core.MrpoidSettings;
 import com.mrpoid.game.engine.ActorGroup;
-import com.mrpoid.game.keypad.Keypad.KeyLayouter;
+import com.mrpoid.game.keypad.Keypad.KeyLayout;
 
 
 /**
@@ -29,7 +29,7 @@ import com.mrpoid.game.keypad.Keypad.KeyLayouter;
  * @author YYichou 2014-6-26
  *
  */
-public class DefKeyLayouter implements KeyLayouter {
+public class DefKeyLayout implements KeyLayout {
 	private int viewW, viewH;
 	
 	

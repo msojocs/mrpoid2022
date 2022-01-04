@@ -131,9 +131,7 @@ public abstract class Actor {
 	}
 	
 	public boolean isHit(float fx, float fy) {
-		if (fx < 0 || fx > w || fy < 0 || fy > h)
-			return false;
-		return true;
+		return !(fx < 0) && !(fx > w) && !(fy < 0) && !(fy > h);
 	}
 	
 	public boolean isShow() {

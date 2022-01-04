@@ -35,7 +35,6 @@ import android.view.SurfaceView;
  */
 public class EmuView extends SurfaceView {
 	public static final String TAG = "EmulatorSurface";
-	
 
 	public EmuView(Context context) {
 		super(context);

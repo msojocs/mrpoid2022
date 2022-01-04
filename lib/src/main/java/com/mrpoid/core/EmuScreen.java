@@ -33,6 +33,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -45,528 +46,535 @@ import com.edroid.common.utils.Logger;
  * @author Yichou 2013-4-19
  */
 public class EmuScreen implements View.OnTouchListener, View.OnKeyListener, SurfaceHolder.Callback, Handler.Callback {
-	static final String TAG = EmuScreen.class.getSimpleName();
-	static final Logger log = Emulator.log;
-	
-	private static final String TEST = "1.你好，Hellogfa"; 
-	
-	private Emulator emulator;
-	private EmuConfig cfg;
-	private SurfaceHolder surfaceHolder;
+    static final String TAG = EmuScreen.class.getSimpleName();
+    static final Logger log = Emulator.log;
 
-	private HandlerThread drawThread;
-	private Handler drawHandler;
-	private boolean surfaceOk;
+    private static final String TEST = "1.你好，Hellogfa";
+
+    private Emulator emulator;
+    private EmuConfig cfg;
+    private SurfaceHolder surfaceHolder;
+
+    private HandlerThread drawThread;
+    private Handler drawHandler;
+    private boolean surfaceOk;
 
 
-	public Bitmap bitmap, cacheBitmap;
-	public Canvas cacheCanvas = new Canvas();
-	private RectF region = new RectF(); //绘制区域
+    public Bitmap bitmap, cacheBitmap;
+    public Canvas cacheCanvas = new Canvas();
+    private RectF region = new RectF(); //绘制区域
 
-	private float scaleX, scaleY;
-//	public Point size = new Point(); //大小
-	private int viewW, viewH;
-	private int screenW, screenH;
-	
-	private float CHR_H;
-	private Paint paint, bmpPaint;
-	private Rect textRect = new Rect(); //测量字符用
-	private Rect textRectD = new Rect(); //测量字符用
-	private char[] tmpBuf = new char[2];
-	
-//	private Typeface mTypeface;
-	private int font_ansi_w,font_ansi_h,font_w,font_h;
+    private float scaleX, scaleY;
+    //	public Point size = new Point(); //大小
+    private int viewW, viewH;
+    private int screenW, screenH;
 
-	Rect testRect = new Rect();
-	Paint testPaint = new Paint();
-	boolean debugDraw = false;
+    private float CHR_H;
+    private Paint paint, bmpPaint;
+    private Rect textRect = new Rect(); //测量字符用
+    private Rect textRectD = new Rect(); //测量字符用
+    private char[] tmpBuf = new char[2];
 
-	private Rect dRectSrc = new Rect(), dRectDst = new Rect();
+    //	private Typeface mTypeface;
+    private int font_ansi_w, font_ansi_h, font_w, font_h;
 
-	@Override
-	public boolean handleMessage(Message msg) {
-		if(msg.what == 1)
-			flush();
-		else if(msg.what == 2) {
-			flush();
-			drawHandler.sendEmptyMessageDelayed(2, 10000); //5s自动刷屏玩玩看
-		}
-		return true;
-	}
+    Rect testRect = new Rect();
+    Paint testPaint = new Paint();
+    boolean debugDraw = false;
 
-	public EmuScreen(Emulator emulator) {
-		this.emulator = emulator;
-		cfg = EmuConfig.getInstance();
+    private Rect dRectSrc = new Rect(), dRectDst = new Rect();
 
-		drawThread = new HandlerThread("draw");
-		drawThread.start();
-		drawHandler = new Handler(drawThread.getLooper(), this);
-		
-		paint = new Paint();
-		paint.setTextSize(cfg.sysfontSize);
-		paint.setAntiAlias(true);
-		
-		bmpPaint = new Paint();
-		
-//		if(FileUtils.assetExist(emulator.getContext().getAssets(), "fonts/COUR.TTF")) {
-//			mTypeface = Typeface.createFromAsset(emulator.getContext().getAssets(), "fonts/COUR.TTF");
-//			paint.setTypeface(mTypeface);
-//		}
+    @Override
+    public boolean handleMessage(Message msg) {
+        if (msg.what == 1)
+            flush();
+        else if (msg.what == 2) {
+            flush();
+            drawHandler.sendEmptyMessageDelayed(2, 10000); //5s自动刷屏玩玩看
+        }
+        return true;
+    }
 
-//		scaleX = cfg.
-		testPaint.setStyle(Style.STROKE);
+    public EmuScreen(Emulator emulator) {
+        this.emulator = emulator;
+        cfg = EmuConfig.getInstance();
 
-		EmuView view = emulator.getView();
-		view.setOnKeyListener(this);
-		view.setOnTouchListener(this);
+        drawThread = new HandlerThread("draw");
+        drawThread.start();
+        drawHandler = new Handler(drawThread.getLooper(), this);
 
-		surfaceHolder = view.getHolder();
-		surfaceHolder.addCallback(this);
-		if(!surfaceHolder.isCreating())
-			surfaceOk = true;
+        paint = new Paint();
+        paint.setTextSize(cfg.sysFontSize);
+        paint.setAntiAlias(true);
 
-		setSize(cfg.scnw, cfg.scnh);
+        bmpPaint = new Paint();
 
-		drawHandler.sendEmptyMessageDelayed(2, 100000);
-	}
+        //		if(FileUtils.assetExist(emulator.getContext().getAssets(), "fonts/COUR.TTF")) {
+        //			mTypeface = Typeface.createFromAsset(emulator.getContext().getAssets(), "fonts/COUR.TTF");
+        //			paint.setTypeface(mTypeface);
+        //		}
 
-//	public void init() {
-//		setMrpScreenSize(screenSize.width, screenSize.height);
-//		clear(Color.WHITE);
-//	}
+        //		scaleX = cfg.
+        testPaint.setStyle(Style.STROKE);
 
-	/**
-	 * 初始化paint，设置字体宽高，优化：等宽字体不用检测直接赋值
-	 * 
-	 * @param size
-	 */
-	public void setTextSize(int size) {
-		paint.setTextSize(size);
-		paint.getTextBounds(TEST, 0, TEST.length(), textRect);
-		tmpBuf[0] = '鼎'; 
-		tmpBuf[1] = 0;
-		paint.getTextBounds(tmpBuf, 0, 1, textRectD);
-		CHR_H = textRect.height();
-		
-		font_w=size;
-		font_h=size;
-		font_ansi_w=(int) Math.ceil(paint.measureText(tmpBuf, 0, 1));
-		font_ansi_h=size;// textRect.height();
-	}
-	
-	public synchronized void recyle() {
-		if(bitmap != null) {
-			bitmap.recycle();
-			bitmap = null;
-		}
-		
-		if(cacheBitmap != null){
-			cacheBitmap.recycle();
-			cacheBitmap = null;
-		}
-	}
+        EmuView view = emulator.getView();
+        view.setOnKeyListener(this);
+        view.setOnTouchListener(this);
 
-	public void N2J_drawChar(int c, int x, int y, int color) {
-		tmpBuf[0] = (char) c; 
-		tmpBuf[1] = 0;
-		
-//		System.out.println("" + tmpBuf[0] + " " + x + "," + y);
+        surfaceHolder = view.getHolder();
+        surfaceHolder.addCallback(this);
+        if (!surfaceHolder.isCreating())
+            surfaceOk = true;
 
-		paint.setColor(color);
-		paint.getTextBounds(tmpBuf, 0, 1, testRect);
-		
-		if(debugDraw)
-		{
-			testPaint.setAlpha(0xff);
-			testPaint.setColor(Color.RED);
-			cacheCanvas.drawLine(x, y, x+textRect.width(), y, testPaint);
-			cacheCanvas.drawLine(x, y, x, y+textRect.height(), testPaint);
-		}
-		
-		//顶、左 对齐 +charH-2
-//		x += -testRect.left;
-//		y += -textRect.top;
-//		cacheCanvas.drawText(tmpBuf, 0,1, x, y, paint);
-		
-		//顶、左 对齐 +charH-2  风的影子
-		cacheCanvas.drawText(tmpBuf, 0,1, x, y+CHR_H-2, paint);
+        setSize(cfg.scnw, cfg.scnh);
 
-		if(debugDraw) {
-			testRect.offset((int)x, (int)y);
-			
-			testPaint.setColor(Color.BLUE);
-			testPaint.setAlpha(0x80);
-			
-			cacheCanvas.drawRect(testRect, testPaint);
-		}
-	}
-	
-	StringBuilder sb = new StringBuilder(256);
-	
-	public void N2J_measureChar(int ch) {
-		tmpBuf[0] = (char)ch;
-		tmpBuf[1] = 0;
-		
-//		sb.append(tmpBuf[0]);
-//		if(sb.length() > 200) {
-//			System.out.println(sb.toString());
-//			sb = new StringBuilder(256);
-//		}
+        drawHandler.sendEmptyMessageDelayed(2, 100000);
+    }
 
-		paint.getTextBounds(tmpBuf, 0, 1, textRect);
-		
-		if (ch < 128) {
-			emulator.N2J_charW = font_ansi_w;// (int)Math.ceil(paint.measureText(tmpBuf,
-												// 0, 1));
-			emulator.N2J_charH = font_ansi_h;
-		} else {
-			emulator.N2J_charW = font_w;
-			emulator.N2J_charH = font_h;
-		}
-		
-		emulator.N2J_charW = textRect.width();//(int)Math.ceil(paint.measureText(tmpBuf, 0, 1));
-		emulator.N2J_charH = textRect.height();
-		
-//		if(emulator.N2J_charH > CHR_H)
-//			CHR_H = emulator.N2J_charH;
-		
-//		Log.i("---", "measure" + String.valueOf(tmpBuf));
-	}
-	
-	public void N2J_drawBitmap(int ch) {
-//		bitmap.
-	}
-	
-	private void createBitmap() {
-		//重新创建屏幕位图
-		if(bitmap != null)
-			bitmap.recycle();
-		
-		if(cacheBitmap != null)
-			cacheBitmap.recycle();
-		
-		cacheBitmap = Bitmap.createBitmap(screenW, screenH, Config.RGB_565);
-		bitmap = Bitmap.createBitmap(screenW, screenH, Config.RGB_565);
-		cacheCanvas.setBitmap(cacheBitmap);
-		
-		emulator.native_screenReset(cacheBitmap, bitmap, screenW, screenH);
-	}
-	
-	/**
-	 * 设置屏幕可视区域尺寸
-	 */
-	void setViewportSize(int width, int height) {
-		viewW = width;
-		viewH = height;
+    //	public void init() {
+    //		setMrpScreenSize(screenSize.width, screenSize.height);
+    //		clear(Color.WHITE);
+    //	}
 
-		setScale(cfg.scaleMode);
-	}
+    /**
+     * 初始化paint，设置字体宽高，优化：等宽字体不用检测直接赋值
+     *
+     * @param size
+     */
+    public void setTextSize(int size) {
+        paint.setTextSize(size);
+        paint.getTextBounds(TEST, 0, TEST.length(), textRect);
+        tmpBuf[0] = '鼎';
+        tmpBuf[1] = 0;
+        paint.getTextBounds(tmpBuf, 0, 1, textRectD);
+        CHR_H = textRect.height();
 
-	public void setScale(int mode) {
-		switch (mode) {
-		case EmuConfig.SCALE_STRE:
-			this.scaleX = viewW/(float)screenW;
-			this.scaleY = viewH/(float)screenH;
-			break;
-		case EmuConfig.SCALE_2X:
-			this.scaleX = this.scaleY = 2;
-			break;
-		case EmuConfig.SCALE_PRO: //取最小值
-			this.scaleY = this.scaleX = Math.min(viewW/(float)screenW, viewH/(float)screenH);
-			break;
-			
-		default:
-			this.scaleY = this.scaleX = 1;
-			break;
-		}
-		
-		float w = screenW*scaleX;
-		region.left = (viewW - w)/2;
-		region.right = region.left + w;
-		region.top = 0;
-		region.bottom = screenH*scaleY;
-	}
-	
-	/**
-	 * 设置 mrp 屏幕大小
-	 * 
-	 * @param w
-	 * @param h
-	 */
-	private void setSize(int w, int h) {
-//		if(screenW == w && screenH == h)
-//			return;
-		
-		switch (w) {
-		case 176:
-			setTextSize(14);
-			break;
-			
-		case 240:
-			setTextSize(16);
-			break;
-			
-		case 320:
-			setTextSize(20);
-			break;
-			
-		case 480:
-			setTextSize(40);
-			break;
-		}
-		
-		screenW = w;
-		screenH = h;
+        font_w = size;
+        font_h = size;
+        font_ansi_w = (int) Math.ceil(paint.measureText(tmpBuf, 0, 1));
+        font_ansi_h = size;// textRect.height();
+    }
 
-		createBitmap();
-	}
-	
-	public void setPosition(int x, int y) {
-		region.offsetTo(x, y);
-	}
-	
-	public void clear(int color) {
-		cacheCanvas.drawColor(color);
-		bitmap.eraseColor(color);
-	}
-	
-	public void pause() {
-	}
-	
-	public void resume() {
-		if(emulator.isRunning()){
-			if(cacheBitmap == null || cacheBitmap.isRecycled()){ //无效了，重启mrp
-				
-			}
-			
-			if(bitmap == null || bitmap.isRecycled()){
-				bitmap = Bitmap.createBitmap(screenW, screenH, Config.RGB_565);
-				emulator.native_screenReset(cacheBitmap, bitmap, screenW, screenH);
-			}
-			
-			bmpPaint.setAntiAlias(cfg.anti);
-		}
-	}
-	
-	private void draw(Canvas canvas) {
-		if(bitmap==null || bitmap.isRecycled()) {
-			return;
-		}
-		
-		//这个设置缩放绘制bmp抗锯齿
-		bmpPaint.setFilterBitmap(cfg.anti);
-		
-		/**
-		 * 刷屏非主线程，这里涉及到 bitmap 同时占有的问题，所以先进底层锁住
-		 */
-//		native_lockBitmap();
-		canvas.drawBitmap(bitmap, null, region, bmpPaint);
-//		native_unLockBitmap();
-	}
+    public synchronized void recyle() {
+        if (bitmap != null) {
+            bitmap.recycle();
+            bitmap = null;
+        }
 
-	public void switchAnt() {
-		cfg.anti = !cfg.anti;
-		bmpPaint.setFilterBitmap(cfg.anti);
+        if (cacheBitmap != null) {
+            cacheBitmap.recycle();
+            cacheBitmap = null;
+        }
+    }
 
-		flush();
-	}
+    public void N2J_drawChar(int c, int x, int y, int color) {
+        tmpBuf[0] = (char) c;
+        tmpBuf[1] = 0;
 
-	public void drawBitmap(Bitmap bitmap, int sx, int sy, int sw, int sh) {
-		dRectSrc.set(0, 0, bitmap.getWidth()-1, bitmap.getHeight()-1);
-		dRectDst.set(sx, sy, sx+sw-1, sy+sh-1);
-		cacheCanvas.drawBitmap(bitmap, dRectSrc, dRectDst, null);
-	}
+        //		System.out.println("" + tmpBuf[0] + " " + x + "," + y);
 
-	public void flush() {
-		if(!surfaceOk)
-			return;
+        paint.setColor(color);
+        paint.getTextBounds(tmpBuf, 0, 1, testRect);
 
-		Canvas canvas = surfaceHolder.lockCanvas();
-		if (canvas != null) {
-			canvas.drawColor(cfg.bgColor);
+        if (debugDraw) {
+            testPaint.setAlpha(0xff);
+            testPaint.setColor(Color.RED);
+            cacheCanvas.drawLine(x, y, x + textRect.width(), y, testPaint);
+            cacheCanvas.drawLine(x, y, x, y + textRect.height(), testPaint);
+        }
 
-//			if (Prefer.enableAntiAtial)
-//				canvas.setDrawFilter(filter);
-//			else
-//				canvas.setDrawFilter(null);
+        //顶、左 对齐 +charH-2
+        //		x += -testRect.left;
+        //		y += -textRect.top;
+        //		cacheCanvas.drawText(tmpBuf, 0,1, x, y, paint);
 
-			draw(canvas);
+        //顶、左 对齐 +charH-2  风的影子
+        cacheCanvas.drawText(tmpBuf, 0, 1, x, y + CHR_H - 2, paint);
 
-			surfaceHolder.unlockCanvasAndPost(canvas);
-		}
-	}
+        if (debugDraw) {
+            testRect.offset((int) x, (int) y);
 
-	public void postFlush() {
-		drawHandler.sendEmptyMessage(1);
-	}
+            testPaint.setColor(Color.BLUE);
+            testPaint.setAlpha(0x80);
 
-	public void screenShot(Context context) {
-		// 获取系统图片存储路径
-		File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-		if(path == null){
-			path = new File(Environment.getExternalStorageDirectory(), "Pictures");
-		}
-		path = new File(path, "screenshot");
-		path.mkdirs();
+            cacheCanvas.drawRect(testRect, testPaint);
+        }
+    }
 
-		// 根据当前时间生成图片名称
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyymmddHHmmss", Locale.CHINA);
-		String name = sdf.format(new Date()) + ".png";
+    StringBuilder sb = new StringBuilder(256);
 
-		path = new File(path, name);
-		if(EmuUtils.bitmapToFile(bitmap, path)){
-			Toast.makeText(context, "截图成功！\n文件保存在：" + path.getPath(), Toast.LENGTH_SHORT).show();
-		}else {
-			Toast.makeText(context, "截图失败！", Toast.LENGTH_SHORT).show();
-		}
-	}
+    public void N2J_measureChar(int ch) {
+        tmpBuf[0] = (char) ch;
+        tmpBuf[1] = 0;
 
-	public static int transKeycode(int andcode) {
-		switch (andcode) {
-			case KeyEvent.KEYCODE_DPAD_UP:
-				return MrDefines.MR_KEY_UP;
-			case KeyEvent.KEYCODE_DPAD_RIGHT:
-				return MrDefines.MR_KEY_RIGHT;
-			case KeyEvent.KEYCODE_DPAD_LEFT:
-				return MrDefines.MR_KEY_LEFT;
-			case KeyEvent.KEYCODE_DPAD_DOWN:
-				return MrDefines.MR_KEY_DOWN;
-			case KeyEvent.KEYCODE_DPAD_CENTER:
-				return MrDefines.MR_KEY_SELECT;
+        //		sb.append(tmpBuf[0]);
+        //		if(sb.length() > 200) {
+        //			System.out.println(sb.toString());
+        //			sb = new StringBuilder(256);
+        //		}
 
-			case KeyEvent.KEYCODE_SOFT_LEFT:
-			case KeyEvent.KEYCODE_MENU:
-				return MrDefines.MR_KEY_SOFTLEFT;
-			case KeyEvent.KEYCODE_SOFT_RIGHT:
-			case KeyEvent.KEYCODE_BACK:
-			case KeyEvent.KEYCODE_CLEAR:
-				return MrDefines.MR_KEY_SOFTRIGHT;
+        paint.getTextBounds(tmpBuf, 0, 1, textRect);
 
-			case KeyEvent.KEYCODE_VOLUME_UP:
-				return MrDefines.MR_KEY_UP;
-			case KeyEvent.KEYCODE_VOLUME_DOWN:
-				return MrDefines.MR_KEY_DOWN;
+        if (ch < 128) {
+            emulator.N2J_charW = font_ansi_w;// (int)Math.ceil(paint.measureText(tmpBuf,
+            // 0, 1));
+            emulator.N2J_charH = font_ansi_h;
+        } else {
+            emulator.N2J_charW = font_w;
+            emulator.N2J_charH = font_h;
+        }
 
-			case KeyEvent.KEYCODE_1:
-				return MrDefines.MR_KEY_1;
-			case KeyEvent.KEYCODE_2:
-				return MrDefines.MR_KEY_2;
-			case KeyEvent.KEYCODE_3:
-				return MrDefines.MR_KEY_3;
-			case KeyEvent.KEYCODE_4:
-				return MrDefines.MR_KEY_4;
-			case KeyEvent.KEYCODE_5:
-				return MrDefines.MR_KEY_5;
-			case KeyEvent.KEYCODE_6:
-				return MrDefines.MR_KEY_6;
-			case KeyEvent.KEYCODE_7:
-				return MrDefines.MR_KEY_7;
-			case KeyEvent.KEYCODE_8:
-				return MrDefines.MR_KEY_8;
-			case KeyEvent.KEYCODE_9:
-				return MrDefines.MR_KEY_9;
-			case KeyEvent.KEYCODE_0:
-				return MrDefines.MR_KEY_0;
-			case KeyEvent.KEYCODE_STAR:
-				return MrDefines.MR_KEY_STAR;
-			case KeyEvent.KEYCODE_POUND:
-				return MrDefines.MR_KEY_POUND;
-			case KeyEvent.KEYCODE_CALL:
-				return MrDefines.MR_KEY_SEND;
+        emulator.N2J_charW = textRect.width();//(int)Math.ceil(paint.measureText(tmpBuf, 0, 1));
+        emulator.N2J_charH = textRect.height();
 
-			case KeyEvent.KEYCODE_ENTER:
-				return MrDefines.MR_KEY_SELECT;
-		}
+        //		if(emulator.N2J_charH > CHR_H)
+        //			CHR_H = emulator.N2J_charH;
 
-		return -1;
-	}
+        //		Log.i("---", "measure" + String.valueOf(tmpBuf));
+    }
 
-	private boolean handleKeyEvent(KeyEvent e, int keyCode) {
-		if(e.getAction() == KeyEvent.ACTION_DOWN) {
-			if (cfg.catchMenuButton && keyCode == KeyEvent.KEYCODE_BACK) {
-				keyCode = KeyEvent.KEYCODE_MENU;
-			}
+    public void N2J_drawBitmap(int ch) {
+        //		bitmap.
+    }
 
-			if (keyCode == KeyEvent.KEYCODE_MENU) {
-				return false;
-			} else if ((keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) && !cfg.catchVolumeButton) {
-				return false;
-			} else {
-				emulator.postMrpEvent(MrDefines.MR_KEY_PRESS, transKeycode(keyCode), 0);
-			}
-		}
+    private void createBitmap() {
+        Log.i(TAG, "创建屏幕位图");
+        //重新创建屏幕位图
+        if (bitmap != null)
+            bitmap.recycle();
 
-		return true;
-	}
+        if (cacheBitmap != null)
+            cacheBitmap.recycle();
 
-	private float lastX, lastY;
-	private void handleMotionEvent(MotionEvent event) {
-		float fx =  event.getX();
-		float fy =  event.getY();
+        cacheBitmap = Bitmap.createBitmap(screenW, screenH, Config.RGB_565);
+        bitmap = Bitmap.createBitmap(screenW, screenH, Config.RGB_565);
+        cacheCanvas.setBitmap(cacheBitmap);
 
-		if(region.contains(fx, fy)){
-			int x = (int) ((fx-region.left)/scaleX);
-			int y = (int) ((fy-region.top)/scaleY);
+        emulator.native_screenReset(cacheBitmap, bitmap, screenW, screenH);
+    }
 
-			switch (event.getAction()) {
-				case MotionEvent.ACTION_DOWN:
-					lastX = fx;
-					lastY = fy;
-					emulator.postMrpEvent(MrDefines.MR_MOUSE_DOWN, x, y);
-					break;
+    /**
+     * 设置屏幕可视区域尺寸
+     */
+    void setViewportSize(int width, int height) {
+        Log.i(TAG, "设置屏幕可视区域尺寸");
+        viewW = width;
+        viewH = height;
 
-				case MotionEvent.ACTION_MOVE: {
-					float dx = lastX-fx;
-					float dy = lastY-fy;
-					float sx = scaleX*5;
-					float sy = scaleY*6;
+        setScale(cfg.scaleMode);
+    }
 
-					if(dx>sx || dx<-sx ||dy>sy || dy<-sy){
-						emulator.postMrpEvent(MrDefines.MR_MOUSE_MOVE, x, y);
-						lastX = fx;
-						lastY = fy;
-					}
+    /**
+     * 设置比例
+     * @param mode 模式
+     */
+    public void setScale(int mode) {
+        switch (mode) {
+            case EmuConfig.SCALE_STRE:
+                this.scaleX = viewW / (float) screenW;
+                this.scaleY = viewH / (float) screenH;
+                break;
+            case EmuConfig.SCALE_2X:
+                this.scaleX = this.scaleY = 2;
+                break;
+            case EmuConfig.SCALE_PRO: //取最小值
+                this.scaleY = this.scaleX = Math.min(viewW / (float) screenW, viewH / (float) screenH);
+                break;
 
-					break;
-				}
+            default:
+                this.scaleY = this.scaleX = 1;
+                break;
+        }
 
-				case MotionEvent.ACTION_UP:
-					emulator.postMrpEvent(MrDefines.MR_MOUSE_UP, x, y);
-					break;
-			}
-		}
-	}
+        float w = screenW * scaleX;
+        region.left = (viewW - w) / 2;
+        region.right = region.left + w;
+        region.top = 0;
+        region.bottom = screenH * scaleY;
+    }
 
-	@Override
-	public boolean onKey(View view, int keyCode, KeyEvent e) {
-		return handleKeyEvent(e, keyCode);
-	}
+    /**
+     * 设置 mrp 屏幕大小
+     *
+     * @param w
+     * @param h
+     */
+    private void setSize(int w, int h) {
+        //		if(screenW == w && screenH == h)
+        //			return;
 
-	@Override
-	public boolean onTouch(View view, MotionEvent e) {
-		handleMotionEvent(e);
-		return true;
-	}
+        switch (w) {
+            case 176:
+                setTextSize(14);
+                break;
 
-	@Override
-	public void surfaceCreated(SurfaceHolder h) {
-		log.d("surfaceCreated " + h);
-		surfaceOk = true;
-		surfaceHolder = h;
-	}
+            case 240:
+                setTextSize(16);
+                break;
 
-	@Override
-	public void surfaceChanged(SurfaceHolder surfaceHolder, int format, int w, int h) {
-		log.d("surfaceChanged " + w + " " + h);
-		setViewportSize(w, h);
-	}
+            case 320:
+                setTextSize(20);
+                break;
 
-	//activity pause 也会调用
-	@Override
-	public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
-		log.d("surfaceDestroyed " + surfaceHolder);
-		surfaceOk = false;
-//		this.surfaceHolder = null;
-//		this.surfaceHolder.removeCallback(this);
-	}
+            case 480:
+                setTextSize(40);
+                break;
+        }
+
+        screenW = w;
+        screenH = h;
+
+        createBitmap();
+    }
+
+    public void setPosition(int x, int y) {
+        region.offsetTo(x, y);
+    }
+
+    public void clear(int color) {
+        cacheCanvas.drawColor(color);
+        bitmap.eraseColor(color);
+    }
+
+    public void pause() {
+    }
+
+    public void resume() {
+        if (emulator.isRunning()) {
+            if (cacheBitmap == null || cacheBitmap.isRecycled()) { //无效了，重启mrp
+
+            }
+
+            if (bitmap == null || bitmap.isRecycled()) {
+                bitmap = Bitmap.createBitmap(screenW, screenH, Config.RGB_565);
+                emulator.native_screenReset(cacheBitmap, bitmap, screenW, screenH);
+            }
+
+            bmpPaint.setAntiAlias(cfg.anti);
+        }
+    }
+
+    private void draw(Canvas canvas) {
+        if (bitmap == null || bitmap.isRecycled()) {
+            return;
+        }
+
+        //这个设置缩放绘制bmp抗锯齿
+        bmpPaint.setFilterBitmap(cfg.anti);
+
+        /**
+         * 刷屏非主线程，这里涉及到 bitmap 同时占有的问题，所以先进底层锁住
+         */
+        //		native_lockBitmap();
+        canvas.drawBitmap(bitmap, null, region, bmpPaint);
+        //		native_unLockBitmap();
+    }
+
+    public void switchAnt() {
+        cfg.anti = !cfg.anti;
+        bmpPaint.setFilterBitmap(cfg.anti);
+
+        flush();
+    }
+
+    public void drawBitmap(Bitmap bitmap, int sx, int sy, int sw, int sh) {
+        Log.i(TAG, String.format("画位图：sx-%d，sy-%d，sw-%d，sh-%d", sx, sy, sw, sh));
+        dRectSrc.set(0, 0, bitmap.getWidth() - 1, bitmap.getHeight() - 1);
+        dRectDst.set(sx, sy, sx + sw - 1, sy + sh - 1);
+        cacheCanvas.drawBitmap(bitmap, dRectSrc, dRectDst, null);
+    }
+
+    public void flush() {
+        if (!surfaceOk)
+            return;
+
+        Canvas canvas = surfaceHolder.lockCanvas();
+        if (canvas != null) {
+            canvas.drawColor(cfg.bgColor);
+
+            //			if (Prefer.enableAntiAtial)
+            //				canvas.setDrawFilter(filter);
+            //			else
+            //				canvas.setDrawFilter(null);
+
+            draw(canvas);
+
+            surfaceHolder.unlockCanvasAndPost(canvas);
+        }
+    }
+
+    public void postFlush() {
+        drawHandler.sendEmptyMessage(1);
+    }
+
+    public void screenShot(Context context) {
+        // 获取系统图片存储路径
+        File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        if (path == null) {
+            path = new File(Environment.getExternalStorageDirectory(), "Pictures");
+        }
+        path = new File(path, "screenshot");
+        path.mkdirs();
+
+        // 根据当前时间生成图片名称
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyymmddHHmmss", Locale.CHINA);
+        String name = sdf.format(new Date()) + ".png";
+
+        path = new File(path, name);
+        if (EmuUtils.bitmapToFile(bitmap, path)) {
+            Toast.makeText(context, "截图成功！\n文件保存在：" + path.getPath(), Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(context, "截图失败！", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public static int transKeycode(int andcode) {
+        switch (andcode) {
+            case KeyEvent.KEYCODE_DPAD_UP:
+                return MrDefines.MR_KEY_UP;
+            case KeyEvent.KEYCODE_DPAD_RIGHT:
+                return MrDefines.MR_KEY_RIGHT;
+            case KeyEvent.KEYCODE_DPAD_LEFT:
+                return MrDefines.MR_KEY_LEFT;
+            case KeyEvent.KEYCODE_DPAD_DOWN:
+                return MrDefines.MR_KEY_DOWN;
+            case KeyEvent.KEYCODE_DPAD_CENTER:
+                return MrDefines.MR_KEY_SELECT;
+
+            case KeyEvent.KEYCODE_SOFT_LEFT:
+            case KeyEvent.KEYCODE_MENU:
+                return MrDefines.MR_KEY_SOFTLEFT;
+            case KeyEvent.KEYCODE_SOFT_RIGHT:
+            case KeyEvent.KEYCODE_BACK:
+            case KeyEvent.KEYCODE_CLEAR:
+                return MrDefines.MR_KEY_SOFTRIGHT;
+
+            case KeyEvent.KEYCODE_VOLUME_UP:
+                return MrDefines.MR_KEY_UP;
+            case KeyEvent.KEYCODE_VOLUME_DOWN:
+                return MrDefines.MR_KEY_DOWN;
+
+            case KeyEvent.KEYCODE_1:
+                return MrDefines.MR_KEY_1;
+            case KeyEvent.KEYCODE_2:
+                return MrDefines.MR_KEY_2;
+            case KeyEvent.KEYCODE_3:
+                return MrDefines.MR_KEY_3;
+            case KeyEvent.KEYCODE_4:
+                return MrDefines.MR_KEY_4;
+            case KeyEvent.KEYCODE_5:
+                return MrDefines.MR_KEY_5;
+            case KeyEvent.KEYCODE_6:
+                return MrDefines.MR_KEY_6;
+            case KeyEvent.KEYCODE_7:
+                return MrDefines.MR_KEY_7;
+            case KeyEvent.KEYCODE_8:
+                return MrDefines.MR_KEY_8;
+            case KeyEvent.KEYCODE_9:
+                return MrDefines.MR_KEY_9;
+            case KeyEvent.KEYCODE_0:
+                return MrDefines.MR_KEY_0;
+            case KeyEvent.KEYCODE_STAR:
+                return MrDefines.MR_KEY_STAR;
+            case KeyEvent.KEYCODE_POUND:
+                return MrDefines.MR_KEY_POUND;
+            case KeyEvent.KEYCODE_CALL:
+                return MrDefines.MR_KEY_SEND;
+
+            case KeyEvent.KEYCODE_ENTER:
+                return MrDefines.MR_KEY_SELECT;
+        }
+
+        return -1;
+    }
+
+    private boolean handleKeyEvent(KeyEvent e, int keyCode) {
+        if (e.getAction() == KeyEvent.ACTION_DOWN) {
+            if (cfg.catchMenuButton && keyCode == KeyEvent.KEYCODE_BACK) {
+                keyCode = KeyEvent.KEYCODE_MENU;
+            }
+
+            if (keyCode == KeyEvent.KEYCODE_MENU) {
+                return false;
+            } else if ((keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) && !cfg.catchVolumeButton) {
+                return false;
+            } else {
+                emulator.postMrpEvent(MrDefines.MR_KEY_PRESS, transKeycode(keyCode), 0);
+            }
+        }
+
+        return true;
+    }
+
+    private float lastX, lastY;
+
+    private void handleMotionEvent(MotionEvent event) {
+        float fx = event.getX();
+        float fy = event.getY();
+
+        if (region.contains(fx, fy)) {
+            int x = (int) ((fx - region.left) / scaleX);
+            int y = (int) ((fy - region.top) / scaleY);
+
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    lastX = fx;
+                    lastY = fy;
+                    emulator.postMrpEvent(MrDefines.MR_MOUSE_DOWN, x, y);
+                    break;
+
+                case MotionEvent.ACTION_MOVE: {
+                    float dx = lastX - fx;
+                    float dy = lastY - fy;
+                    float sx = scaleX * 5;
+                    float sy = scaleY * 6;
+
+                    if (dx > sx || dx < -sx || dy > sy || dy < -sy) {
+                        emulator.postMrpEvent(MrDefines.MR_MOUSE_MOVE, x, y);
+                        lastX = fx;
+                        lastY = fy;
+                    }
+
+                    break;
+                }
+
+                case MotionEvent.ACTION_UP:
+                    emulator.postMrpEvent(MrDefines.MR_MOUSE_UP, x, y);
+                    break;
+            }
+        }
+    }
+
+    @Override
+    public boolean onKey(View view, int keyCode, KeyEvent e) {
+        return handleKeyEvent(e, keyCode);
+    }
+
+    @Override
+    public boolean onTouch(View view, MotionEvent e) {
+        handleMotionEvent(e);
+        return true;
+    }
+
+    @Override
+    public void surfaceCreated(SurfaceHolder h) {
+        log.d("surfaceCreated " + h);
+        surfaceOk = true;
+        surfaceHolder = h;
+    }
+
+    @Override
+    public void surfaceChanged(SurfaceHolder surfaceHolder, int format, int w, int h) {
+        log.d("surfaceChanged " + w + " " + h);
+        setViewportSize(w, h);
+    }
+
+    //activity pause 也会调用
+    @Override
+    public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
+        log.d("surfaceDestroyed " + surfaceHolder);
+        surfaceOk = false;
+        //		this.surfaceHolder = null;
+        //		this.surfaceHolder.removeCallback(this);
+    }
 }

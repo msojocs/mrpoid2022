@@ -41,7 +41,7 @@ public class Base64InputStream extends InputStream {
 	/**
 	 * The underlying stream.
 	 */
-	private InputStream inputStream;
+	private final InputStream inputStream;
 
 	/**
 	 * The buffer.

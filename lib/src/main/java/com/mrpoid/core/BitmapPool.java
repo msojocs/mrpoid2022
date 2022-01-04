@@ -42,7 +42,7 @@ public class BitmapPool {
 	}
 	
 	
-	public static void recyle() {
+	public static void recycle() {
 		Set<String> set = map.keySet();
 		for(String key : set){
 			WeakReference<Bitmap> r = map.get(key);

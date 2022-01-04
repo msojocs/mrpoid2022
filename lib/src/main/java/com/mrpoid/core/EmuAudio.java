@@ -6,6 +6,8 @@ import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaPlayer.OnErrorListener;
 import android.os.Vibrator;
 
+import lombok.Getter;
+
 
 /**
  * 声音播放管理器
@@ -18,7 +20,7 @@ import android.os.Vibrator;
 public final class EmuAudio implements OnErrorListener, OnCompletionListener, MrDefines {
 	private static final String TAG = "EmuAudio";
 	
-	//meidia 接口编号区
+	//media 接口编号区
 	public static final int MR_MEDIA_INIT = 201, 
 		MR_MEDIA_BUF_LOAD = 203, 
 		MR_MEDIA_FILE_LOAD = 202, 
@@ -44,9 +46,11 @@ public final class EmuAudio implements OnErrorListener, OnCompletionListener, Mr
 	private MediaPlayer mp3Player;
 	private MediaPlayer mediaPlayer;
 	private boolean audioPaused = false;
-	private Emulator emulator;
+	private final Emulator emulator;
 	private Vibrator vibrator;
-	private boolean recyled = false;
+
+	@Getter
+	private boolean recycled = false;
 	
 	private boolean needCallback = false;
 	private int pausePosition;
@@ -61,13 +65,10 @@ public final class EmuAudio implements OnErrorListener, OnCompletionListener, Mr
 //		float v = Prefer.volume/100.0f;
 //		mp3Player.setVolume(v, v);
 	}
+
 	
-	public boolean isRecyled() {
-		return recyled;
-	}
-	
-	public synchronized void recyle() {
-		if(recyled)
+	public synchronized void recycle() {
+		if(recycled)
 			return;
 		
 		if(mp3Player != null) {
@@ -85,11 +86,11 @@ public final class EmuAudio implements OnErrorListener, OnCompletionListener, Mr
 			vibrator = null;
 		}
 		
-		recyled = true;
+		recycled = true;
 	}
 	
 	public void pause() {
-		if(recyled) return;
+		if(recycled) return;
 		
 		if(mp3Player.isPlaying()) {
 			audioPaused = true;
@@ -103,7 +104,7 @@ public final class EmuAudio implements OnErrorListener, OnCompletionListener, Mr
 	}
 	
 	public void resume() {
-		if(recyled) return;
+		if(recycled) return;
 		
 		if(audioPaused) {
 			audioPaused = false;
@@ -116,7 +117,7 @@ public final class EmuAudio implements OnErrorListener, OnCompletionListener, Mr
 	}
 	
 	public void stop() {
-		if(recyled) return;
+		if(recycled) return;
 		
 		if(mp3Player.isPlaying()) {
 			mp3Player.stop();
@@ -150,7 +151,7 @@ public final class EmuAudio implements OnErrorListener, OnCompletionListener, Mr
 	}
 
 	public void N2J_playSound(String path, int loop) {
-		if(recyled) return;
+		if(recycled) return;
 		
 		if(path == null) return;
 
@@ -173,7 +174,7 @@ public final class EmuAudio implements OnErrorListener, OnCompletionListener, Mr
 	}
 	
 	public void N2J_stopSound() {
-		if(recyled) return;
+		if(recycled) return;
 		
 		EmuLog.i(TAG, "stop sound");
 		
@@ -184,7 +185,7 @@ public final class EmuAudio implements OnErrorListener, OnCompletionListener, Mr
 	}
 	
 	public void N2J_musicLoadFile(String path) {
-		if(recyled) return;
+		if(recycled) return;
 		
 		if(mediaPlayer == null || path == null) 
 			return;
@@ -203,7 +204,7 @@ public final class EmuAudio implements OnErrorListener, OnCompletionListener, Mr
 	public int N2J_musicCMD(int cmd, int arg0, int arg1) {
 		int ret = 0;
 		
-		if(recyled) return ret;
+		if(recycled) return ret;
 		
 		if(cmd == MR_MEDIA_INIT) {
 			if(mediaPlayer != null){
@@ -318,13 +319,13 @@ public final class EmuAudio implements OnErrorListener, OnCompletionListener, Mr
 	}
 
 	public void N2J_startShake(int ms){
-		if(recyled) return;
+		if(recycled) return;
 		
 		vibrator.vibrate(ms);
     }
 	
 	public void N2J_stopShake(){
-		if(recyled) return;
+		if(recycled) return;
 		
 		vibrator.cancel();
 	}
