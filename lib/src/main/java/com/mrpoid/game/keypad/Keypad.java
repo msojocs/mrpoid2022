@@ -177,6 +177,7 @@ public class Keypad extends Director implements ClickCallback {
                 .show();
     }
 
+
     public void setLayouter(KeyLayout layouter) {
         this.layouter = layouter;
     }

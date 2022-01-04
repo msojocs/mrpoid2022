@@ -113,6 +113,10 @@ void _detachJniEnv(JNIEnv * env)
     (*gJVM)->DetachCurrentThread(gJVM);
 }
 
+/**
+* 底层获取JAVA方法
+* @param env JNI环境
+*/
 static void initJniId(JNIEnv * env)
 {
 	//----------- Emulator.java -------------------------------------
