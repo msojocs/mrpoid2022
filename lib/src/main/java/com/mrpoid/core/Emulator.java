@@ -41,6 +41,8 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import com.edroid.common.utils.UIUtils;
 import com.mrpoid.R;
 import com.mrpoid.app.EmulatorActivity;
@@ -196,7 +198,12 @@ public class Emulator implements Callback {
 		screen.recyle();
 		bInited = false;
 	}
-	
+
+	/**
+	 * 保存传入参数，发送初始化信号
+	 * @param activity EmulatorActivity 模拟器主界面
+	 * @param view EmuView 模拟器图像区域
+	 */
 	public void init(EmulatorActivity activity, EmuView view) {
         mContext = activity.getApplicationContext();
         emulatorActivity = activity;
@@ -962,3 +969,11 @@ public class Emulator implements Callback {
 
 	///////////////////////////////////
 }
+
+ //class MrpThreadCallback implements Callback {
+ //
+	// @Override
+	// public boolean handleMessage(@NonNull Message msg) {
+	//	 return false;
+	// }
+ //}

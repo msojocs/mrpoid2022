@@ -45,6 +45,8 @@ import com.mrpoid.game.engine.ActorGroup;
 import com.mrpoid.game.engine.Director;
 import com.mrpoid.game.engine.Actor.ClickCallback;
 
+import lombok.Setter;
+
 /**
  * 虚拟键盘
  *
@@ -79,7 +81,8 @@ public class Keypad extends Director implements ClickCallback {
     private FloatMenuButton floatMenuBtn;
     private ActorGroup rootGroup;
     private int mode;
-    private OnKeyEventListener mListener;
+    @Setter
+    private OnKeyEventListener onKeyEventListener;
     private boolean mEditMode = false;
 
     int numW = 45, numH = 30, numM = 8, softW = 45, softH = 30;
@@ -176,10 +179,6 @@ public class Keypad extends Director implements ClickCallback {
 
     public void setLayouter(KeyLayout layouter) {
         this.layouter = layouter;
-    }
-
-    public void setOnKeyEventListener(OnKeyEventListener l) {
-        this.mListener = l;
     }
 
     public int getMode() {
@@ -599,11 +598,11 @@ public class Keypad extends Director implements ClickCallback {
         if (mEditMode)
             return;
 
-        if (mListener != null) {
+        if (onKeyEventListener != null) {
             if (down)
-                mListener.onKeyDown(key);
+                onKeyEventListener.onKeyDown(key);
             else
-                mListener.onKeyUp(key);
+                onKeyEventListener.onKeyUp(key);
         }
     }
 }

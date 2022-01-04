@@ -257,7 +257,7 @@ public class EmuScreen implements View.OnTouchListener, View.OnKeyListener, Surf
      * 设置屏幕可视区域尺寸
      */
     void setViewportSize(int width, int height) {
-        Log.i(TAG, "设置屏幕可视区域尺寸");
+        Log.i(TAG, String.format("设置屏幕可视区域尺寸 width:%d height:%d", width, height));
         viewW = width;
         viewH = height;
 

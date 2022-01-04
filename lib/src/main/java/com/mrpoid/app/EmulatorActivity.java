@@ -97,10 +97,16 @@ public class EmulatorActivity extends BaseActivity implements Handler.Callback, 
 
     private TextView tvInfo;
     private EmuView emulatorView;
+    /**
+     * 模拟器实例
+     */
     private Emulator emulator;
+    /**
+     * 模拟器配置
+     */
     private EmuConfig cfg;
     //	private SmsReceiver mSmsReceiver;
-    private ViewGroup continer;
+    private ViewGroup container;
     public Handler handler;
     private LayoutInflater inflater;
     private Keypad keypad;
@@ -108,6 +114,60 @@ public class EmulatorActivity extends BaseActivity implements Handler.Callback, 
     private Vibrator vibrator;
 
     String mEntryActivity, mEntryMrp;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        Log.i(TAG, "创建");
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_emulator);
+
+        Log.i(TAG, "检查入口MRP与入口Activity");
+        initEntrys();
+        //		getWindow().requestFeature(Window.FEATURE_NO_TITLE);//去掉标题栏
+
+        handler = new Handler(this);
+        inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
+        emulator = Emulator.getInstance();
+        cfg = EmuConfig.getInstance();
+
+        emulatorView = new EmuView(this);
+        emulatorView.setBackgroundColor(Color.TRANSPARENT);
+        container = findViewById(R.id.content);
+        // 将emulatorView添加到container
+        container.addView(emulatorView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+        // 注册上下文菜单，注册操作由onCreateContextMenu完成
+        registerForContextMenu(emulatorView);
+
+        // 初始化虚拟键盘
+        initPad();
+
+        Log.i(TAG, "内存显示处理");
+        //内存显示
+        {
+            // 创建一个显示View
+            tvInfo = new TextView(this);
+            tvInfo.setBackgroundColor(0x80000000);
+            tvInfo.setTextColor(0xfff0f0f0);
+            tvInfo.setTextSize(16);
+            tvInfo.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
+            tvInfo.setSingleLine(true);
+            tvInfo.setVisibility(View.INVISIBLE);
+            tvInfo.setId(R.id.tv_info);
+            tvInfo.setOnClickListener(this);
+
+            int padding = getResources().getDimensionPixelSize(R.dimen.dp5);
+            tvInfo.setPadding(padding, padding, padding, padding);
+            // 添加内存显示区域到container
+            container.addView(tvInfo, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+        }
+
+        Log.i(TAG, "模拟器初始化");
+        emulator.init(this, emulatorView);
+        Log.i(TAG, "模拟器启动");
+        emulator.startMrp(mEntryMrp);
+    }
 
     @Override
     public boolean handleMessage(Message msg) {
@@ -149,25 +209,30 @@ public class EmulatorActivity extends BaseActivity implements Handler.Callback, 
         }
     }
 
+    /**
+     * 检查入口MRP与入口Activity是否存在
+     * 有一个不存在，就直接结束当前Activity
+     */
     private void initEntrys() {
         String path = getIntent().getStringExtra(MrpoidMain.INTENT_KEY_ENTRY_MRP);
         String activity = getIntent().getStringExtra(MrpoidMain.INTENT_KEY_ENTRY_ACTIVITY);
 
-        SharedPreferences appsp = getSharedPreferences(APP_ACTIVITY_NAME, 0);
+        SharedPreferences appSP = getSharedPreferences(APP_ACTIVITY_NAME, 0);
         if (path == null) {
-            path = appsp.getString(MrpoidMain.INTENT_KEY_ENTRY_MRP, null);
+            path = appSP.getString(MrpoidMain.INTENT_KEY_ENTRY_MRP, null);
         } else {
             //保存路径，下次启动时候丢失也可以拿到
-            appsp.edit().putString(MrpoidMain.INTENT_KEY_ENTRY_MRP, path).commit();
+            appSP.edit().putString(MrpoidMain.INTENT_KEY_ENTRY_MRP, path).apply();
         }
 
         if (activity == null) {
-            activity = appsp.getString(MrpoidMain.INTENT_KEY_ENTRY_ACTIVITY, null);
+            activity = appSP.getString(MrpoidMain.INTENT_KEY_ENTRY_ACTIVITY, null);
         } else {
-            appsp.edit().putString(MrpoidMain.INTENT_KEY_ENTRY_ACTIVITY, activity).commit();
+            appSP.edit().putString(MrpoidMain.INTENT_KEY_ENTRY_ACTIVITY, activity).apply();
         }
 
         if (path == null || activity == null) {
+            // 结束Activity
             finish();
             Toast.makeText(this, "启动文件丢失！", Toast.LENGTH_SHORT).show();
             return;
@@ -197,62 +262,13 @@ public class EmulatorActivity extends BaseActivity implements Handler.Callback, 
         keypad = new Keypad(this, false);
 
         View padView = new KeypadView(this, keypad);
-        continer.addView(padView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+        // 添加虚拟键盘到container
+        container.addView(padView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 
         keypad.attachView(padView); //依赖一个 view 来展示
         keypad.setOnKeyEventListener(mKeyEventListener);
         keypad.setMode(2);
         keypad.setOpacity(EmuConfig.getInstance().padAlpha);
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        Log.i(TAG, "创建");
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_emulator);
-
-        Log.i(TAG, "初始化入口");
-        initEntrys();
-//		getWindow().requestFeature(Window.FEATURE_NO_TITLE);//去掉标题栏
-
-        Log.i(TAG, "其它");
-        handler = new Handler(this);
-        inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-
-        emulator = Emulator.getInstance();
-        cfg = EmuConfig.getInstance();
-
-        emulatorView = new EmuView(this);
-        emulatorView.setBackgroundColor(Color.TRANSPARENT);
-        continer = findViewById(R.id.contener);
-        continer.addView(emulatorView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-        registerForContextMenu(emulatorView);
-
-        initPad();
-
-        Log.i(TAG, "内存显示");
-        //内存显示
-        {
-            tvInfo = new TextView(this);
-            tvInfo.setBackgroundColor(0x80000000);
-            tvInfo.setTextColor(0xfff0f0f0);
-            tvInfo.setTextSize(16);
-            tvInfo.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
-            tvInfo.setSingleLine(true);
-            tvInfo.setVisibility(View.INVISIBLE);
-            tvInfo.setId(R.id.tv_info);
-            tvInfo.setOnClickListener(this);
-
-            int padding = getResources().getDimensionPixelSize(R.dimen.dp5);
-            tvInfo.setPadding(padding, padding, padding, padding);
-            continer.addView(tvInfo, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-        }
-
-        Log.i(TAG, "模拟器初始化");
-        emulator.init(this, emulatorView);
-        Log.i(TAG, "模拟器启动");
-        emulator.startMrp(mEntryMrp);
     }
 
     @Override
@@ -404,6 +420,7 @@ public class EmulatorActivity extends BaseActivity implements Handler.Callback, 
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        // 上下文菜单创建
         if (v == emulatorView) {
             getMenuInflater().inflate(R.menu.emu_main, menu);
         }
@@ -445,13 +462,7 @@ public class EmulatorActivity extends BaseActivity implements Handler.Callback, 
     void showToolListDialog() {
         new AlertDialog.Builder(this)
                 .setTitle(R.string.tools)
-                .setItems(TOOLS, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        runTool(which);
-                    }
-                })
+                .setItems(TOOLS, (dialog, which) -> runTool(which))
                 .create()
                 .show();
     }
@@ -479,19 +490,13 @@ public class EmulatorActivity extends BaseActivity implements Handler.Callback, 
             mrpInputEdit = (EditText) editDlgView.findViewById(R.id.editText1);
             mrpInputDialog = builder.setTitle(title)
                     .setView(editDlgView)
-                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            emulator.setEditInputContent(mrpInputEdit.getText().toString());
-                            emulator.postMrpEvent(MrDefines.MR_DIALOG_EVENT, MrDefines.MR_DIALOG_KEY_OK, 0);
-                        }
+                    .setPositiveButton(R.string.ok, (dialog, which) -> {
+                        emulator.setEditInputContent(mrpInputEdit.getText().toString());
+                        emulator.postMrpEvent(MrDefines.MR_DIALOG_EVENT, MrDefines.MR_DIALOG_KEY_OK, 0);
                     })
-                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            emulator.setEditInputContent(null);
-                            emulator.postMrpEvent(MrDefines.MR_DIALOG_EVENT, MrDefines.MR_DIALOG_KEY_CANCEL, 0);
-                        }
+                    .setNegativeButton(R.string.cancel, (dialog, which) -> {
+                        emulator.setEditInputContent(null);
+                        emulator.postMrpEvent(MrDefines.MR_DIALOG_EVENT, MrDefines.MR_DIALOG_KEY_CANCEL, 0);
                     })
                     .setCancelable(false)
                     .create();
@@ -644,28 +649,12 @@ public class EmulatorActivity extends BaseActivity implements Handler.Callback, 
                         + "请求发送短信：\n"
                         + "地址：" + addr + "\n"
                         + "内容：" + text + "\n")
-                .setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        EmuSmsManager.getDefault().sendSms(text, addr);
-                    }
+                .setPositiveButton(R.string.accept, (dialog1, which) -> EmuSmsManager.getDefault().sendSms(text, addr))
+                .setNegativeButton(R.string.refused, (dialog12, which) -> {
+                    //直接通知底层失败
+                    emulator.postMrpEvent(MrDefines.MR_SMS_RESULT, MrDefines.MR_FAILED, 0);
                 })
-                .setNegativeButton(R.string.refused, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //直接通知底层失败
-                        emulator.postMrpEvent(MrDefines.MR_SMS_RESULT, MrDefines.MR_FAILED, 0);
-                    }
-                })
-                .setOnCancelListener(new DialogInterface.OnCancelListener() {
-
-                    @Override
-                    public void onCancel(DialogInterface dialog) {
-                        emulator.postMrpEvent(MrDefines.MR_SMS_RESULT, MrDefines.MR_SUCCESS, 0);
-                    }
-                })
+                .setOnCancelListener(dialog13 -> emulator.postMrpEvent(MrDefines.MR_SMS_RESULT, MrDefines.MR_SUCCESS, 0))
                 .create();
         dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(!SMS_DEL_MODE);
@@ -686,12 +675,9 @@ public class EmulatorActivity extends BaseActivity implements Handler.Callback, 
                 .setMessage(emulator.getCurMrpAppName()
                         + "请求拨打：\n"
                         + number)
-                .setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + number));
+                .setPositiveButton(R.string.accept, (dialog, which) -> {
+                    Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + number));
 //					EmulatorActivity.this.startActivity(intent);
-                    }
                 })
                 .setNegativeButton(R.string.refused, null)
                 .create()
@@ -701,13 +687,7 @@ public class EmulatorActivity extends BaseActivity implements Handler.Callback, 
     //---------- 对话框区 ----------------------------------------
     private AlertDialog dsmDialog = null;
     private AlertDialog.Builder dsmDialogBuilder = null;
-    private static final DialogInterface.OnClickListener dsmDialogClickListener = new DialogInterface.OnClickListener() {
-
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            Emulator.getInstance().postMrpEvent(MR_DIALOG_EVENT, which == DialogInterface.BUTTON_NEGATIVE ? MR_DIALOG_KEY_OK : MR_DIALOG_KEY_CANCEL, 0);
-        }
-    };
+    private static final DialogInterface.OnClickListener dsmDialogClickListener = (dialog, which) -> Emulator.getInstance().postMrpEvent(MR_DIALOG_EVENT, which == DialogInterface.BUTTON_NEGATIVE ? MR_DIALOG_KEY_OK : MR_DIALOG_KEY_CANCEL, 0);
 
     public void dsmDialogShow(String title, String content, int type) {
         dsmDialogBuilder = new AlertDialog.Builder(getActivity());
@@ -750,13 +730,7 @@ public class EmulatorActivity extends BaseActivity implements Handler.Callback, 
     private AlertDialog.Builder dsmMenuBuilder = null;
     private List<String> dsmMenuItems = null;
     private int dsmMenuItemCount = 0;
-    private static final DialogInterface.OnClickListener dsmMenuItemClickListener = new DialogInterface.OnClickListener() {
-
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            Emulator.getInstance().postMrpEvent(MR_MENU_SELECT, which, 0);
-        }
-    };
+    private static final DialogInterface.OnClickListener dsmMenuItemClickListener = (dialog, which) -> Emulator.getInstance().postMrpEvent(MR_MENU_SELECT, which, 0);
 
     public void dsmMenuCreate(String title, int itemCount) {
         dsmMenuItemCount = itemCount;
@@ -766,15 +740,9 @@ public class EmulatorActivity extends BaseActivity implements Handler.Callback, 
         dsmMenuBuilder = new AlertDialog.Builder(getActivity());
         dsmMenuBuilder.setTitle(title);
         //MTK 返回
-        dsmMenuBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+        dsmMenuBuilder.setNegativeButton(R.string.cancel, (dialog, which) -> Emulator.getInstance().postMrpEvent(MR_MENU_RETURN, 0, 0));
 
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Emulator.getInstance().postMrpEvent(MR_MENU_RETURN, 0, 0);
-            }
-        });
-
-        dsmMenuItems = new ArrayList<String>(itemCount);
+        dsmMenuItems = new ArrayList<>(itemCount);
         for (int i = 0; i < itemCount; i++) {
             dsmMenuItems.add("null");
         }
