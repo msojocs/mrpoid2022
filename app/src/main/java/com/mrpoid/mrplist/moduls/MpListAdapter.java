@@ -32,111 +32,111 @@ import com.mrpoid.mrplist.R;
 
 /**
  * 列表适配器
- * 
+ *
  * @author Yichou 2013-11-23
  *
  */
 public final class MpListAdapter extends BaseAdapter {
-	private final LayoutInflater mInflater;
-	private final List<MpFile> mList = new ArrayList<>(32);
+    private final LayoutInflater mInflater;
+    private final List<MpFile> mList = new ArrayList<>(32);
 
 
-	public MpListAdapter(Activity activity) {
-		mInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-	}
-	
-	public void setColors(int[] colors) {
-	}
-	
-	public void setData(List<MpFile> newData) {
-		mList.clear();
-		if(newData != null) {
-			mList.addAll(newData);
-		}
-		notifyDataSetChanged();
-	}
-	
-	public void addData(MpFile file) {
-		mList.add(file);
-		notifyDataSetChanged();
-	}
+    public MpListAdapter(Activity activity) {
+        mInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
 
-	public List<MpFile> getData() {
-		return mList;
-	}
-	
-	/**
-	 * 移除条目
-	 * 
-	 * @param position 位置
-	 */
-	public void remove(int position) {
-		mList.remove(position);
-		
-		notifyDataSetChanged();
-	}
-	
-	@Override
-	public int getCount() {
-		return mList.size();
-	}
+    public void setColors(int[] colors) {
+    }
 
-	@Override
-	public MpFile getItem(int position) {
-		return mList.get(position);
-	}
+    public void setData(List<MpFile> newData) {
+        mList.clear();
+        if (newData != null) {
+            mList.addAll(newData);
+        }
+        notifyDataSetChanged();
+    }
 
-	@Override
-	public long getItemId(int position) {
-		return position;
-	}
+    public void addData(MpFile file) {
+        mList.add(file);
+        notifyDataSetChanged();
+    }
 
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		ViewHoder hoder;
+    public List<MpFile> getData() {
+        return mList;
+    }
 
-		MpFile file = mList.get(position);
+    /**
+     * 移除条目
+     *
+     * @param position 位置
+     */
+    public void remove(int position) {
+        mList.remove(position);
 
-		if (convertView == null) {
-			convertView = mInflater.inflate(R.layout.file_list_item, null);
-			hoder = new ViewHoder();
+        notifyDataSetChanged();
+    }
 
-			hoder.icon = (ImageView) convertView.findViewById(R.id.imageView1);
-			hoder.viewDiv = convertView.findViewById(R.id.viewDiv);
-			
-			hoder.tv_title = (TextView) convertView.findViewById(R.id.textView1);
-			hoder.tv_msg = (TextView) convertView.findViewById(R.id.textView2);
-			hoder.tv_size = (TextView) convertView.findViewById(R.id.textView3);
-			
-			convertView.setTag(hoder);
-		} else {
-			hoder = (ViewHoder) convertView.getTag();
-		}
+    @Override
+    public int getCount() {
+        return mList.size();
+    }
 
-		hoder.tv_title.setText(file.getTtile());
-		hoder.tv_msg.setText(file.getMsg());
-		hoder.tv_size.setText(file.getSizeString());
-		hoder.icon.setImageResource(file.getType().getIconRes());
-		
-//		if(colors != null) {
-//			hoder.tv_title.setTextColor(colors[0]);
-//			hoder.tv_msg.setTextColor(colors[1]);
-//			hoder.tv_size.setTextColor(colors[2]);
-//		}
-		
-		if(position == getCount()-1) {
-			hoder.viewDiv.setVisibility(View.GONE);
-		} else {
-			hoder.viewDiv.setVisibility(View.VISIBLE);
-		}
+    @Override
+    public MpFile getItem(int position) {
+        return mList.get(position);
+    }
 
-		return convertView;
-	}
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
 
-	// 保存视图
-	static final class ViewHoder {
-		TextView tv_title, tv_msg, tv_size;
-		ImageView icon;
-		View viewDiv;
-	}
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        ViewHoder hoder;
+
+        MpFile file = mList.get(position);
+
+        if (convertView == null) {
+            convertView = mInflater.inflate(R.layout.file_list_item, null);
+            hoder = new ViewHoder();
+
+            hoder.icon = (ImageView) convertView.findViewById(R.id.imageView1);
+            hoder.viewDiv = convertView.findViewById(R.id.viewDiv);
+
+            hoder.tv_title = (TextView) convertView.findViewById(R.id.textView1);
+            hoder.tv_msg = (TextView) convertView.findViewById(R.id.textView2);
+            hoder.tv_size = (TextView) convertView.findViewById(R.id.textView3);
+
+            convertView.setTag(hoder);
+        } else {
+            hoder = (ViewHoder) convertView.getTag();
+        }
+
+        hoder.tv_title.setText(file.getTtile());
+        hoder.tv_msg.setText(file.getMsg());
+        hoder.tv_size.setText(file.getSizeString());
+        hoder.icon.setImageResource(file.getType().getIconRes());
+
+        //		if(colors != null) {
+        //			hoder.tv_title.setTextColor(colors[0]);
+        //			hoder.tv_msg.setTextColor(colors[1]);
+        //			hoder.tv_size.setTextColor(colors[2]);
+        //		}
+
+        if (position == getCount() - 1) {
+            hoder.viewDiv.setVisibility(View.GONE);
+        } else {
+            hoder.viewDiv.setVisibility(View.VISIBLE);
+        }
+
+        return convertView;
+    }
+
+    // 保存视图
+    static final class ViewHoder {
+        TextView tv_title, tv_msg, tv_size;
+        ImageView icon;
+        View viewDiv;
+    }
 }

@@ -23,25 +23,23 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
 
-
 public final class PreferencesProvider {
     public static final String PREFERENCES_KEY = "com.cyanogenmod.trebuchet_preferences";
 
     private static Map<String, Object> sKeyValues;
-    
-    
+
 
     @SuppressWarnings("unchecked")
     public static void load(Context context) {
         SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_KEY, 0);
-        sKeyValues = (Map<String, Object>)preferences.getAll();
+        sKeyValues = (Map<String, Object>) preferences.getAll();
     }
 
     private static int getInt(String key, int def) {
         return sKeyValues.containsKey(key) && sKeyValues.get(key) instanceof Integer ?
                 (Integer) sKeyValues.get(key) : def;
     }
-    
+
     private static void setInt(Context ctx, String key, int value) {
         SharedPreferences preferences = ctx.getSharedPreferences(PREFERENCES_KEY, 0);
         Editor editor = preferences.edit();
@@ -57,11 +55,11 @@ public final class PreferencesProvider {
 
     private static void setBoolean(Context ctx, String key, boolean value) {
         SharedPreferences preferences = ctx.getSharedPreferences(PREFERENCES_KEY, 0);
-        
+
         preferences.edit()
-          .putBoolean(key, value)
-          .apply(); // For better performance
-        
+                .putBoolean(key, value)
+                .apply(); // For better performance
+
         sKeyValues.put(key, Boolean.valueOf(value));
     }
 
@@ -84,22 +82,27 @@ public final class PreferencesProvider {
             public static boolean getShowDir(boolean def) {
                 return getBoolean("list_show_dir", def);
             }
+
             public static void setShowDir(Context ctx, boolean value) {
                 setBoolean(ctx, "list_show_dir", value);
             }
+
             public static int getThemeColor(int def) {
-            	return getInt("drak_theme", def);
+                return getInt("drak_theme", def);
             }
+
             public static void setThemeColor(Context ctx, int value) {
-            	setInt(ctx, "drak_theme", value);
+                setInt(ctx, "drak_theme", value);
             }
+
             public static int getThemeImage(int def) {
                 return getInt("theme_image", def);
             }
+
             public static void setThemeImage(Context ctx, int value) {
-            	setInt(ctx, "theme_image", value);
+                setInt(ctx, "theme_image", value);
             }
-            
+
         }
     }
 

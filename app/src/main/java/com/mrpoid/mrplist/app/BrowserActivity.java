@@ -14,27 +14,28 @@ import com.mrpoid.mrplist.view.BrowserFragment;
 
 public class BrowserActivity extends BaseActivity {
 
-	private static String TAG = BrowserActivity.class.getSimpleName();
-	@Override
-	protected void onCreate(Bundle arg0) {
+    private static String TAG = BrowserActivity.class.getSimpleName();
 
-		setTheme(R.style.AppTheme);
-		setContentView(R.layout.fragment_browser);
+    @Override
+    protected void onCreate(Bundle arg0) {
 
-		super.onCreate(arg0);
+        setTheme(R.style.AppTheme);
+        setContentView(R.layout.fragment_browser);
 
-		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-		ft.replace(android.R.id.content, new BrowserFragment(), "main").commit();
-	}
+        super.onCreate(arg0);
 
-	public boolean isLightTheme() {
-		return false;
-	}
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(android.R.id.content, new BrowserFragment(), "main").commit();
+    }
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		Log.i(TAG, "选项创建");
+    public boolean isLightTheme() {
+        return false;
+    }
 
-		return true;
-	}
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        Log.i(TAG, "选项创建");
+
+        return true;
+    }
 }

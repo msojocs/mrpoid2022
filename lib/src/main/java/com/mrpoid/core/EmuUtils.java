@@ -122,7 +122,13 @@ public class EmuUtils {
 			fos.close();
 		}
 	}
-	
+
+	/**
+	 * 将位图存储为图片
+	 * @param bitmap 位图
+	 * @param path 路径
+	 * @return 成功true | 失败false
+	 */
 	public static boolean bitmapToFile(Bitmap bitmap, File path) {
 		FileOutputStream fos = null;
 		try {

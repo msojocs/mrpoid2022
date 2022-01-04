@@ -10,140 +10,142 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.WindowManager;
 
 public class WelcomeActivity extends AppCompatActivity {
 
-	void go() {
-		SharedPreferences sp = getPreferences(0);
-		if (!sp.getBoolean("showLogo", true)) {
-			startActivity(new Intent(WelcomeActivity.this, HomeActivity.class));
-			finish();
-			return;
-		}
+    void go() {
+        SharedPreferences sp = getPreferences(0);
+        if (!sp.getBoolean("showLogo", true)) {
+            startActivity(new Intent(WelcomeActivity.this, HomeActivity.class));
+            finish();
+            return;
+        }
 
-		sp.edit().putBoolean("showLogo", false).apply();
+        sp.edit().putBoolean("showLogo", false).apply();
 
-		new Handler().postDelayed(new Runnable() {
+        new Handler().postDelayed(new Runnable() {
 
-			@Override
-			public void run() {
-				startActivity(new Intent(WelcomeActivity.this, HomeActivity.class));
-				finish();
-			}
-		}, 3000);
-	}
-	
-	void gp3() {
-        String[] perms = { Manifest.permission.READ_PHONE_STATE};
+            @Override
+            public void run() {
+                startActivity(new Intent(WelcomeActivity.this, HomeActivity.class));
+                finish();
+            }
+        }, 3000);
+    }
+
+    void gp3() {
+        String[] perms = {Manifest.permission.READ_PHONE_STATE};
         if (!isgen(perms))
             gen(perms, 3);
         else
             go();
-	}
+    }
 
-	void gp1() {
-	    String[] perms = { Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
-		if (!isgen(perms))
-		    gen(perms, 1);
-		else
-		    gp2();
-	}
+    void gp1() {
+        String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
+        if (!isgen(perms))
+            gen(perms, 1);
+        else
+            gp2();
+    }
 
-	void gp2() {
-	    String[] perms = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
+    void gp2() {
+        String[] perms = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
         if (!isgen(perms))
             gen(perms, 2);
         else
             gp3();
-	}
+    }
 
-	void gen(String[] perms, int code) {
+    void gen(String[] perms, int code) {
         ActivityCompat.requestPermissions(this, perms, code);
     }
 
-	boolean isgen(String[] perms) {
-	    for (String perm : perms) {
+    boolean isgen(String[] perms) {
+        for (String perm : perms) {
             if (ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED)
                 return false;
         }
         return true;
     }
 
-	boolean isok(int[] grantResults) {
-		for (int grant : grantResults) {
-			if (grant != PackageManager.PERMISSION_GRANTED) {
-				return false;
-			}
-		}
+    boolean isok(int[] grantResults) {
+        for (int grant : grantResults) {
+            if (grant != PackageManager.PERMISSION_GRANTED) {
+                return false;
+            }
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	@Override
-	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-		switch (requestCode) {
-			case 1: {
-				if(isok(grantResults)) {
-					gp2();
-				} else {
-					gp1();
-				}
-				break;
-			}
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
+                if (isok(grantResults)) {
+                    gp2();
+                } else {
+                    gp1();
+                }
+                break;
+            }
 
-			case 2: {
-				if(isok(grantResults)) {
-					gp3();
-				} else {
-					gp2();
-				}
-				break;
-			}
-			case 3: {
-				if(isok(grantResults)) {
+            case 2: {
+                if (isok(grantResults)) {
+                    gp3();
+                } else {
+                    gp2();
+                }
+                break;
+            }
+            case 3: {
+                if (isok(grantResults)) {
                     go();
-				} else {
-					gp3();
-				}
-				break;
-			}
-		}
+                } else {
+                    gp3();
+                }
+                break;
+            }
+        }
 
-		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-	}
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-//		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        //		requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
-		setContentView(R.layout.activity_welcome);
+        setContentView(R.layout.activity_welcome);
 
-		if (Build.VERSION.SDK_INT >= 23) {
-			gp1();
-		} else
-		    go();
-	}
+        if (Build.VERSION.SDK_INT >= 23) {
+            gp1();
+        } else
+            go();
+    }
 
-	@Override
-	protected void onPause() {
-		UmengUtils.onPause(this);
+    @Override
+    protected void onPause() {
+        UmengUtils.onPause(this);
 
-		super.onPause();
-	}
+        super.onPause();
+    }
 
-	@Override
-	protected void onResume() {
-		super.onResume();
+    @Override
+    protected void onResume() {
+        super.onResume();
 
-		UmengUtils.onResume(this);
-	}
+        UmengUtils.onResume(this);
+    }
 }

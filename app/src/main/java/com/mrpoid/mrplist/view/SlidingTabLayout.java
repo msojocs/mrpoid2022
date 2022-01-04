@@ -22,6 +22,7 @@ import android.graphics.Typeface;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+
 import android.util.AttributeSet;
 import android.util.SparseArray;
 import android.util.TypedValue;

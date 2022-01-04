@@ -103,12 +103,12 @@ public class HomeActivity extends AppCompatActivity implements OnClickListener,
     @Override
     protected void onCreate(Bundle arg0) {
         Log.d(TAG, "home create");
-//		int themeColor = PreferencesProvider.Interface.General.getThemeColor(0);
-//		if(themeColor == 1) {
+        //		int themeColor = PreferencesProvider.Interface.General.getThemeColor(0);
+        //		if(themeColor == 1) {
         setTheme(R.style.AppTheme);
-//		} else {
-//			setTheme(R.style.Theme_AppCompat);
-//		}
+        //		} else {
+        //			setTheme(R.style.Theme_AppCompat);
+        //		}
         super.onCreate(arg0);
 
         setContentView(R.layout.activity_home);
@@ -120,10 +120,10 @@ public class HomeActivity extends AppCompatActivity implements OnClickListener,
             getSupportActionBar().setDisplayUseLogoEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-//        getSupportActionBar().setElevation(0);
-//		getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0x80222222));
+        //        getSupportActionBar().setElevation(0);
+        //		getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0x80222222));
 
-//		PAGE_TITLES = getResources().getStringArray(R.array.page_titles);
+        //		PAGE_TITLES = getResources().getStringArray(R.array.page_titles);
 
         ViewPager mPager = (ViewPager) findViewById(R.id.pager);
         mPager.setAdapter(new MyFragmentPagerAdapter(getSupportFragmentManager()));
@@ -134,13 +134,13 @@ public class HomeActivity extends AppCompatActivity implements OnClickListener,
         slidingTabLayout.setDistributeEvenly(true);
         slidingTabLayout.setViewPager(mPager);
 
-//		mPageIndicator = (TitlePageIndicator)findViewById(R.id.indicator);
-//		mPageIndicator.setViewPager(mPager);
-//		mPageIndicator.setOnPageChangeListener(this);
-//		mPageIndicator.setFooterIndicatorStyle(IndicatorStyle.Underline);
-//		mPageIndicator.setOnCenterItemClickListener(this);
-//		mPageIndicator.setCurrentItem(0);
-//		mPageIndicator.setFooterColor(0xf0e1e5ee);
+        //		mPageIndicator = (TitlePageIndicator)findViewById(R.id.indicator);
+        //		mPageIndicator.setViewPager(mPager);
+        //		mPageIndicator.setOnPageChangeListener(this);
+        //		mPageIndicator.setFooterIndicatorStyle(IndicatorStyle.Underline);
+        //		mPageIndicator.setOnCenterItemClickListener(this);
+        //		mPageIndicator.setCurrentItem(0);
+        //		mPageIndicator.setFooterColor(0xf0e1e5ee);
 
         //创建
         favoriteFmg = new MyFavoriteFragment();
@@ -150,14 +150,14 @@ public class HomeActivity extends AppCompatActivity implements OnClickListener,
         initLeftDrawer();
         initBackground();
 
-//		runOnUiThread(new Runnable() {
-//
-//			@Override
-//			public void run() {
-//				File file = new File(Environment.getExternalStorageDirectory(), "mythroad/240x320/gwy.mrp");
-//				MrpoidMain.runMrp(getActivity(), file.getPath());
-//			}
-//		});
+        //		runOnUiThread(new Runnable() {
+        //
+        //			@Override
+        //			public void run() {
+        //				File file = new File(Environment.getExternalStorageDirectory(), "mythroad/240x320/gwy.mrp");
+        //				MrpoidMain.runMrp(getActivity(), file.getPath());
+        //			}
+        //		});
     }
 
     // 初始化左侧抽屉
@@ -186,14 +186,14 @@ public class HomeActivity extends AppCompatActivity implements OnClickListener,
         }
     }
 
-//    public void setCurrentPage(int page) {
-//		mPager.setCurrentItem(page);
-//	}
+    //    public void setCurrentPage(int page) {
+    //		mPager.setCurrentItem(page);
+    //	}
 
     private void initBackground() {
-//		int img = PreferencesProvider.Interface.General.getThemeImage(DEFAULT_BACKGROUND_INDEX);
-//		if(img != 0)
-//			setBackground(img, true);
+        //		int img = PreferencesProvider.Interface.General.getThemeImage(DEFAULT_BACKGROUND_INDEX);
+        //		if(img != 0)
+        //			setBackground(img, true);
     }
 
     private void setBackground(int img) {
@@ -271,15 +271,15 @@ public class HomeActivity extends AppCompatActivity implements OnClickListener,
 
     @SuppressLint("NewApi")
     private void reStartSelf() {
-//		if(VERSION.SDK_INT >= 11) {
-//			recreate();
-//		} else {
-//			finish();
-//
-//			startActivity(new Intent(this, getClass())
-//					.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-//					.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-//		}
+        //		if(VERSION.SDK_INT >= 11) {
+        //			recreate();
+        //		} else {
+        //			finish();
+        //
+        //			startActivity(new Intent(this, getClass())
+        //					.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+        //					.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+        //		}
         finish();
 
         startActivity(new Intent(this, getClass())
@@ -384,10 +384,10 @@ public class HomeActivity extends AppCompatActivity implements OnClickListener,
         MyFavoriteManager.getInstance().add(path);
     }
 
-//	public void runMrp(String path) {
-//		MrpoidMain.runMrp(this, path);
-//		addToFavorate(path);
-//	}
+    //	public void runMrp(String path) {
+    //		MrpoidMain.runMrp(this, path);
+    //		addToFavorate(path);
+    //	}
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
