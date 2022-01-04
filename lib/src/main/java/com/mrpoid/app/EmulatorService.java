@@ -36,7 +36,7 @@ import com.mrpoid.apps.procmgr.AppProcessService;
  * 
  */
 public class EmulatorService extends AppProcessService {
-	static final String TAG = "EmulatorService";
+	static final String TAG = EmulatorService.class.getSimpleName();
 	
 	public static final String ACTION_STARTMRP = "com.mrpoid.actions.STARTMRP";
 	public static final String ACTION_FOREGROUND = "com.mrpoid.actions.FOREGROUND";

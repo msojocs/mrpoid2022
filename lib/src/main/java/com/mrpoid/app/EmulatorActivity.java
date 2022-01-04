@@ -77,7 +77,7 @@ import android.widget.Toast;
  * 最后修改：2013-3-14 20:06:44
  */
 public class EmulatorActivity extends BaseActivity implements Handler.Callback, MrDefines, OnClickListener {
-    static final String TAG = "EmulatorActivity";
+    static final String TAG = EmulatorActivity.class.getSimpleName();
 
     public static boolean SMS_DEL_MODE = false;
 
@@ -441,11 +441,9 @@ public class EmulatorActivity extends BaseActivity implements Handler.Callback, 
 
         new AlertDialog.Builder(this)
                 .setTitle(R.string.scaling_mode)
-                .setSingleChoiceItems(R.array.scaling_mode_entries, choice, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        /* User clicked on a radio button do some stuff */
-                        tmpChoice = which;
-                    }
+                .setSingleChoiceItems(R.array.scaling_mode_entries, choice, (dialog, which) -> {
+                    /* User clicked on a radio button do some stuff */
+                    tmpChoice = which;
                 })
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {

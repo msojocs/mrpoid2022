@@ -18,7 +18,7 @@ import com.edroid.common.utils.Logger;
  * @author Yichou 2013-12-19
  */
 public class AppProcess implements Callback, IMessageCodes {
-    public static final Logger log = Logger.create(EmuLog.isShowLog, "AppProcess");
+    public static final Logger log = Logger.create(EmuLog.isShowLog, AppProcess.class.getSimpleName());
     private static String TAG = AppProcess.class.getSimpleName();
 
     /**

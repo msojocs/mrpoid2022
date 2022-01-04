@@ -73,16 +73,14 @@ public class EmuLog {
 
 	public static void showScreenLog(final Activity activity, final String info) {
 		if (isShowLog) {
-			activity.runOnUiThread(new Runnable() {
-				public void run() {
-					if (m_toast == null) {
-						//避免每次新建 Toast
-						m_toast = Toast.makeText(activity, info, Toast.LENGTH_LONG);
-					} else {
-						m_toast.setText(info);
-					}
-					m_toast.show();
+			activity.runOnUiThread(() -> {
+				if (m_toast == null) {
+					//避免每次新建 Toast
+					m_toast = Toast.makeText(activity, info, Toast.LENGTH_LONG);
+				} else {
+					m_toast.setText(info);
 				}
+				m_toast.show();
 			});
 		}
 	}

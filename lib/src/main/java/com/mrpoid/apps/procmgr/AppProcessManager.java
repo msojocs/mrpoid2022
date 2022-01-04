@@ -112,7 +112,12 @@ public class AppProcessManager {
 			Log.i(TAG, "proc" + procIndex + " wait service connection cb!");
 		}
 	}
-	
+
+	/**
+	 * 添加进程到指定索引，并标记为连接状态
+	 * @param index 进程索引
+	 * @param process 进程
+	 */
 	private void markAsConnected(int index, AppProcess process) {
 		synchronized (mProcList) {
 			mProcList[index].app = process;
@@ -123,7 +128,12 @@ public class AppProcessManager {
 					+ (System.currentTimeMillis() - mProcList[index].readyTime));
 		}
 	}
-	
+
+	/**
+	 * 标记指定进程为运行状态
+	 * @param procIndex 进程索引
+	 * @return 成功true | 失败false
+	 */
 	protected boolean markAsRunning(int procIndex) {
 		synchronized (mProcList) {
 			if(mProcList[procIndex].state == ItemState.RUNNING) { //被人抢先了一步，你回去吧
@@ -140,6 +150,10 @@ public class AppProcessManager {
 		return true;
 	}
 
+	/**
+	 * 解绑指定进程的服务
+	 * @param procIndex 进程索引
+	 */
 	private void unbindProc(int procIndex) {
 		synchronized (mProcList) {
 			if (mProcList[procIndex].conn != null) {
@@ -281,10 +295,8 @@ public class AppProcessManager {
 
 	
 	/**
-	 * 在独立进程运行 apk
+	 * 在独立进程运行 mrp
 	 *
-	 * 
-	 * @return apk 运行 id
 	 */
 	public synchronized void requestIdleProcess(int defProcIndex, boolean force, String mrpPath, RequestCallback cb) {
 		int procIndex = checkRuning(mrpPath);
@@ -299,7 +311,7 @@ public class AppProcessManager {
 				mProcList[procIndex].app.resume();
 				cb.onSuccess(procIndex, mProcList[procIndex].app, true);
 				
-				return ; //直接返回 running proc
+				return ;
 			} 
 			else if(mProcList[procIndex].state == ItemState.WAITING) { //怎么还在 waiting ?
 				if(System.currentTimeMillis() - mProcList[procIndex].readyTime > 10*1000) { //wait most 10 seconds
@@ -326,7 +338,7 @@ public class AppProcessManager {
 				return ;
 			}
 		}
-		
+		// 绑定进程
 		binProc(procIndex, mrpPath, cb);
 	}
 	

@@ -19,7 +19,7 @@ import com.edroid.common.utils.FileUtils;
  * 
  */
 public class ExternActivity extends BaseActivity {
-	private static final String TAG = "MrpoidExtern";
+	private static final String TAG = ExternActivity.class.getSimpleName();
 
 	private void showError(String msg) {
 		Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
