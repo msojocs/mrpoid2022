@@ -9,6 +9,7 @@ import com.mrpoid.mrplist.app.HomeActivity;
 import com.mrpoid.mrplist.moduls.MpFile;
 import com.mrpoid.mrplist.moduls.MpListAdapter;
 import com.mrpoid.mrplist.moduls.MyFavoriteManager;
+import com.mrpoid.mrplist.utils.Test;
 
 import android.graphics.Color;
 import android.os.Bundle;

@@ -104,8 +104,6 @@ public class HomeActivity extends AppCompatActivity implements OnClickListener,
 
     @Override
     protected void onCreate(Bundle arg0) {
-        Test.hello();
-        Emulator.hello();
         Log.d(TAG, "home create");
 //		int themeColor = PreferencesProvider.Interface.General.getThemeColor(0);
 //		if(themeColor == 1) {

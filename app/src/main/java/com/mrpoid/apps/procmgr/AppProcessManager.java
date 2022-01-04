@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.mrpoid.core.EmuLog;
 import com.edroid.common.utils.Logger;
+import com.mrpoid.mrplist.utils.Test;
 
 
 /**
@@ -288,7 +289,7 @@ public class AppProcessManager {
 	 */
 	public synchronized void requestIdleProcess(int defProcIndex, boolean force, String mrpPath, RequestCallback cb) {
 		int procIndex = checkRuning(mrpPath);
-		
+
 		/**
 		 * if is already running we dont't case defProcIndex
 		 */
@@ -300,15 +301,13 @@ public class AppProcessManager {
 				cb.onSuccess(procIndex, mProcList[procIndex].app, true);
 				
 				return ; //直接返回 running proc
-			} 
-			else if(mProcList[procIndex].state == ItemState.WAITING) { //怎么还在 waiting ?
+			}else if(mProcList[procIndex].state == ItemState.WAITING) { //怎么还在 waiting ?
 				if(System.currentTimeMillis() - mProcList[procIndex].readyTime > 10*1000) { //wait most 10 seconds
 					resetProc(procIndex);
 				} else {
 					procIndex = -1; //开一个新的
 				}
-			} 
-			else if(mProcList[procIndex].state == ItemState.IDLE) {
+			}else if(mProcList[procIndex].state == ItemState.IDLE) {
 				resetProc(procIndex);
 			}
 		} 

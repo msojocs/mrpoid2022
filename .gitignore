@@ -10,3 +10,4 @@
 
 # Project exclude paths
 /lib/.cxx/
+/app/distribution/

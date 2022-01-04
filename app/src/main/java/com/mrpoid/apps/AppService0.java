@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.mrpoid.app.EmulatorActivity;
 import com.mrpoid.app.EmulatorService;
+import com.mrpoid.mrplist.utils.Test;
 
 public class AppService0 extends EmulatorService {
 	private static String TAG = AppService0.class.getSimpleName();
@@ -15,7 +16,7 @@ public class AppService0 extends EmulatorService {
 
 	@Override
 	public void onCreate() {
-		Log.i(TAG, "创建 onCreate");
+		android.os.Debug.waitForDebugger();
 		super.onCreate();
 	}
 

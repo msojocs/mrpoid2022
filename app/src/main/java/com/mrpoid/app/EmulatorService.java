@@ -45,7 +45,7 @@ public class EmulatorService extends AppProcessService {
 	
 	@Override
 	public void onCreate() {
-		Log.i(TAG, "create");
+		Log.i(TAG, "===========模拟器服务创建=============");
 		super.onCreate();
 	}
 	
@@ -78,7 +78,7 @@ public class EmulatorService extends AppProcessService {
 			activityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			activityIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 			activityIntent.putExtras(intent);
-			Log.i(TAG, "开始Activity");
+			Log.i(TAG, "开始AppActivity");
 			getApplicationContext().startActivity(activityIntent);
 		}
 		else if (ACTION_FOREGROUND.equals(intent.getAction())) {

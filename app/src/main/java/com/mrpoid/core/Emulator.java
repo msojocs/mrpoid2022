@@ -46,6 +46,7 @@ import com.mrpoid.app.EmulatorActivity;
 import com.edroid.common.utils.FileUtils;
 import com.edroid.common.utils.Logger;
 import com.mrpoid.mrplist.R;
+import com.mrpoid.mrplist.utils.Test;
 
 
 /**
@@ -123,7 +124,7 @@ public class Emulator implements Callback {
 		bSoLoaded = true;
     }
 
-	private Emulator() {
+	public Emulator() {
 	    mrpThread = new HandlerThread("mrp");
 	    mrpThread.start();
 	    handler = new Handler(mrpThread.getLooper(),this);
@@ -373,8 +374,9 @@ public class Emulator implements Callback {
 
         running = true;
 
+        Test.hello();
         // JNI启动MRP程序
-                                            native_startMrp(path);
+        native_startMrp(path);
     }
 	
 	/**
@@ -963,5 +965,5 @@ public class Emulator implements Callback {
 
 	///////////////////////////////////
 
-	public static native void hello();
+	public native void hello();
 }

@@ -101,12 +101,12 @@ public final class MpListAdapter extends BaseAdapter {
 			convertView = mInflater.inflate(R.layout.file_list_item, null);
 			hoder = new ViewHoder();
 
-			hoder.icon = (ImageView) convertView.findViewById(R.id.imageView1);
+			hoder.icon =  convertView.findViewById(R.id.imageView1);
 			hoder.viewDiv = convertView.findViewById(R.id.viewDiv);
 			
-			hoder.tv_title = (TextView) convertView.findViewById(R.id.textView1);
-			hoder.tv_msg = (TextView) convertView.findViewById(R.id.textView2);
-			hoder.tv_size = (TextView) convertView.findViewById(R.id.textView3);
+			hoder.tv_title = convertView.findViewById(R.id.textView1);
+			hoder.tv_msg = convertView.findViewById(R.id.textView2);
+			hoder.tv_size = convertView.findViewById(R.id.textView3);
 			
 			convertView.setTag(hoder);
 		} else {

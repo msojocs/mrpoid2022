@@ -35,6 +35,7 @@ import com.mrpoid.game.keysprite.KeySprite;
 import com.mrpoid.game.keysprite.OnChooseLitener;
 import com.mrpoid.game.keysprite.Sprite;
 import com.mrpoid.mrplist.R;
+import com.mrpoid.mrplist.utils.Test;
 
 import android.Manifest.permission;
 import android.app.Dialog;
@@ -595,6 +596,8 @@ public class EmulatorActivity extends BaseActivity implements Handler.Callback, 
     }
 
     private void entryBackground() {
+
+        Test.hello();
         startAppService(EmulatorService.ACTION_FOREGROUND);
     }
 

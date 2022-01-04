@@ -12,9 +12,12 @@ import android.util.Log;
 
 import com.mrpoid.core.EmuLog;
 import com.edroid.common.utils.Logger;
+import com.mrpoid.mrplist.utils.Test;
 
 
 /**
+ * MRP运行进程
+ *
  * @author Yichou 2013-12-19
  */
 public class AppProcess implements Callback, IMessageCodes {
@@ -43,8 +46,8 @@ public class AppProcess implements Callback, IMessageCodes {
      * 进程管理器
      */
     private final AppProcessManager manager;
-    private long startTime; //启动时间
-    private long lastActiveTime; //最后活动时间（根据此时间决定被杀优先级）
+    private long startTime; // 启动时间
+    private long lastActiveTime; // 最后活动时间（根据此时间决定被杀优先级）
     private int pid;
     private ProcessLifeListener mLifeListener;
 
