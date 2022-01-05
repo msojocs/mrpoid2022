@@ -1703,7 +1703,7 @@ int32 mr_platEx(int32 code, uint8* input, int32 input_len, uint8** output, int32
 				//pageMalloc((void**)output, output_len, SCNW * SCNH *4);
                 *output_len = SCNW * SCNH * 4;
                 *output = malloc(*output_len);
-                LOGI("malloc exRam addr=%p len=%d", output, output_len);
+                LOGI("malloc exRam addr=%p len=%d", output, *output_len);
                 return MR_SUCCESS;
 			} else {
 				*output = NULL;
@@ -1777,7 +1777,7 @@ int32 mr_platEx(int32 code, uint8* input, int32 input_len, uint8** output, int32
 
 				memcpy(buf, input, len+2);
 				UCS2ByteRev(buf);
-				UCS2ToGBString((uint16*)buf, gbBuf, gbBufLen);
+				UCS2ToGBString((uint16*)buf, (uint8*)gbBuf, gbBufLen);
 
 				strcpy(*output, gbBuf);
 				/**

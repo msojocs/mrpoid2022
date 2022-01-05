@@ -122,7 +122,7 @@
 //#define MR_GET_FREE_SPACE                       1305
 //#define MR_GET_SIM_INFO				1307
 //
-////meidia 接口编号区
+////media 接口编号区
 //#define MR_MEDIA_INIT                  		201
 //#define MR_MEDIA_BUF_LOAD            		203
 //#define MR_MEDIA_FILE_LOAD           		202

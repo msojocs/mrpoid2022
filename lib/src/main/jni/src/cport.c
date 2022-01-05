@@ -8,7 +8,7 @@
 
 void* mr_memcpy(void* dst, const void* src, uint32 n)
 {
-    if(!dst || !src || n<1 || !isAddrValid(dst)) {
+    if(!dst || !src || n<1 || !isAddrValid((char *)dst)) {
         LOGE("mr_memcpy InvalidAddr %p %p %d", dst, src, n);
 //        return dst;
     }

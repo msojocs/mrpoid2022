@@ -2,7 +2,7 @@
 #define __TABLES_H__
 
 /*-----------------------------------*/
-// 表格
+// 字符编码表格
 
 // gb2uni码表
 static const unsigned char gb2uTable[] = {

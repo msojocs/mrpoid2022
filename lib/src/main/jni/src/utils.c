@@ -7,7 +7,11 @@
 #include "mr_helper.h"
 #include "emulator.h"
 
-
+/**
+* 获取文件类型
+* @param name 文件路径
+* @return MR_IS_FILE | MR_IS_DIR | MR_IS_INVALID
+*/
 int getFileType(const char *name)
 {
 	struct stat s1;
@@ -28,7 +32,7 @@ int getFileType(const char *name)
 		return MR_IS_INVALID;
 }
 
-int getFileSize(const char *path)
+long long getFileSize(const char *path)
 {
 	struct stat s1;
 	int ret;

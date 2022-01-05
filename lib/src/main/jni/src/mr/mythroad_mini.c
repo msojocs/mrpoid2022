@@ -1303,7 +1303,7 @@ _DrawText(char *pcText, int16 x, int16 y, uint8 r, uint8 g, uint8 b, int is_unic
 #endif
 
     if (!is_unicode) {
-        tempBuf = c2u((const char *) pcText, NULL, &TextSize);
+        tempBuf = c2u((const unsigned char *) pcText, NULL, &TextSize);
         if (!tempBuf) {
             //mrp_pushfstring(vm_state, "DrawText x=%d:c2u err!",x);
             //mrp_error(vm_state);
@@ -1458,7 +1458,7 @@ _DrawTextEx(char *pcText, int16 x, int16 y, mr_screenRectSt rect, mr_colourSt co
     }
 
     if (!(flag & DRAW_TEXT_EX_IS_UNICODE)) {
-        tempBuf = c2u((const char *) pcText, NULL, &TextSize);
+        tempBuf = c2u((const unsigned char *) pcText, NULL, &TextSize);
         if (!tempBuf) {
             MRDBGPRINTF("DrawTextEx x=%d:c2u err!", x);
             return 0;

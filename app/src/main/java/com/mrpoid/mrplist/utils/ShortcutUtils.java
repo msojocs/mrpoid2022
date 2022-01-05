@@ -82,14 +82,14 @@ public class ShortcutUtils {
 
     // 创建快捷方式
     public static void createShortCut(Activity app, String title, int icon, File path) {
-        String componetName = "com.mrpoid.app.ExternActivity";
+        String componentName = "com.mrpoid.app.ExternActivity";
         // ComponentName comp = new ComponentName(this.getPackageName(),
         // this.getPackageName() + "." + this.getLocalClassName());
         // Intent shortcutIntent = new
         // Intent(Intent.ACTION_MAIN).setComponent(comp);
         // if(isAddShortCut(appName))
         // return;
-        ComponentName comp = new ComponentName(app.getApplicationContext(), componetName);
+        ComponentName comp = new ComponentName(app.getApplicationContext(), componentName);
         Intent shortcutIntent = new Intent(new Intent(Intent.ACTION_MAIN).setComponent(comp));
 
         // 加上这句能避免启动新的 Activity

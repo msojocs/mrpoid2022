@@ -240,6 +240,7 @@ void SetDsmPath(const char *path);
 
 extern int32 mr_start_dsmC(char* start_file, const char* entry);
 
+// 检查地址是否在分配内存范围之内
 #define isAddrValid(p) \
     (p >= gEmuEnv.vm_mem_base && p < gEmuEnv.vm_mem_end)
 
