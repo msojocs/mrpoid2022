@@ -5729,6 +5729,7 @@ static int32 _mr_intra_start(char *appExName, const char *entry) {
 
     Origin_LG_mem_len = _mr_getMetaMemLimit();
 
+    // 分配内存
     if (_mr_mem_init() != MR_SUCCESS) {
         return MR_FAILED;
     }
@@ -5852,6 +5853,7 @@ static int32 _mr_intra_start(char *appExName, const char *entry) {
     mr_timer_state = MR_TIMER_STATE_IDLE;
     mr_timer_run_without_pause = FALSE;
     bi = bi & MR_FLAGS_AI;
+    // 初始化数据为0
     MEMSET(mr_bitmap, 0, sizeof(mr_bitmapSt) * BITMAPMAX);
     MEMSET(mr_sound, 0, sizeof(mr_sound));
 
@@ -6022,7 +6024,7 @@ static int32 _mr_intra_start(char *appExName, const char *entry) {
    MEMCPY(pack_filename, temp_pack_filename, sizeof(pack_filename));
 }
 #endif
-//入口变量
+    // 入口变量
     if (!entry) {
         entry = "_dsm";
     }
@@ -6030,7 +6032,7 @@ static int32 _mr_intra_start(char *appExName, const char *entry) {
     mrp_setglobal(vm_state, "_mr_entry");
 
     STRNCPY(mr_entry, entry, sizeof(mr_entry) - 1);
-//入口变量
+    // 入口变量
 
     mrp_pushstring(vm_state, start_fileparameter);
     mrp_setglobal(vm_state, "_mr_param");

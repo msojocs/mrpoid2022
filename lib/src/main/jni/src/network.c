@@ -36,14 +36,14 @@ static char *ip2str(uint32 ip, char *out) {
 }
 
 void DsmSocketInit() {
-    int i = 0;
+    int i;
 
     for (i = 0; i < DSM_SUPPORT_SOC_NUM; i++)
         socStat[i].socketId = MR_FAILED;
 }
 
 void DsmSocketClose() {
-    int i = 0;
+    int i;
 
     for (i = 0; i < DSM_SUPPORT_SOC_NUM; i++) {
         if (socStat[i].socketId != MR_FAILED)
@@ -552,15 +552,27 @@ int32 mr_recv(int32 s, char *buf, int len) {
 //	}
 //}
 
-void readLine(const char *p, char *out) {
-    const char *p1 = p;
+/**
+* 读取字符串中的一行
+* @param input 输入字符串
+* @param out 读取的行
+*/
+void readLine(const char *input, char *out) {
+    const char *p1 = input;
 
     while (*p1 && *p1 != '\r' && *p1 != '\n') p1++;
 
-    strncpy(out, p, p1 - p);
+    strncpy(out, input, p1 - input);
 }
 
-void getRealIP(const char *buf, int len, int32 *ip, int32 *prot) {
+/**
+* 获取真实IP
+* @param buf HTTP数据
+* @param len 长度
+* @param ip IP
+* @param port 端口
+*/
+void getRealIP(const char *buf, int len, int32 *ip, int32 *port) {
     const char *p;
     char line[128] = {0};
 
@@ -575,7 +587,7 @@ void getRealIP(const char *buf, int len, int32 *ip, int32 *prot) {
         sscanf(line, "Host: %[^:]:%s", ipstr, portstr);
 
         *ip = mr_getHostByName_block(ipstr);
-        *prot = atoi(portstr);
+        *port = atoi(portstr);
     }
 }
 

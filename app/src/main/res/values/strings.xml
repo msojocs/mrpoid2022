@@ -63,10 +63,10 @@
 
     <string-array name="page_titles">
         <item>本地应用</item>
-		<item>我的收藏</item>
-		<item>文件浏览</item>
+        <item>我的收藏</item>
+        <item>文件浏览</item>
     </string-array>
-    
+
     <string-array name="main_menu_items">
         <item>设置</item>
         <item>关于</item>
@@ -76,7 +76,7 @@
         <item>在线下载</item>
         <item>文件管理</item>
     </string-array>
-    
+
     <string-array name="run_mode_entries">
         <item>模拟器1</item>
         <item>模拟器2</item>
@@ -92,5 +92,8 @@
         <item>320x240</item>
         <item>480x800</item>
     </string-array>
+    <string name="title_activity_store">StoreActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
 
 </resources>

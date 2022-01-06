@@ -555,7 +555,12 @@ static int errfile(mrp_State *L, int fnameindex) {
     return MRP_ERRFILE;
 }
 
-
+/**
+* 加载文件
+* @param L MRP路径
+* @param filename 启动文件
+* @return
+*/
 MRPLIB_API int mr_L_loadfile(mrp_State *L, const char *filename) {
 #ifdef PC_MOD
     LoadF lf;

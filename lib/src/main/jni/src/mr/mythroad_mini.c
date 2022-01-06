@@ -5311,11 +5311,14 @@ static int32 _mr_intra_start(char *appExName, const char *entry) {
     {
         int32 len = 0;
         mr_screenBuf = NULL;
+
+        // 第二内存申请
         if (mr_platEx(1001, NULL, 0, (uint8 **) &mr_screenBuf, &len, NULL) == MR_SUCCESS) {
             if ((mr_screenBuf != NULL) && (len >= MR_SCREEN_MAX_W * MR_SCREEN_H * MR_SCREEN_DEEP)) {
                 mr_bitmap[BITMAPMAX].type = MR_SCREEN_SECOND_BUF;
                 mr_bitmap[BITMAPMAX].buflen = len;
             } else if (mr_screenBuf != NULL) {
+                // 第二内存释放
                 mr_platEx(1002, (uint8 *) mr_screenBuf, len, (uint8 **) NULL, NULL, NULL);
                 mr_screenBuf = NULL;
             }
@@ -5500,7 +5503,12 @@ int32 mr_start_dsm(const char *entry) {
     return _mr_intra_start("logo.ext", entry);
 #endif
 }
-
+/**
+* 启动MRP
+* @param start_file 启动入口
+* @param entry MRP文件
+* @return
+*/
 int32 mr_start_dsmC(char *start_file, const char *entry) {
     mr_screeninfo screeninfo;
     if (mr_getScreenInfo(&screeninfo) != MR_SUCCESS) {

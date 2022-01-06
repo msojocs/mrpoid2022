@@ -123,6 +123,12 @@ MRPLIB_API void mr_L_pushresult (mr_L_Buffer *B);
 ** Compatibility macros and functions
 */
 
+/**
+*
+* @param L MRP路径
+* @param filename 启动文件
+* @return
+*/
 MRPLIB_API int   mrp_dofile (mrp_State *L, const char *filename);
 MRPLIB_API int   mrp_dostring (mrp_State *L, const char *str);
 MRPLIB_API int   mrp_dobuffer (mrp_State *L, const char *buff, size_t sz,
