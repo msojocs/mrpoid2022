@@ -4945,7 +4945,9 @@ static int _mr_TestComC(int input0, char *input1, int32 len, int32 code) {
 #else
         case 800: {
             //int code = ((int)  mr_L_optint(L,3,0));
+            // 越过头部8字节 MRPG CMAP
             mr_load_c_function = (MR_LOAD_C_FUNCTION) (input1 + 8);
+            // 将头4个字节修改为函数表地址
             *((void **) (input1)) = (void *) _mr_c_function_table;
 
 #ifdef  MR_MSTAR_MOD
@@ -5288,7 +5290,10 @@ int32 mr_doExt(char *extName) {
 
     _mr_TestCom(NULL, 3629, 2913);
 
+    // 加载函数表
     if (_mr_TestComC(800, filebuf, filelen, 0) == 0) {
+
+        // 启动？
         _mr_TestComC(801, filebuf, MR_VERSION, 6);
         _mr_TestComC(801, (char *) &mrc_appInfo_st, sizeof(mrc_appInfo_st), 8);
         ret = _mr_TestComC(801, filebuf, MR_VERSION, 0);
