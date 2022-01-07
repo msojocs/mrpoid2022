@@ -410,6 +410,13 @@ extern MR_FILE_HANDLE mr_open(const char* filename,  uint32 mode);
 extern int32 mr_close(MR_FILE_HANDLE f);
 extern int32 mr_info(const char* filename);
 extern int32 mr_write(MR_FILE_HANDLE f,void *p,uint32 l);
+/**
+* 读取文件中的数据到缓存
+* @param f 要读得文件得句柄
+* @param p 缓存的指针
+* @param l 缓存的大小
+* @return 实际读取的长度
+*/
 extern int32 mr_read(MR_FILE_HANDLE f,void *p,uint32 l);
 extern int32 mr_seek(MR_FILE_HANDLE f, int32 pos, int method);
 extern int32 mr_getLen(const char* filename);

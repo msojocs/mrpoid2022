@@ -888,12 +888,19 @@ int32 mr_close(MR_FILE_HANDLE f)
 
 /****************************************************************************
  函数名:int32 mr_read(MR_FILE_HANDLE f,void *p,uint32 l)
- 描  述:读取文件中得数据
+ 描  述:读取文件中的数据
  参  数:f:要读得文件得句柄
  p:缓存得指针
  l:缓存得大小
  返  回:
  ****************************************************************************/
+/**
+* 读取文件中的数据到缓存
+* @param f 要读得文件得句柄
+* @param p 缓存的指针
+* @param l 缓存的大小
+* @return 实际读取的长度
+*/
 int32 mr_read(MR_FILE_HANDLE f, void *p, uint32 l)
 {
     if(gEmuEnv.showFile)
@@ -901,15 +908,15 @@ int32 mr_read(MR_FILE_HANDLE f, void *p, uint32 l)
 	if(f < 5)
 		return MR_FAILED;
 
-	size_t readnum;
+	size_t readLength;
 
-	readnum = read(f-5, p, (size_t) l);
-	if (readnum < 0){
+	readLength = read(f - 5, p, (size_t) l);
+	if (readLength < 0){
 		LOGE("mr_read(%d) err, %d", f, errno);
 		return MR_FAILED;
 	}
 
-	return (int32) readnum;
+	return (int32) readLength;
 }
 
 /****************************************************************************

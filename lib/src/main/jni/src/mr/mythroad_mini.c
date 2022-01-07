@@ -1849,11 +1849,18 @@ static void _mr_readFileShowInfo(const char *filename, int32 code) {
     MRDBGPRINTF("read file  \"%s\" err, code=%d", filename, code);
 }
 
+/**
+* 读取MRP中指定的文件
+* @param filename 要读取的文件
+* @param filelen 存取文件长度的整型指针
+* @param lookfor 仅判断是否存在
+* @return 解压后的文件内容的指针 | 0错误 | (void *)1存在
+*/
 void *_mr_readFile(const char *filename, int *filelen, int lookfor) {
     //int ret;
     int method;
     uint32 reallen, found = 0;
-    int32 oldlen, nTmp;
+    int32 old_len, nTmp;
     uint32 len;
     void *filebuf;
     MR_FILE_HANDLE f;
@@ -1986,9 +1993,10 @@ void *_mr_readFile(const char *filename, int *filelen, int lookfor) {
 
     } else   /*read file from efs , EFS 中的文件*/
     {
-
+        // 打开文件
         f = mr_open(pack_filename, MR_FILE_RDONLY);
         if (f == 0) {
+            // 打开失败
             //MRDBGPRINTF( "file  \"%s\" can not be opened!", filename);
             _mr_readFileShowInfo(filename, 2002);
             return 0;
@@ -1996,37 +2004,49 @@ void *_mr_readFile(const char *filename, int *filelen, int lookfor) {
 
         // 从这里开始是新版的mrp处理
         {
+            /**
+            * 0 - MRPG
+            * 1 - 实际数据开始位置+4
+            * 2 - 整个Mrp文件总长度
+            * 3 - 头信息长度
+            */
             uint32 headbuf[4];
             //uint32 infohead_len, mrp_tag;
             //headbuf = (uint32 *)MR_MALLOC(16);
-            MEMSET(headbuf, 0, sizeof(headbuf));
-            nTmp = mr_read(f, &headbuf, sizeof(headbuf));
+            MEMSET(headbuf, 0, sizeof(headbuf));        // 初始化为0
+            nTmp = mr_read(f, &headbuf, sizeof(headbuf));       // 读取头部4*4个字节
 #ifdef MR_BIG_ENDIAN
                                                                                                                                     headbuf[0] = ntohl(headbuf[0]);
 			headbuf[1] = ntohl(headbuf[1]);
 			headbuf[2] = ntohl(headbuf[2]);
 			headbuf[3] = ntohl(headbuf[3]);
 #endif
+			// 检查读出长度与起始四个字节是否为MRPG
             if ((nTmp != 16) || (headbuf[0] != 1196446285)) {
                 mr_close(f);
                 _mr_readFileShowInfo(filename, 3001);
                 return 0;
             }
+            // 检查“实际数据开始位置+4”的值
             if (headbuf[1] <= 232) {
                 mr_close(f);
                 _mr_readFileShowInfo(filename, 3051);
                 return 0;
             }
-            {                             //新版mrp
+            {
+                // 新版mrp   实际数据开始位置+4 + 8 - 头信息长度
+                // 文件索引信息处理
                 uint32 indexlen = headbuf[1] + 8 - headbuf[3];
                 uint8 *indexbuf = MR_MALLOC(indexlen);
                 uint32 pos = 0;
                 uint32 file_pos, file_len;
                 if (!indexbuf) {
+                    // 内存分配失败
                     mr_close(f);
                     _mr_readFileShowInfo(filename, 3003);
                     return 0;
                 }
+                // 头信息长度-16，即跳到头信息之后的起始位
                 nTmp = mr_seek(f, headbuf[3] - 16, MR_SEEK_CUR);
                 if (nTmp < 0) {
                     mr_close(f);
@@ -2035,9 +2055,11 @@ void *_mr_readFile(const char *filename, int *filelen, int lookfor) {
                     return 0;
                 }
 
+                // 读取头信息之后的文件索引数据
                 nTmp = mr_read(f, indexbuf, indexlen);
 
                 if ((nTmp != (int32) indexlen)) {
+                    // 读取失败
                     mr_close(f);
                     MR_FREE(indexbuf, indexlen);
                     _mr_readFileShowInfo(filename, 3003);
@@ -2047,17 +2069,22 @@ void *_mr_readFile(const char *filename, int *filelen, int lookfor) {
 
                 //MRDBGPRINTF("str1=%s",filename);
                 while (!found) {
+                    // len 文件名长度
                     MEMCPY(&len, &indexbuf[pos], 4);
 #ifdef MR_BIG_ENDIAN
                     len = ntohl(len);
 #endif
                     pos = pos + 4;
+
+                    // 越界检查
                     if (((len + pos) > indexlen) || (len < 1) || (len >= MR_MAX_FILENAME_SIZE)) {
                         mr_close(f);
                         MR_FREE(indexbuf, indexlen);
                         _mr_readFileShowInfo(filename, 3004);
                         return 0;
                     }
+
+                    // 获取文件名
                     MEMSET(TempName, 0, sizeof(TempName));
                     MEMCPY(TempName, &indexbuf[pos], len);
                     pos = pos + len;
@@ -2070,20 +2097,25 @@ void *_mr_readFile(const char *filename, int *filelen, int lookfor) {
 #endif
 
                     if (STRCMP(filename, TempName) == 0) {
+                        // 要读取的文件
+
                         if (lookfor == 1) {
                             mr_close(f);
                             MR_FREE(indexbuf, indexlen);
                             return (void *) 1;
                         }
                         found = 1;
+                        // 获取文件数据偏移
                         MEMCPY(&file_pos, &indexbuf[pos], 4);
                         pos = pos + 4;
+                        // 获取文件数据长度
                         MEMCPY(&file_len, &indexbuf[pos], 4);
                         pos = pos + 4;
 #ifdef MR_BIG_ENDIAN
                                                                                                                                                 file_pos = ntohl(file_pos);
 						file_len = ntohl(file_len);
 #endif
+						// 检查是否越界  整个Mrp文件总长度
                         if ((file_pos + file_len) > headbuf[2]) {
                             mr_close(f);
                             MR_FREE(indexbuf, indexlen);
@@ -2091,7 +2123,9 @@ void *_mr_readFile(const char *filename, int *filelen, int lookfor) {
                             return 0;
                         }
                     } else {
+                        // 越过剩下12字节信息
                         pos = pos + 12;
+                        // 是否越过界
                         if (pos >= indexlen) {
                             mr_close(f);
                             MR_FREE(indexbuf, indexlen);
@@ -2101,11 +2135,13 @@ void *_mr_readFile(const char *filename, int *filelen, int lookfor) {
                     }/*if (STRCMP(filename, TempName)==0)*/
                 }
 
+                // 索引信息没用了
                 MR_FREE(indexbuf, indexlen);
 
+                // 文件数据长度
                 *filelen = file_len;
 
-                //MRDBGPRINTF("Debug:_mr_readFile:old filelen = %d",file_len);
+                // MRDBGPRINTF("Debug:_mr_readFile:old filelen = %d",file_len);
                 filebuf = MR_MALLOC((uint32) *filelen);
                 if (filebuf == NULL) {
                     mr_close(f);
@@ -2113,6 +2149,7 @@ void *_mr_readFile(const char *filename, int *filelen, int lookfor) {
                     return 0;
                 }
 
+                // 定位指针至数据起点
                 nTmp = mr_seek(f, file_pos, MR_SEEK_SET);
                 if (nTmp < 0) {
                     MR_FREE(filebuf, *filelen);
@@ -2122,9 +2159,9 @@ void *_mr_readFile(const char *filename, int *filelen, int lookfor) {
                 }
 
 
-                oldlen = 0;
+                old_len = 0;
 #ifdef MR_SPREADTRUM_MOD
-                                                                                                                                        if ((*filelen < 0)){
+                if ((*filelen < 0)){
 					MRDBGPRINTF("filelen=%d",*filelen);
 					MR_FREE(filebuf, file_len);
 					mr_close(f);
@@ -2132,12 +2169,12 @@ void *_mr_readFile(const char *filename, int *filelen, int lookfor) {
 					return 0;
 				}
 #endif
-                //MRDBGPRINTF("oldlen=%d",oldlen);
-                while (oldlen < *filelen) {
-                    //MRDBGPRINTF("oldlen=%d",oldlen);
-                    nTmp = mr_read(f, (char *) filebuf + oldlen, *filelen - oldlen);
+                //MRDBGPRINTF("old_len=%d",oldlen);
+                while (old_len < *filelen) {
+                    //MRDBGPRINTF("old_len=%d",oldlen);
+                    nTmp = mr_read(f, (char *) filebuf + old_len, *filelen - old_len);
                     //MRDBGPRINTF("Debug:_mr_readFile:readlen = %d,oldlen=%d",nTmp,oldlen);
-                    //MRDBGPRINTF("oldlen=%d",oldlen);
+                    //MRDBGPRINTF("old_len=%d",oldlen);
 #ifdef MR_SPREADTRUM_MOD
                     if ((nTmp <= 0) || (oldlen > 1024*1024))
 #else
@@ -2150,18 +2187,17 @@ void *_mr_readFile(const char *filename, int *filelen, int lookfor) {
                         _mr_readFileShowInfo(filename, 3009);
                         return 0;
                     }
-                    oldlen = oldlen + nTmp;
+                    // 可能没读完
+                    old_len = old_len + nTmp;
                 }
 
+                // 文件不需要了
                 mr_close(f);
-
 
             }
         }
-        // 新版的mrp处理
+        // END 新版的mrp处理
     }/*efs file*/
-
-
 
 
     mr_gzInBuf = filebuf;
@@ -2173,6 +2209,7 @@ void *_mr_readFile(const char *filename, int *filelen, int lookfor) {
         return filebuf;
     }
 
+    // 获取gz文件对应真实文件长度
     reallen = (uint32) (((uch *) filebuf)[*filelen - 4]);
     reallen |= (uint32) (((uch *) filebuf)[*filelen - 3]) << 8;
     reallen |= (uint32) (((uch *) filebuf)[*filelen - 2]) << 16;
@@ -2183,22 +2220,24 @@ void *_mr_readFile(const char *filename, int *filelen, int lookfor) {
 
     //MRDBGPRINTF("1base=%d,end=%d",  (int32)LG_mem_base, (int32)LG_mem_end);
     //MRDBGPRINTF("is_rom_file = %d",is_rom_file);
+    // 为解压后的数据分配内存空间
     mr_gzOutBuf = MR_MALLOC(reallen);
     //MRDBGPRINTF("mr_gzOutBuf = %d",mr_gzOutBuf);
-    oldlen = *filelen;
+    old_len = *filelen;
     *filelen = reallen;
     //MRDBGPRINTF("2base=%d,end=%d",  (int32)LG_mem_base, (int32)LG_mem_end);
     if (mr_gzOutBuf == NULL) {
         if (!is_rom_file)
-            MR_FREE(mr_gzInBuf, oldlen);
+            MR_FREE(mr_gzInBuf, old_len);
         //MRDBGPRINTF("_mr_readFile  \"%s\" Not memory unzip!", filename);
         return 0;
     }
 
     //MRDBGPRINTF("3base=%d,end=%d",  (int32)LG_mem_base, (int32)LG_mem_end);
+    // 解压缩
     if (mr_unzip() != 0) {
         if (!is_rom_file)
-            MR_FREE(mr_gzInBuf, oldlen);
+            MR_FREE(mr_gzInBuf, old_len);
         MR_FREE(mr_gzOutBuf, reallen);
         MRDBGPRINTF("_mr_readFile: \"%s\" Unzip err!", filename);
         return 0;
@@ -2207,7 +2246,7 @@ void *_mr_readFile(const char *filename, int *filelen, int lookfor) {
     //MRDBGPRINTF("4base=%d,end=%d",  (int32)LG_mem_base, (int32)LG_mem_end);
     //MRDBGPRINTF("is_rom_file = %d",is_rom_file);
     if (!is_rom_file)
-        MR_FREE(mr_gzInBuf, oldlen);
+        MR_FREE(mr_gzInBuf, old_len);
 
     //MRDBGPRINTF("is_rom_file = %d",is_rom_file);
     //MRDBGPRINTF("5base=%d,end=%d",  (int32)LG_mem_base, (int32)LG_mem_end);
@@ -4859,7 +4898,7 @@ extern void mr_c_function_load(void);
 #endif
 
 static int _mr_TestComC(int input0, char *input1, int32 len, int32 code) {
-    int ret = 0;
+    int32 ret = 0;
     //mr_printf("strCom:%d", input0);
     //mr_printf("strCom:%s", input1);
     //mr_printf("strCom:%d", len);
@@ -4905,7 +4944,6 @@ static int _mr_TestComC(int input0, char *input1, int32 len, int32 code) {
 		break;
 #else
         case 800: {
-            int32 ret;
             //int code = ((int)  mr_L_optint(L,3,0));
             mr_load_c_function = (MR_LOAD_C_FUNCTION) (input1 + 8);
             *((void **) (input1)) = (void *) _mr_c_function_table;
@@ -4956,7 +4994,7 @@ static int _mr_TestComC(int input0, char *input1, int32 len, int32 code) {
         }
             break;
         case 801: {
-            int32 output_len, ret;
+            int32 output_len;
             //int code = ((int)  to_mr_tonumber(L,3,0));
             uint8 *output = NULL;
             output_len = 0;
@@ -4966,6 +5004,9 @@ static int _mr_TestComC(int input0, char *input1, int32 len, int32 code) {
         }
             break;
 #endif
+        default:
+            MRDBGPRINTF("未知input0: %d", input0);
+            break;
     }
     return ret;
 }
@@ -5238,13 +5279,14 @@ int32 mr_doExt(char *extName) {
     char *filebuf;
     int32 filelen, ret;
 
+    // 仅读取，不做其它操作
     filebuf = _mr_readFile((const char *) extName, (int *) &filelen, 0);
     if (!filebuf) {
         MRDBGPRINTF("err:%d", 11001);
         return MR_FAILED;
     }
-    _mr_TestCom(NULL, 3629, 2913);
 
+    _mr_TestCom(NULL, 3629, 2913);
 
     if (_mr_TestComC(800, filebuf, filelen, 0) == 0) {
         _mr_TestComC(801, filebuf, MR_VERSION, 6);
