@@ -78,22 +78,23 @@ public class EmuUtils {
 	}
 	
 	public static int getNetworkID(Context context) {
-		String str = ((TelephonyManager) context.getSystemService(TELEPHONY_SERVICE))
-				.getSubscriberId();
-
-		if (str == null)
+		Log.i(TAG, "getNetworkID start");
+		// Unsupported class: com.mediatek.common.telephony.IOnlyOwnerSimSupport
+		//String str = ((TelephonyManager) context.getSystemService(TELEPHONY_SERVICE))
+		//		.getSubscriberId();
+		//if (str == null)
 			return MrDefines.MR_NET_ID_MOBILE; //返回 NULL 会导致未插卡不能运行
 
-		if ((str.regionMatches(0, "46000", 0, 5))
-				|| (str.regionMatches(0, "46002", 0, 5))
-				|| (str.regionMatches(0, "46007", 0, 5)))
-			return MrDefines.MR_NET_ID_MOBILE;
-		else if (str.regionMatches(0, "46001", 0, 5))
-			return MrDefines.MR_NET_ID_CN;
-		else if (str.regionMatches(0, "46003", 0, 5))
-			return MrDefines.MR_NET_ID_CDMA;
-		else
-			return MrDefines.MR_NET_ID_MOBILE; //返回 NULL 会导致未插卡不能运行
+		//if ((str.regionMatches(0, "46000", 0, 5))
+		//		|| (str.regionMatches(0, "46002", 0, 5))
+		//		|| (str.regionMatches(0, "46007", 0, 5)))
+		//	return MrDefines.MR_NET_ID_MOBILE;
+		//else if (str.regionMatches(0, "46001", 0, 5))
+		//	return MrDefines.MR_NET_ID_CN;
+		//else if (str.regionMatches(0, "46003", 0, 5))
+		//	return MrDefines.MR_NET_ID_CDMA;
+		//else
+		//	return MrDefines.MR_NET_ID_MOBILE; //返回 NULL 会导致未插卡不能运行
 	}
 	
 	public static boolean checkSDCARD() {

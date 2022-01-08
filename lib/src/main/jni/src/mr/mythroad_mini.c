@@ -7069,12 +7069,12 @@ char *mr_strncpy(char * s1, const char * s2, int n)
 }
 #endif
 
-uint32 mr_ltoh(char *startAddr) {
+uint32 mr_ltoh(const char *startAddr) {
     return (startAddr[3] << 24) | ((startAddr[2] & 0xff) << 16) | ((startAddr[1] & 0xff) << 8) |
            (startAddr[0] & 0xff);
 }
 
-uint32 mr_ntohl(char *startAddr) {
+uint32 mr_ntohl(const char *startAddr) {
     return ((startAddr[0] & 0xff) << 24) | ((startAddr[1] & 0xff) << 16) |
            ((startAddr[2] & 0xff) << 8) | (startAddr[3] & 0xFF);
 }
@@ -7085,49 +7085,47 @@ uint32 mr_ntohl(char *startAddr) {
 int32 _mr_getMetaMemLimit() {
     int32 nTmp;
     int32 len = 0, file_len = 0;
-    void *workbuffer = NULL;
+    void *workBuffer = NULL;
 
     int32 f;
 
     char TempName[MR_MAX_FILENAME_SIZE];
     int is_rom_file = FALSE;
-    uint32 headbuf[4];
-    char *this_packname;
+    uint32 headBuf[4];
+    char *this_pack_name;
     char *mr_m0_file;
     char _v[4];
     int32 memValue;
 
+    this_pack_name = pack_filename;
 
-    this_packname = pack_filename;
-
-
-    if ((this_packname[0] == '*') || (this_packname[0] == '$')) {
+    // 固化位置：虚拟机预留了20个固化位置，编号0-19，对应虚拟机中的访问地址*A，*B，......
+    if ((this_pack_name[0] == '*') || (this_pack_name[0] == '$')) {
         /*read file from m0*/
         uint32 pos = 0;
         uint32 m0file_len;
 
-
-        if (this_packname[0] == '*') {/*m0 file?*/
-            mr_m0_file = (char *) mr_m0_files[this_packname[1] - 0x41]; //这里定义文件名为*A即是第一个m0文件
+        if (this_pack_name[0] == '*') {/*m0 file?*/
+            mr_m0_file = (char *) mr_m0_files[this_pack_name[1] - 0x41]; //这里定义文件名为*A即是第一个m0文件
             //*B是第二个.........
         } else {
+            // '$'
             mr_m0_file = mr_ram_file;
         }
 
-
         if (mr_m0_file == NULL) {
-
             return 0;
         }
 
         pos = pos + 4;
+        // 可以写成(_v, mr_m0_file + pos, 4) ?
         MEMCPY(&_v[0], &mr_m0_file[pos], 4);
 
         len = mr_ltoh((char *) _v);
 
         pos = pos + 4;
 
-        if (this_packname[0] == '$') {
+        if (this_pack_name[0] == '$') {
             m0file_len = mr_ram_file_len;
         } else {
             MEMCPY(&_v[0], &mr_m0_file[pos], 4);
@@ -7176,34 +7174,36 @@ int32 _mr_getMetaMemLimit() {
         MEMCPY(&_v[0], &mr_m0_file[pos], 4);
     } else   /*read file from efs , EFS 中的文件*/
     {
-        f = mr_open(this_packname, MR_FILE_RDONLY);
+        f = mr_open(this_pack_name, MR_FILE_RDONLY);
 
+        MEMSET(headBuf, 0, sizeof(headBuf));
+        nTmp = mr_read(f, &headBuf, sizeof(headBuf));
 
-        MEMSET(headbuf, 0, sizeof(headbuf));
-        nTmp = mr_read(f, &headbuf, sizeof(headbuf));
+        headBuf[0] = mr_ltoh((char *) &headBuf[0]);
+        headBuf[1] = mr_ltoh((char *) &headBuf[1]);
+        headBuf[2] = mr_ltoh((char *) &headBuf[2]);
+        headBuf[3] = mr_ltoh((char *) &headBuf[3]);
 
-
-        headbuf[0] = mr_ltoh((char *) &headbuf[0]);
-        headbuf[1] = mr_ltoh((char *) &headbuf[1]);
-        headbuf[2] = mr_ltoh((char *) &headbuf[2]);
-        headbuf[3] = mr_ltoh((char *) &headbuf[3]);
-
-        if ((nTmp != 16) || (headbuf[0] != 1196446285) || (headbuf[1] <= 232)) {
+        // 检查读出长度与起始四个字节是否为MRPG, 检查“实际数据开始位置+4”的值
+        if ((nTmp != 16) || (headBuf[0] != 1196446285) || (headBuf[1] <= 232)) {
             mr_close(f);
             return 0;
         }
-        {                             //新版mrp
-            uint32 indexlen = headbuf[1] + 8 - headbuf[3];
+        {
+            //新版mrp
+            // 文件索引信息处理
+            uint32 indexlen = headBuf[1] + 8 - headBuf[3];
             uint32 pos = 0;
             uint32 file_pos = 0;
 
-            nTmp = mr_seek(f, headbuf[3] - 16, MR_SEEK_CUR);
+            // 指针移动至头信息结束位置，即文件索引信息开始位置
+            nTmp = mr_seek(f, headBuf[3] - 16, MR_SEEK_CUR);
             if (nTmp < 0) {
                 mr_close(f);
                 return 0;
             }
 
-
+            // 文件名长度
             nTmp = mr_read(f, &_v[0], 4);
             if (nTmp != 4) {
                 mr_close(f);
@@ -7219,6 +7219,7 @@ int32 _mr_getMetaMemLimit() {
                 return 0;
             }
 
+            // 读取文件名
             nTmp = mr_read(f, &TempName[0], len);
             if (nTmp != len) {
                 mr_close(f);
@@ -7229,16 +7230,20 @@ int32 _mr_getMetaMemLimit() {
 
             pos = pos + len;
             if (STRCMP(CFG_FILENAME, TempName) == 0) {
+                // 是CFG
+
+                // 文件数据偏移
                 nTmp = mr_read(f, &_v[0], 4);
                 pos = pos + 4;
                 file_pos = mr_ltoh((char *) _v);
 
+                // 数据长度
                 nTmp = mr_read(f, &_v[0], 4);
                 pos = pos + 4;
                 file_len = mr_ltoh((char *) _v);
 
-
-                if ((file_pos + file_len) > headbuf[2]) {
+                // 越界检查 整个Mrp文件总长度
+                if ((file_pos + file_len) > headBuf[2]) {
                     mr_close(f);
 
                     return 0;
@@ -7265,6 +7270,7 @@ int32 _mr_getMetaMemLimit() {
 			}
 #endif
 
+            // 读取第4个int32
             nTmp = mr_read(f, &_v[0], 4);
 
             mr_close(f);

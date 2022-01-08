@@ -664,7 +664,7 @@ public class Emulator {
         if (name == null || mContext == null)
             return 0;
 
-        //		EmuLog.i(TAG, "getIntSysinfo("+name+")");
+        EmuLog.i(TAG, "getIntSysInfo("+name+")");
 
         if (name.equalsIgnoreCase("netType")) {
             return EmuUtils.getNetworkType(mContext);
@@ -712,11 +712,8 @@ public class Emulator {
         new AlertDialog.Builder(emulatorActivity) //注意这里不是用 Context
                 .setTitle(R.string.warn)
                 .setMessage(msg)
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        stop(); //结束运行
-                    }
+                .setPositiveButton(R.string.ok, (arg0, arg1) -> {
+                    stop(); //结束运行
                 })
                 .create()
                 .show();

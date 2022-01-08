@@ -989,7 +989,6 @@ const char *emu_getStringSysInfo(const char * name)
     (*e)->ExceptionClear(e);
 
 	if(text != NULL){
-		LOGI("0");
 		const char *str = (*e)->GetStringUTFChars(e, text, JNI_FALSE);
 		if(str != NULL){
 			unsigned int l = strlen(str) + 1;
