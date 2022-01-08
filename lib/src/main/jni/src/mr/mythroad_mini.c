@@ -4990,7 +4990,7 @@ static int _mr_TestComC(int input0, char *input1, int32 len, int32 code) {
 #ifdef MR_BREW_MOD
             mr_cacheSync(NULL,0);
 #endif
-
+            // mr_load_c_function 指向启动文件第8个地址
             ret = mr_load_c_function(code);
 
         }
@@ -5414,10 +5414,14 @@ static int32 _mr_intra_start(char *appExName, const char *entry) {
 
 
     //ret = mrp_dofile(vm_state, appExName);
+    MRDBGPRINTF("mythroad_mini - try to load %s", appExName);
     // 尝试加载自定义的 启动入口
     ret = mr_doExt(appExName);
-    if (0 != ret)
+    if (0 != ret) {
+        MRDBGPRINTF("mythroad_mini - try to load logo.ext");
         ret = mr_doExt("logo.ext"); //尝试加载 logo.ext
+    }
+    MRDBGPRINTF("mythroad_mini - load over");
 
     //这里需要完善
     if (ret != 0) {

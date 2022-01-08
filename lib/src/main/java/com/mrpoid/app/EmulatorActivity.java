@@ -51,6 +51,7 @@ import android.os.Message;
 import android.os.Process;
 import android.os.Vibrator;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import androidx.appcompat.app.AlertDialog;
 
@@ -76,7 +77,7 @@ import android.widget.Toast;
  * <p>
  * 最后修改：2013-3-14 20:06:44
  */
-public class EmulatorActivity extends BaseActivity implements Handler.Callback, MrDefines, OnClickListener {
+public class EmulatorActivity extends BaseActivity implements MrDefines, OnClickListener {
     static final String TAG = EmulatorActivity.class.getSimpleName();
 
     public static boolean SMS_DEL_MODE = false;
@@ -95,7 +96,7 @@ public class EmulatorActivity extends BaseActivity implements Handler.Callback, 
     private static final int REQ_SHOWEDIT = 1001;
     private static final int REQ_GET_IMAGE = 1002;
 
-    private TextView tvInfo;
+    protected TextView tvInfo;
     private EmuView emulatorView;
     /**
      * 模拟器实例
@@ -110,7 +111,7 @@ public class EmulatorActivity extends BaseActivity implements Handler.Callback, 
     public Handler handler;
     private LayoutInflater inflater;
     private Keypad keypad;
-    private boolean mPaused;
+    protected boolean mPaused;
     private Vibrator vibrator;
 
     String mEntryActivity, mEntryMrp;
@@ -125,7 +126,8 @@ public class EmulatorActivity extends BaseActivity implements Handler.Callback, 
         initEntrys();
         //		getWindow().requestFeature(Window.FEATURE_NO_TITLE);//去掉标题栏
 
-        handler = new Handler(this);
+        EACallback eaCallback = new EACallback(this);
+        handler = new Handler(eaCallback);
         inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
@@ -167,37 +169,6 @@ public class EmulatorActivity extends BaseActivity implements Handler.Callback, 
         emulator.init(this, emulatorView);
         Log.i(TAG, "模拟器启动");
         emulator.startMrp(mEntryMrp);
-    }
-
-    @Override
-    public boolean handleMessage(Message msg) {
-        switch (msg.what) {
-            case MSG_ID_UPDATE: {
-                if (mPaused)
-                    break;
-
-                handler.sendEmptyMessageDelayed(MSG_ID_UPDATE, 1000);
-                break;
-            }
-
-            case MSG_ID_UPDATE_INFO_TEXT: {
-                String text = msg.obj == null ? null : msg.obj.toString();
-                if (text == null)
-                    tvInfo.setVisibility(View.INVISIBLE);
-                else {
-                    if (tvInfo.getVisibility() != View.VISIBLE)
-                        tvInfo.setVisibility(View.VISIBLE);
-                    tvInfo.setText(text);
-                }
-
-                break;
-            }
-
-            default:
-                return false;
-        }
-
-        return true;
     }
 
     @Override
@@ -376,7 +347,7 @@ public class EmulatorActivity extends BaseActivity implements Handler.Callback, 
         super.onRestoreInstanceState(savedInstanceState);
     }
 
-    public void postUIRunable(Runnable r) {
+    public void postUIRunnable(Runnable r) {
         handler.post(r);
     }
 
@@ -806,4 +777,53 @@ public class EmulatorActivity extends BaseActivity implements Handler.Callback, 
             return false;
         }
     };
+}
+
+class EACallback implements Handler.Callback{
+
+    //	private static final int MSG_ID_SHOWEDIT = 1001;
+    private static final int MSG_ID_UPDATE = 1002;
+    private static final int MSG_ID_KEY_DOWN = 1012;
+    private static final int MSG_ID_KEY_UP = 1003;
+    private static final int MSG_ID_UPDATE_INFO_TEXT = 1004;
+
+    private static final int INFO_TYPE_KEY_SPRITE = 1001;
+    private static final int REQ_SHOWEDIT = 1001;
+    private static final int REQ_GET_IMAGE = 1002;
+    EmulatorActivity emulatorActivity;
+
+    public EACallback(EmulatorActivity ea){
+        emulatorActivity = ea;
+    }
+    @Override
+    public boolean handleMessage(Message msg) {
+        switch (msg.what) {
+            case MSG_ID_UPDATE: {
+                if (emulatorActivity.mPaused)
+                    break;
+
+                emulatorActivity.handler.sendEmptyMessageDelayed(MSG_ID_UPDATE, 1000);
+                break;
+            }
+
+            case MSG_ID_UPDATE_INFO_TEXT: {
+                String text = msg.obj == null ? null : msg.obj.toString();
+                if (text == null)
+                    emulatorActivity.tvInfo.setVisibility(View.INVISIBLE);
+                else {
+                    if (emulatorActivity.tvInfo.getVisibility() != View.VISIBLE)
+                        emulatorActivity.tvInfo.setVisibility(View.VISIBLE);
+                    emulatorActivity.tvInfo.setText(text);
+                }
+
+                break;
+            }
+
+            default:
+                return false;
+        }
+
+        return true;
+    }
+
 }

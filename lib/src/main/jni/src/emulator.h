@@ -213,9 +213,9 @@ void emu_releaseEdit(int32 editHd);
 
 void emu_finish();
 void emu_showDlg(const char *msg);
-int emu_getIntSysinfo(const char * name);
-const char * emu_getStringSysinfo(const char * name);
-void emu_palySound(const char *path, int loop);
+int emu_getIntSysInfo(const char * name);
+const char * emu_getStringSysInfo(const char * name);
+void emu_playSound(const char *path, int loop);
 void emu_stopSound(int id);
 void emu_startShake(int ms);
 void emu_stopShake();

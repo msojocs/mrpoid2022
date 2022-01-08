@@ -47,8 +47,8 @@ static jmethodID	id_flush; //刷新画布函数 ID
 static jmethodID	id_finish; //结束activity
 static jmethodID	id_timerStart, id_timerStop;
 static jmethodID	id_showEdit, id_showDlg;
-static jmethodID	id_getIntSysinfo;
-static jmethodID	id_getStringSysinfo;
+static jmethodID	id_getIntSysInfo;
+static jmethodID	id_getStringSysInfo;
 static jmethodID	id_requestCallback;
 static jmethodID	id_sendSms;
 static jmethodID	id_getHostByName;
@@ -140,8 +140,8 @@ static void initJniId(JNIEnv * env)
 	id_getHostByName = (*env)->GetMethodID(env, cls, "N2J_getHostByName", "(Ljava/lang/String;)V");
 	id_setStringOptions = (*env)->GetMethodID(env, cls, "N2J_setOptions", "(Ljava/lang/String;Ljava/lang/String;)V");
 
-	id_getIntSysinfo = (*env)->GetMethodID(env, cls, "N2J_getIntSysinfo", "(Ljava/lang/String;)I");
-	id_getStringSysinfo = (*env)->GetMethodID(env, cls, "N2J_getStringSysinfo", "(Ljava/lang/String;)Ljava/lang/String;");
+	id_getIntSysInfo = (*env)->GetMethodID(env, cls, "N2J_getIntSysInfo", "(Ljava/lang/String;)I");
+	id_getStringSysInfo = (*env)->GetMethodID(env, cls, "N2J_getStringSysInfo", "(Ljava/lang/String;)Ljava/lang/String;");
 	id_readTsfFont = (*env)->GetMethodID(env, cls, "N2J_readTsfFont", "()[B");
 
 	id_callVoidMethod = (*env)->GetMethodID(env, cls, "N2J_callVoidMethod", "([Ljava/lang/String;)V");
@@ -943,12 +943,12 @@ void emu_finish()
     (*e)->ExceptionClear(e);
 }
 
-int emu_getIntSysinfo(const char * name)
+int emu_getIntSysInfo(const char * name)
 {
 	JNIEnv *e = getJniEnv();
 
 	int i = (*e)->CallIntMethod(e, obj_emulator,
-			id_getIntSysinfo,
+			id_getIntSysInfo,
 			(*e)->NewStringUTF(e, name));
     (*e)->ExceptionClear(e);
 
@@ -979,19 +979,20 @@ void emu_setStringOptions(const char *key, const char *value)
     (*e)->ExceptionClear(e);
 }
 
-const char *emu_getStringSysinfo(const char * name)
+const char *emu_getStringSysInfo(const char * name)
 {
 	JNIEnv *e = getJniEnv();
 
-	LOGI("emu_getStringSysinfo env=%p,tid=%d", e, gettid());
+	LOGI("emu_getStringSysInfo env=%p,tid=%d", e, gettid());
 
-	jstring text = (jstring)(*e)->CallObjectMethod(e, obj_emulator, id_getStringSysinfo, (*e)->NewStringUTF(e, name));
+	jstring text = (jstring)(*e)->CallObjectMethod(e, obj_emulator, id_getStringSysInfo, (*e)->NewStringUTF(e, name));
     (*e)->ExceptionClear(e);
 
 	if(text != NULL){
+		LOGI("0");
 		const char *str = (*e)->GetStringUTFChars(e, text, JNI_FALSE);
 		if(str != NULL){
-			int l = strlen(str) + 1;
+			unsigned int l = strlen(str) + 1;
 			char *content = malloc(l);
 			memcpy(content, str, l);
 
@@ -1197,10 +1198,10 @@ void emu_measureChar(uint16 ch, int *w, int *h)
 
 
 //-------------- Begin EmuAudio.java ------------------------------------------------
-void emu_palySound(const char *path, int loop)
+void emu_playSound(const char *path, int loop)
 {
 	JNIEnv *e = getJniEnv();
-	LOGD("emu_palySound %s %p", path, e);
+	LOGD("emu_playSound %s %p", path, e);
 
 	char buf[128] = {0};
     strncpy(buf, path, 128);

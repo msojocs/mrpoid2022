@@ -94,20 +94,20 @@ void dsm_init()
 	DsmPathInit();
 	DsmSocketInit();
 
-	const char * str = emu_getStringSysinfo(SYSINFO_IMEI);
+	const char * str = emu_getStringSysInfo(SYSINFO_IMEI);
 	if(str){
 		strcpy(dsmIMEI, str);
 		free((void*)str);
 	}
 
-	str = emu_getStringSysinfo(SYSINFO_IMSI);
+	str = emu_getStringSysInfo(SYSINFO_IMSI);
 	if(str){
 		strcpy(dsmIMSI, str);
 		free((void*)str);
 	}
 
-	dsmNetWorkID = emu_getIntSysinfo("netID");
-	dsmNetType = emu_getIntSysinfo("netType");
+	dsmNetWorkID = emu_getIntSysInfo("netID");
+	dsmNetType = emu_getIntSysInfo("netType");
 }
 
 /**
@@ -854,7 +854,7 @@ MR_FILE_HANDLE mr_open(const char* filename, uint32 mode)
 		return (MR_FILE_HANDLE)NULL;
 	}
 
-	f += 5; //因为 linux 返回0也成功，mrp返回0 为失败！所以统一加5
+	f += 5; // 因为 linux 返回0也成功，mrp返回0 为失败！所以统一加5
 	if(gEmuEnv.showFile)
 		LOGI("mr_open(%s,%d) fd is: %d", fullpathname, new_mode, f);
 
@@ -874,6 +874,7 @@ int32 mr_close(MR_FILE_HANDLE f)
 
 	int ret;
 
+	// open那边+5了，得减回去
 	ret = close(f-5);
 	if (ret != 0){
 		LOGE("mr_close(%d) err, %d", f, errno);
@@ -910,6 +911,7 @@ int32 mr_read(MR_FILE_HANDLE f, void *p, uint32 l)
 
 	size_t readLength;
 
+	// open那边+5了，得减回去
 	readLength = read(f - 5, p, (size_t) l);
 	if (readLength < 0){
 		LOGE("mr_read(%d) err, %d", f, errno);
@@ -937,6 +939,7 @@ int32 mr_write(MR_FILE_HANDLE f, void *p, uint32 l)
 
 	size_t writenum = 0;
 
+	// open那边+5了，得减回去
 	writenum = write(f-5, p, (size_t) l);
 
 	if (writenum < 0){
@@ -962,9 +965,35 @@ int32 mr_seek(MR_FILE_HANDLE f, int32 pos, int method)
 
 	off_t ret;
 
+	// test
+	if(method == MR_SEEK_SET && pos < 0)
+	{
+	}
+
+	// open那边+5了，得减回去
 	ret = lseek(f-5, (off_t) pos, method);
 	if (ret < 0) {
-		LOGE("mr_seek(%d,%d) err, %d", f, pos, errno);
+		LOGE("dsm.c mr_seek(%d,%d) err, %d", f, pos, errno);
+		switch(errno){
+			case EBADE:
+				LOGE("dsm.c %d - EBADE - 并不是一个打开的文件描述符", f);
+				break;
+			case EINVAL:
+				LOGE("dsm.c %d - EINVAL - whence 无效", f);
+				break;
+			case ENXIO:
+				LOGE("dsm.c %d - ENXIO - offset越界", f);
+				break;
+			case EOVERFLOW:
+				LOGE("dsm.c %d - EOVERFLOW - offset越界", f);
+				break;
+			case ESPIPE:
+				LOGE("dsm.c %d - ESPIPE - 是一个pipe, socket, or FIFO", f);
+				break;
+			default:
+				LOGE("dsm.c %d - 不知道什么问题", f);
+				break;
+		}
 		return MR_FAILED;
 	}
 
@@ -1400,7 +1429,7 @@ int32 mr_playSound(int type, const void* data, uint32 dataLen, int32 loop)
 	}
 
 	char fullpathname[DSM_MAX_FILE_LEN] = { 0 };
-	emu_palySound(get_filename(fullpathname, buf), loop);
+	emu_playSound(get_filename(fullpathname, buf), loop);
 
 	return MR_SUCCESS;
 }

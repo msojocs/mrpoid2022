@@ -42,6 +42,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 
+import androidx.annotation.NonNull;
+
 import com.edroid.common.utils.UIUtils;
 import com.mrpoid.R;
 import com.mrpoid.app.EmulatorActivity;
@@ -657,7 +659,7 @@ public class Emulator {
      * @param name 键值
      * @return 参数值
      */
-    private int N2J_getIntSysinfo(String name) {
+    private int N2J_getIntSysInfo(String name) {
         //native 上调的函数一定要检查空指针，否则将导致致命错误
         if (name == null || mContext == null)
             return 0;
@@ -679,21 +681,21 @@ public class Emulator {
      * @param name 键值
      * @return 成功：返回获取到的参数 失败：返回 null
      */
-    private String N2J_getStringSysinfo(String name) {
+    private String N2J_getStringSysInfo(String name) {
         //native 上调的函数一定要检查空指针，否则将导致致命错误
         if (name == null || mContext == null)
             return null;
 
         if (name.equalsIgnoreCase("imei")) {
-            TelephonyManager mTm = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
+            //TelephonyManager mTm = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
             return N2J_imei;
         } else if (name.equalsIgnoreCase("imsi")) {
-            TelephonyManager mTm = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
+            //TelephonyManager mTm = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
             return N2J_imsi;
         } else if (name.equalsIgnoreCase("phone-model")) {
             return android.os.Build.MODEL; // 手机型号
         } else if (name.equalsIgnoreCase("phone-num")) {
-            TelephonyManager mTm = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
+            //TelephonyManager mTm = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
             return "10086"; // 手机号码，有的可得，有的不可得
         }
 
@@ -968,20 +970,23 @@ class MrpThreadCallback implements Callback {
     }
 
     @Override
-    public boolean handleMessage(Message msg) {
+    public boolean handleMessage(@NonNull Message msg) {
         Log.i(TAG, String.format("%X handleMessage: %s", msg.what, msg));
         switch (msg.what) {
             case MSG_HEART: {
+                Log.i(TAG, "收到信号 - 心跳");
                 Log.w(TAG, "thread alive----------- " + alive++);
                 handler.sendEmptyMessageDelayed(MSG_HEART, 30000);
                 break;
             }
 
             case MSG_TIMER_OUT:
+                Log.i(TAG, "收到信号 - 超时");
                 emulator.native_event(MrDefines.MR_EMU_ON_TIMER, 0, 0);
                 break;
 
             case MSG_CALLBACK:
+                Log.i(TAG, "收到信号 - 回调");
                 emulator.native_callback(msg.arg1, msg.arg2);
                 break;
 
@@ -990,28 +995,36 @@ class MrpThreadCallback implements Callback {
                 break;
 
             case MSG_START_UP_MRP:
+                Log.i(TAG, "收到信号 - 启动MRP");
                 emulator.startup_i((String) msg.obj);
                 break;
             case MSG_MRP_PAUSE:
+                Log.i(TAG, "收到信号 - 暂停");
                 emulator.pause_i();
                 break;
             case MSG_MRP_RESUME:
+                Log.i(TAG, "收到信号 - 恢复");
                 emulator.resume_i();
                 break;
             case MSG_MRP_STOP:
+                Log.i(TAG, "收到信号 - 停止");
                 emulator.stop_i();
                 break;
             case MSG_MRP_EVENT:
+                Log.i(TAG, "收到信号 - MRP事件");
                 emulator.native_event((Integer) msg.obj, msg.arg1, msg.arg2); // 获取不到，暂时返回都是0
                 break;
             case MSG_INIT:
+                Log.i(TAG, "收到信号 - 初始化");
                 emulator.init_i();
                 break;
             case MSG_EXIT:
+                Log.i(TAG, "收到信号 - 退出");
                 emulator.exit_i();
                 break;
 
             default:
+                Log.i(TAG, "收到信号 - 无法识别，交由native处理");
                 return (1 == emulator.native_handleMessage(msg.what, msg.arg1, msg.arg2));
         }
 
