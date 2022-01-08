@@ -323,7 +323,7 @@ int32 mr_mem_get(char** mem_base, uint32* mem_len){
     gEmuEnv.vm_mem_end = buffer + len;
 
 	if(showApiLog) 
-		LOGE("mr_mem_get base=%p len=%x end=%p =================", gEmuEnv.vm_mem_base, len, gEmuEnv.vm_mem_end);
+		LOGI("mr_mem_get base=%p len=%x end=%p =================", gEmuEnv.vm_mem_base, len, gEmuEnv.vm_mem_end);
 
 	return MR_SUCCESS;
 }
@@ -346,15 +346,15 @@ int32 mr_mem_free(char* mem, uint32 mem_len)
 int32 pageMalloc(void **out, int32 *outLen, uint32 needLen)
 {
 	char *buf;
-	int pagesize, pagecount;
+	unsigned int pageSize, pageCount;
 
-	pagesize = sysconf(_SC_PAGE_SIZE);
-	if (pagesize == -1)
+	pageSize = sysconf(_SC_PAGE_SIZE);
+	if (pageSize == -1)
 		handle_error("sysconf");
 
-	pagecount = needLen/pagesize + 1;	
-	needLen = pagesize*pagecount;
-	buf = memalign(pagesize, needLen);
+	pageCount = needLen / pageSize + 1;
+	needLen = pageSize * pageCount;
+	buf = memalign(pageSize, needLen);
 	if (buf == NULL)
 		handle_error("memalign");
 

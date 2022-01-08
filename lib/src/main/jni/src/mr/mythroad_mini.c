@@ -2070,7 +2070,7 @@ void *_mr_readFile(const char *filename, int *filelen, int lookfor) {
                 //MRDBGPRINTF("str1=%s",filename);
                 while (!found) {
                     // len 文件名长度
-                    MEMCPY(&len, &indexbuf[pos], 4);
+                    MEMCPY(&len, indexbuf+pos, 4);
 #ifdef MR_BIG_ENDIAN
                     len = ntohl(len);
 #endif
@@ -2086,7 +2086,7 @@ void *_mr_readFile(const char *filename, int *filelen, int lookfor) {
 
                     // 获取文件名
                     MEMSET(TempName, 0, sizeof(TempName));
-                    MEMCPY(TempName, &indexbuf[pos], len);
+                    MEMCPY(TempName, indexbuf+pos, len);
                     pos = pos + len;
 
 #if 0
@@ -2106,10 +2106,10 @@ void *_mr_readFile(const char *filename, int *filelen, int lookfor) {
                         }
                         found = 1;
                         // 获取文件数据偏移
-                        MEMCPY(&file_pos, &indexbuf[pos], 4);
+                        MEMCPY(&file_pos, indexbuf + pos, 4);
                         pos = pos + 4;
                         // 获取文件数据长度
-                        MEMCPY(&file_len, &indexbuf[pos], 4);
+                        MEMCPY(&file_len, indexbuf + pos, 4);
                         pos = pos + 4;
 #ifdef MR_BIG_ENDIAN
                                                                                                                                                 file_pos = ntohl(file_pos);
@@ -7179,10 +7179,10 @@ int32 _mr_getMetaMemLimit() {
         MEMSET(headBuf, 0, sizeof(headBuf));
         nTmp = mr_read(f, &headBuf, sizeof(headBuf));
 
-        headBuf[0] = mr_ltoh((char *) &headBuf[0]);
-        headBuf[1] = mr_ltoh((char *) &headBuf[1]);
-        headBuf[2] = mr_ltoh((char *) &headBuf[2]);
-        headBuf[3] = mr_ltoh((char *) &headBuf[3]);
+        headBuf[0] = mr_ltoh((char *) headBuf);
+        headBuf[1] = mr_ltoh((char *) (headBuf+1));
+        headBuf[2] = mr_ltoh((char *) (headBuf+2));
+        headBuf[3] = mr_ltoh((char *) (headBuf+3));
 
         // 检查读出长度与起始四个字节是否为MRPG, 检查“实际数据开始位置+4”的值
         if ((nTmp != 16) || (headBuf[0] != 1196446285) || (headBuf[1] <= 232)) {
@@ -7204,7 +7204,7 @@ int32 _mr_getMetaMemLimit() {
             }
 
             // 文件名长度
-            nTmp = mr_read(f, &_v[0], 4);
+            nTmp = mr_read(f, _v, 4);
             if (nTmp != 4) {
                 mr_close(f);
                 return 0;
@@ -7220,7 +7220,7 @@ int32 _mr_getMetaMemLimit() {
             }
 
             // 读取文件名
-            nTmp = mr_read(f, &TempName[0], len);
+            nTmp = mr_read(f, TempName, len);
             if (nTmp != len) {
                 mr_close(f);
                 return 0;
@@ -7233,12 +7233,12 @@ int32 _mr_getMetaMemLimit() {
                 // 是CFG
 
                 // 文件数据偏移
-                nTmp = mr_read(f, &_v[0], 4);
+                nTmp = mr_read(f, _v, 4);
                 pos = pos + 4;
                 file_pos = mr_ltoh((char *) _v);
 
                 // 数据长度
-                nTmp = mr_read(f, &_v[0], 4);
+                nTmp = mr_read(f, _v, 4);
                 pos = pos + 4;
                 file_len = mr_ltoh((char *) _v);
 
@@ -7271,7 +7271,7 @@ int32 _mr_getMetaMemLimit() {
 #endif
 
             // 读取第4个int32
-            nTmp = mr_read(f, &_v[0], 4);
+            nTmp = mr_read(f, _v, 4);
 
             mr_close(f);
             if (nTmp != 4) {
