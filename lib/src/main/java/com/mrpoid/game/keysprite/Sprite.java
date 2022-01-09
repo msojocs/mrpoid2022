@@ -21,7 +21,7 @@ public class Sprite {
 		StringBuilder sb = new StringBuilder("按键 ");
 		sb.append(title);
 		sb.append("，持续 ");
-		sb.append(String.valueOf(time));
+		sb.append(time);
 		sb.append(" ms");
 		
 		return sb.toString();

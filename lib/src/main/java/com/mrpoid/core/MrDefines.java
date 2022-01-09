@@ -22,25 +22,25 @@ package com.mrpoid.core;
  *
  */
 public interface MrDefines {
-	public int MR_FAILED = -1,
+	int MR_FAILED = -1,
 		MR_SUCCESS = 0,
 		MR_IGNORE = 1,
 		MR_WAITING = 2;
 	
-	public int
+	int
     	MR_DIALOG_KEY_OK = 0,
     	MR_DIALOG_KEY_CANCEL = 1;
     	
-	public int	MR_LOCALUI_KEY_OK = 0,
+	int	MR_LOCALUI_KEY_OK = 0,
     	MR_LOCALUI_KEY_CANCEL = 1,
     	MR_LOCALUI_ACTIVE = 2;
     	
-	public int	MR_EDIT_ANY = 0,  //任何字符
+	int	MR_EDIT_ANY = 0,  //任何字符
     	MR_EDIT_NUMERIC = 1,         // 数字
     	MR_EDIT_PASSWORD = 2,       //密码，用"*"显示
     	MR_EDIT_ALPHA = 3;			//字母
 	
-	public int  MR_KEY_0=0, //按键 0
+	int  MR_KEY_0=0, //按键 0
         MR_KEY_1=1, //按键 1
         MR_KEY_2=2, //按键 2
         MR_KEY_3=3, //按键 3
@@ -69,12 +69,12 @@ public interface MrDefines {
         MR_KEY_CAPTURE=26, //拍照键
         MR_KEY_NONE=27; //按键 保留
 	
-	public int  MR_DIALOG_OK=0, //对话框有"确定"键。
+	int  MR_DIALOG_OK=0, //对话框有"确定"键。
         MR_DIALOG_OK_CANCEL=1,
         MR_DIALOG_CANCEL=2,
         MR_DIALOG_NONE=100;
 
-	public int MR_KEY_PRESS=0, /*0*/
+	int MR_KEY_PRESS=0, /*0*/
         MR_KEY_RELEASE=1, /*1*/
         MR_MOUSE_DOWN=2, /*2*/
         MR_MOUSE_UP=3, /*3*/
@@ -99,24 +99,24 @@ public interface MrDefines {
 
 	    MR_EMU_ON_TIMER = 2001; //add by yichou
 	
-	public int NETTYPE_WIFI=0,
+	int NETTYPE_WIFI=0,
 		NETTYPE_CMWAP=1,
 		NETTYPE_CMNET=2,
 		NETTYPE_UNKNOW=3;
 	
-	public int MR_SOUND_MIDI=0,
+	int MR_SOUND_MIDI=0,
 	   MR_SOUND_WAV=1,
 	   MR_SOUND_MP3=2,
 	   MR_SOUND_AMR=3,
 	   MR_SOUND_PCM=4;  //8K
 
-	public int MR_NET_ID_MOBILE=0,                  //移动
+	int MR_NET_ID_MOBILE=0,                  //移动
 	   MR_NET_ID_CN=1,          // 联通gsm
 	   MR_NET_ID_CDMA=2,       //联通CDMA
 	   MR_NET_ID_NONE=3,       //未插卡
 	   MR_NET_ID_OTHER=4;     /*其他网络*/
 
-	public int MR_MEDIA_IDLE= 1001, /*1.not init; 2.device closed*/
+	int MR_MEDIA_IDLE= 1001, /*1.not init; 2.device closed*/
 	   MR_MEDIA_INITED = 1002,
 	   MR_MEDIA_LOADED = 1003, /*1.loaded not play; 2.play finished; 3.play stoped*/
 	   MR_MEDIA_PLAYING = 1004,/*1.playing*/

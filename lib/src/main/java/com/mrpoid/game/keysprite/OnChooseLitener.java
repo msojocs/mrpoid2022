@@ -7,7 +7,7 @@ package com.mrpoid.game.keysprite;
  *
  */
 public interface OnChooseLitener {
-	public void onChoose(Object object);
+	void onChoose(Object object);
 	
-	public void onCancel();
+	void onCancel();
 }

@@ -7,7 +7,7 @@ package com.mrpoid.game.keysprite;
  *
  */
 public interface KeyEventListener {
-	public void onKeyDown(int key, Sprite sprite);
+	void onKeyDown(int key, Sprite sprite);
 	
-	public void onKeyUp(int key, Sprite sprite);
+	void onKeyUp(int key, Sprite sprite);
 }

@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
@@ -34,19 +33,20 @@ import com.mrpoid.view.ListViewPathAdapter.OnPathOperateListener;
 public class PathChooseDialog extends Dialog implements android.view.View.OnClickListener {
 	private ListView lv;
 	private TextView tvCurPath;
-	private Context ctx;
+	private final Context ctx;
 
 	private List<String> data;
 	private ListAdapter listAdapter;
 
-	private ChooseCompleteListener listener;
-	private Stack<String> pathStack = new Stack<String>();
+	private final ChooseCompleteListener listener;
+	private final Stack<String> pathStack = new Stack<>();
 
 	private int firstIndex = 0;
 	private boolean isBack = false;
 
 	private View lastSelectItem; // 上一个长按操作的View
-	private String root, dir;
+	private final String root;
+	private final String dir;
 	
 	
 	public static void ChoosePath(Context activity, ChooseCompleteListener l, String root, String dir) {
@@ -54,7 +54,7 @@ public class PathChooseDialog extends Dialog implements android.view.View.OnClic
 	}
 	
 	// 监听操作事件
-	private OnPathOperateListener pListener = new OnPathOperateListener() {
+	private final OnPathOperateListener pListener = new OnPathOperateListener() {
 		@Override
 		public void onPathOperate(int type, final int position, final TextView pathName) {
 			if (type == OnPathOperateListener.DEL) {
@@ -62,7 +62,7 @@ public class PathChooseDialog extends Dialog implements android.view.View.OnClic
 				int rs = FileUtils.deleteBlankPath(path);
 				if (rs == 0) {
 					data.remove(position);
-					refleshListView(data, firstIndex);
+					refreshListView(data, firstIndex);
 					UIUtils.toastMessage(ctx, "删除成功");
 				} else if (rs == 1) {
 					UIUtils.toastMessage(ctx, "没有权限");
@@ -77,34 +77,24 @@ public class PathChooseDialog extends Dialog implements android.view.View.OnClic
 				builder.setTitle("重命名");
 				builder.setView(et);
 				builder.setCancelable(true);
-				builder.setPositiveButton("确定", new OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						String input = et.getText().toString();
-						if (input != null || input.length() == 0) {
-							UIUtils.toastMessage(ctx, "输入不能为空");
+				builder.setPositiveButton("确定", (dialog, which) -> {
+					String input = et.getText().toString();
+					if (input != null || input.length() == 0) {
+						UIUtils.toastMessage(ctx, "输入不能为空");
+					} else {
+						String newPath = pathStack.peek() + File.separator + input;
+						boolean rs = FileUtils.reNamePath(data.get(position), newPath);
+						if (rs) {
+							pathName.setText(input);
+							data.set(position, newPath);
+							UIUtils.toastMessage(ctx, "重命名成功");
 						} else {
-							String newPath = pathStack.peek() + File.separator + input;
-							boolean rs = FileUtils.reNamePath(data.get(position), newPath);
-							if (rs == true) {
-								pathName.setText(input);
-								data.set(position, newPath);
-								UIUtils.toastMessage(ctx, "重命名成功");
-							} else {
-								UIUtils.toastMessage(ctx, "重命名失败");
-							}
+							UIUtils.toastMessage(ctx, "重命名失败");
 						}
-						dialog.dismiss();
 					}
+					dialog.dismiss();
 				});
-				builder.setNegativeButton("取消", new OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.dismiss();
-					}
-				});
+				builder.setNegativeButton("取消", (dialog, which) -> dialog.dismiss());
 				builder.create().show();
 			}
 		}
@@ -137,8 +127,8 @@ public class PathChooseDialog extends Dialog implements android.view.View.OnClic
 	}
 
 	private void init() {
-		lv = (ListView) findViewById(android.R.id.list);
-		tvCurPath = (TextView) findViewById(R.id.tv_cur_path);
+		lv = findViewById(android.R.id.list);
+		tvCurPath = findViewById(R.id.tv_cur_path);
 
 		findViewById(R.id.btn_comfirm).setOnClickListener(this);
 		findViewById(R.id.btn_back).setOnClickListener(this);
@@ -161,32 +151,26 @@ public class PathChooseDialog extends Dialog implements android.view.View.OnClic
 		data = FileUtils.listPath(rootPath);
 		tvCurPath.setText(rootPath);
 
-		refleshListView(data, 0);
+		refreshListView(data, 0);
 		// 单击
-		lv.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				firstIndex = position;
-				String currentPath = data.get(position);
-				tvCurPath.setText(currentPath);
-				data = FileUtils.listPath(currentPath);
-				pathStack.add(currentPath);
-				refleshListView(data, pathStack.size() - 1);
-			}
+		lv.setOnItemClickListener((parent, view, position, id) -> {
+			firstIndex = position;
+			String currentPath = data.get(position);
+			tvCurPath.setText(currentPath);
+			data = FileUtils.listPath(currentPath);
+			pathStack.add(currentPath);
+			refreshListView(data, pathStack.size() - 1);
 		});
 		// 长按
-		lv.setOnItemLongClickListener(new OnItemLongClickListener() {
-			@Override
-			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-				if (lastSelectItem != null && !lastSelectItem.equals(view)) {
-					lastSelectItem.findViewById(R.id.ll_op).setVisibility(View.GONE);
-				}
-				LinearLayout llOp = (LinearLayout) view.findViewById(R.id.ll_op);
-				int visible = llOp.getVisibility() == View.GONE ? View.VISIBLE : View.GONE;
-				llOp.setVisibility(visible);
-				lastSelectItem = view;
-				return true;
+		lv.setOnItemLongClickListener((parent, view, position, id) -> {
+			if (lastSelectItem != null && !lastSelectItem.equals(view)) {
+				lastSelectItem.findViewById(R.id.ll_op).setVisibility(View.GONE);
 			}
+			LinearLayout llOp = (LinearLayout) view.findViewById(R.id.ll_op);
+			int visible = llOp.getVisibility() == View.GONE ? View.VISIBLE : View.GONE;
+			llOp.setVisibility(visible);
+			lastSelectItem = view;
+			return true;
 		});
 	}
 
@@ -195,7 +179,7 @@ public class PathChooseDialog extends Dialog implements android.view.View.OnClic
 	 * 
 	 * @param data
 	 */
-	private void refleshListView(List<String> data, int firstItem) {
+	private void refreshListView(List<String> data, int firstItem) {
 		String lost = FileUtils.getSDRoot() + "lost+found";
 		data.remove(lost);
 		listAdapter = new ListViewPathAdapter(ctx, data, R.layout.file_path_listitem, pListener);
@@ -211,7 +195,7 @@ public class PathChooseDialog extends Dialog implements android.view.View.OnClic
 				pathStack.pop();
 				data = FileUtils.listPath(pathStack.peek());
 				tvCurPath.setText(pathStack.peek());
-				refleshListView(data, firstIndex);
+				refreshListView(data, firstIndex);
 			}
 		} else if (v.getId() == R.id.btn_comfirm) {
 			String full = pathStack.peek();
@@ -225,37 +209,28 @@ public class PathChooseDialog extends Dialog implements android.view.View.OnClic
 			builder.setTitle("新建文件夹");
 			builder.setView(et);
 			builder.setCancelable(true);
-			builder.setPositiveButton("确定", new OnClickListener() {
-
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					String rs = et.getText().toString();
-					if (rs == null || rs.length() == 0) {
-						UIUtils.toastMessage(ctx, "输入不能为空");
-					} else {
-						String newPath = pathStack.peek() + File.separator + rs;
-						int ret = FileUtils.createDir(newPath);
-						switch (ret) {
-						case FileUtils.SUCCESS:
-							data.add(newPath);
-							refleshListView(data, data.size() - 1);
-							UIUtils.toastMessage(ctx, "创建成功");
-							break;
-						case FileUtils.FAILED:
-							UIUtils.toastMessage(ctx, "创建失败");
-							break;
-						}
+			builder.setPositiveButton("确定", (dialog, which) -> {
+				String rs = et.getText().toString();
+				if (rs == null || rs.length() == 0) {
+					UIUtils.toastMessage(ctx, "输入不能为空");
+				} else {
+					String newPath = pathStack.peek() + File.separator + rs;
+					int ret = FileUtils.createDir(newPath);
+					switch (ret) {
+					case FileUtils.SUCCESS:
+						data.add(newPath);
+						refreshListView(data, data.size() - 1);
+						UIUtils.toastMessage(ctx, "创建成功");
+						break;
+					case FileUtils.FAILED:
+						UIUtils.toastMessage(ctx, "创建失败");
+						break;
 					}
-					dialog.dismiss();
 				}
+				dialog.dismiss();
 			});
 
-			builder.setNegativeButton("取消", new OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					dialog.dismiss();
-				}
-			});
+			builder.setNegativeButton("取消", (dialog, which) -> dialog.dismiss());
 			builder.create().show();
 		}
 	}

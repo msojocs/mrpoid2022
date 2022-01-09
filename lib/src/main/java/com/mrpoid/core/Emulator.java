@@ -26,7 +26,6 @@ import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -37,7 +36,6 @@ import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
 import android.os.Process;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -90,7 +88,6 @@ public class Emulator {
     private EmuView emulatorView;
     private EmulatorActivity emulatorActivity;
 
-    private HandlerThread mrpThread;
     private final Handler handler;
 
     private EmuAudio audio;
@@ -126,7 +123,7 @@ public class Emulator {
     }
 
     private Emulator() {
-        mrpThread = new HandlerThread("mrp");
+        HandlerThread mrpThread = new HandlerThread("mrp");
         mrpThread.start();
         MrpThreadCallback mrpThreadCallback = new MrpThreadCallback(this);
         handler = new Handler(mrpThread.getLooper(), mrpThreadCallback);
@@ -148,7 +145,7 @@ public class Emulator {
     public void recycle() {
         native_destroy();
         audio.recycle();
-        screen.recyle();
+        screen.recycle();
         bInited = false;
     }
 
@@ -245,7 +242,6 @@ public class Emulator {
         return emulatorActivity;
     }
 
-
     public EmuView getView() {
         return emulatorView;
     }
@@ -316,17 +312,18 @@ public class Emulator {
 
         this.runMrpPath = path;
 
-        if (runMrpPath == null) {
-            log.e("no run file!");
-            stop();
-            return;
-        }
+        //if (runMrpPath == null) {
+        //    log.e("no run file!");
+        //    stop();
+        //    return;
+        //}
 
         log.i("start");
 
         //等所有环境准备好后再确定它为运行状态
         path = runMrpPath;
-        if (path.charAt(0) != '*') { //非固化应用
+        if (path.charAt(0) != '*') {
+            // 非固化应用
             path = "%" + runMrpPath;
         }
 
@@ -386,7 +383,7 @@ public class Emulator {
 
         audio.stop();
         audio.recycle();
-        screen.recyle();
+        screen.recycle();
         BitmapPool.recycle();
 
         emulatorActivity = null;
@@ -605,6 +602,7 @@ public class Emulator {
         if (emulatorActivity != null)
             emulatorActivity.finish();
     }
+
     private void N2J_flush() {
         if (!running || emulatorView == null)
             return;
@@ -706,7 +704,7 @@ public class Emulator {
      * 底层请求显示一个对话框，该对话框弹出，表明底层出现了不可继续下去的错误，
      * 需要退出 MRP 运行
      *
-     * @param msg
+     * @param msg 显示的内容
      */
     private void N2J_showDlg(String msg) {
         new AlertDialog.Builder(emulatorActivity) //注意这里不是用 Context
@@ -825,7 +823,7 @@ public class Emulator {
     /**
      * 底层调用万能方法
      *
-     * @param args
+     * @param args 参数
      */
     private void N2J_callVoidMethod(String[] args) {
         if (null == args)
@@ -838,27 +836,33 @@ public class Emulator {
             if (action == null)
                 return;
 
-            if (action.equals("call")) {
-                if (argc >= 2 && args[1] != null) {
-                    if (emulatorActivity != null) emulatorActivity.reqCallPhone(args[1]);
-                }
-            } else if (action.equals("viewUrl")) {
-                if (argc >= 2 && args[1] != null) {
-                    reqBrowser(args[1]);
-                }
-            } else if (action.equals("getSmsCenter")) { //获取短信中心，通过 mr_event 回调
-                handler.sendEmptyMessageDelayed(MSG_MR_SMS_GET_SC, 500);
-            } else if ("showToast".equals(action)) {
-                Toast.makeText(mContext, args[1], Toast.LENGTH_SHORT).show();
-            } else if ("crash".equals(action)) {
-                new Thread() {
-                    @Override
-                    public void run() {
-                        Looper.prepare();
-                        Toast.makeText(mContext, "mrp线程异常退出！", Toast.LENGTH_LONG).show();
-                        Looper.loop();
+            switch (action) {
+                case "call":
+                    if (argc >= 2 && args[1] != null) {
+                        if (emulatorActivity != null) emulatorActivity.reqCallPhone(args[1]);
                     }
-                }.start();
+                    break;
+                case "viewUrl":
+                    if (argc >= 2 && args[1] != null) {
+                        reqBrowser(args[1]);
+                    }
+                    break;
+                case "getSmsCenter":  //获取短信中心，通过 mr_event 回调
+                    handler.sendEmptyMessageDelayed(MSG_MR_SMS_GET_SC, 500);
+                    break;
+                case "showToast":
+                    Toast.makeText(mContext, args[1], Toast.LENGTH_SHORT).show();
+                    break;
+                case "crash":
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            Looper.prepare();
+                            Toast.makeText(mContext, "mrp线程异常退出！", Toast.LENGTH_LONG).show();
+                            Looper.loop();
+                        }
+                    }.start();
+                    break;
             }
         }
     }
@@ -876,6 +880,7 @@ public class Emulator {
      */
     private void N2J_drawImage(String path, int x, int y, int w, int h) {
         //		log.i("drawImage " + x)
+        Log.i(TAG, "===========N2J_drawImage");
         screen.drawBitmap(BitmapPool.getBitmap(path), x, y, w, h);
     }
 

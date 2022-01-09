@@ -11,8 +11,8 @@ import android.graphics.Paint;
  *
  */
 public abstract class Actor {
-	public static interface ClickCallback {
-		public void onClick(int key, boolean down);
+	public interface ClickCallback {
+		void onClick(int key, boolean down);
 	}
 	
 	protected float x, y, w, h;
@@ -190,11 +190,11 @@ public abstract class Actor {
 		return am.getViewH();
 	}
 	
-	protected int getWroldW() {
+	protected int getWorldW() {
 		return 0;
 	}
 
-	protected int getWroldH() {
+	protected int getWorldH() {
 		return 0;
 	}
 	

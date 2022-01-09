@@ -114,8 +114,8 @@ public class SampleKeySprite implements KeySprite, Runnable {
 			case XmlPullParser.START_TAG: {
 				if("key".equals(parser.getName())){
 					Sprite sprite = new Sprite(parser.getAttributeValue(0), 
-							Integer.valueOf(parser.getAttributeValue(1)), 
-							Integer.valueOf(parser.getAttributeValue(2)));
+							Integer.parseInt(parser.getAttributeValue(1)),
+							Integer.parseInt(parser.getAttributeValue(2)));
 					
 					spriteList.add(sprite);
 				}

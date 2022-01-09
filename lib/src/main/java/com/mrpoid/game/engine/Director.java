@@ -19,7 +19,7 @@ public abstract class Director {
 	 * 视图大小，快速访问，设计成 public
 	 */
 	public int viewW, viewH;
-	private ActorGroup rootGroup;
+	private final ActorGroup rootGroup;
 	protected int alpha;
 	
 	

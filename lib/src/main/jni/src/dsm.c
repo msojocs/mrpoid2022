@@ -932,22 +932,22 @@ int32 mr_read(MR_FILE_HANDLE f, void *p, uint32 l)
 int32 mr_write(MR_FILE_HANDLE f, void *p, uint32 l)
 {
     if(gEmuEnv.showFile)
-        LOGI("mr_read %d,%p,%d", f, p, l);
+        LOGI("mr_write %d,%p,%d", f, p, l);
 
 	if(f < 0)
 		return MR_FAILED;
 
-	size_t writenum = 0;
+	size_t writeNum = 0;
 
 	// open那边+5了，得减回去
-	writenum = write(f-5, p, (size_t) l);
+	writeNum = write(f - 5, p, (size_t) l);
 
-	if (writenum < 0){
+	if (writeNum < 0){
 		LOGE("mr_write(%d) err, %d", f, errno);
 		return MR_FAILED;
 	}
 
-	return writenum;
+	return writeNum;
 }
 
 /****************************************************************************

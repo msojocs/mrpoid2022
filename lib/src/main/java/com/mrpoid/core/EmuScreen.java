@@ -40,29 +40,33 @@ import android.view.SurfaceHolder;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import com.edroid.common.utils.Logger;
+
+import lombok.Setter;
 
 /**
  * @author Yichou 2013-4-19
  */
-public class EmuScreen implements View.OnTouchListener, View.OnKeyListener, SurfaceHolder.Callback, Handler.Callback {
+public class EmuScreen {
     static final String TAG = EmuScreen.class.getSimpleName();
     static final Logger log = Emulator.log;
 
-    private static final String TEST = "1.你好，Hellogfa";
+    private static final String TEST = "1.你好，Hello World";
 
-    private Emulator emulator;
-    private EmuConfig cfg;
+    private final Emulator emulator;
+    private final EmuConfig cfg;
     private SurfaceHolder surfaceHolder;
 
     private HandlerThread drawThread;
-    private Handler drawHandler;
+    private final Handler drawHandler;
     private boolean surfaceOk;
 
 
     public Bitmap bitmap, cacheBitmap;
     public Canvas cacheCanvas = new Canvas();
-    private RectF region = new RectF(); //绘制区域
+    private final RectF region = new RectF(); //绘制区域
 
     private float scaleX, scaleY;
     //	public Point size = new Point(); //大小
@@ -70,10 +74,11 @@ public class EmuScreen implements View.OnTouchListener, View.OnKeyListener, Surf
     private int screenW, screenH;
 
     private float CHR_H;
-    private Paint paint, bmpPaint;
-    private Rect textRect = new Rect(); //测量字符用
-    private Rect textRectD = new Rect(); //测量字符用
-    private char[] tmpBuf = new char[2];
+    private final Paint paint;
+    private final Paint bmpPaint;
+    private final Rect textRect = new Rect(); //测量字符用
+    private final Rect textRectD = new Rect(); //测量字符用
+    private final char[] tmpBuf = new char[2];
 
     //	private Typeface mTypeface;
     private int font_ansi_w, font_ansi_h, font_w, font_h;
@@ -82,18 +87,8 @@ public class EmuScreen implements View.OnTouchListener, View.OnKeyListener, Surf
     Paint testPaint = new Paint();
     boolean debugDraw = false;
 
-    private Rect dRectSrc = new Rect(), dRectDst = new Rect();
-
-    @Override
-    public boolean handleMessage(Message msg) {
-        if (msg.what == 1)
-            flush();
-        else if (msg.what == 2) {
-            flush();
-            drawHandler.sendEmptyMessageDelayed(2, 10000); //5s自动刷屏玩玩看
-        }
-        return true;
-    }
+    private final Rect dRectSrc = new Rect();
+    private final Rect dRectDst = new Rect();
 
     public EmuScreen(Emulator emulator) {
         this.emulator = emulator;
@@ -101,7 +96,10 @@ public class EmuScreen implements View.OnTouchListener, View.OnKeyListener, Surf
 
         drawThread = new HandlerThread("draw");
         drawThread.start();
-        drawHandler = new Handler(drawThread.getLooper(), this);
+
+        DrawCallback drawCallback = new DrawCallback(this);
+        drawHandler = new Handler(drawThread.getLooper(), drawCallback);
+        drawCallback.setDrawHandler(drawHandler);
 
         paint = new Paint();
         paint.setTextSize(cfg.sysFontSize);
@@ -118,11 +116,37 @@ public class EmuScreen implements View.OnTouchListener, View.OnKeyListener, Surf
         testPaint.setStyle(Style.STROKE);
 
         EmuView view = emulator.getView();
-        view.setOnKeyListener(this);
-        view.setOnTouchListener(this);
+        view.setOnKeyListener((view1, keyCode, e) -> handleKeyEvent(e, keyCode));
+        view.setOnTouchListener((v, e)-> {
+            handleMotionEvent(e);
+            return true;
+        });
 
         surfaceHolder = view.getHolder();
-        surfaceHolder.addCallback(this);
+        surfaceHolder.addCallback(new SurfaceHolder.Callback() {
+
+            @Override
+            public void surfaceCreated(SurfaceHolder h) {
+                log.d("surfaceCreated " + h);
+                surfaceOk = true;
+                surfaceHolder = h;
+            }
+
+            @Override
+            public void surfaceChanged(SurfaceHolder surfaceHolder, int format, int w, int h) {
+                log.d("surfaceChanged " + w + " " + h);
+                setViewportSize(w, h);
+            }
+
+            //activity pause 也会调用
+            @Override
+            public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
+                log.d("surfaceDestroyed " + surfaceHolder);
+                surfaceOk = false;
+                //		this.surfaceHolder = null;
+                //		this.surfaceHolder.removeCallback(this);
+            }
+        });
         if (!surfaceHolder.isCreating())
             surfaceOk = true;
 
@@ -139,7 +163,7 @@ public class EmuScreen implements View.OnTouchListener, View.OnKeyListener, Surf
     /**
      * 初始化paint，设置字体宽高，优化：等宽字体不用检测直接赋值
      *
-     * @param size
+     * @param size 大小
      */
     public void setTextSize(int size) {
         paint.setTextSize(size);
@@ -155,7 +179,7 @@ public class EmuScreen implements View.OnTouchListener, View.OnKeyListener, Surf
         font_ansi_h = size;// textRect.height();
     }
 
-    public synchronized void recyle() {
+    public synchronized void recycle() {
         if (bitmap != null) {
             bitmap.recycle();
             bitmap = null;
@@ -200,8 +224,6 @@ public class EmuScreen implements View.OnTouchListener, View.OnKeyListener, Surf
             cacheCanvas.drawRect(testRect, testPaint);
         }
     }
-
-    StringBuilder sb = new StringBuilder(256);
 
     public void N2J_measureChar(int ch) {
         tmpBuf[0] = (char) ch;
@@ -296,8 +318,8 @@ public class EmuScreen implements View.OnTouchListener, View.OnKeyListener, Surf
     /**
      * 设置 mrp 屏幕大小
      *
-     * @param w
-     * @param h
+     * @param w 宽
+     * @param h 高
      */
     private void setSize(int w, int h) {
         //		if(screenW == w && screenH == h)
@@ -417,7 +439,7 @@ public class EmuScreen implements View.OnTouchListener, View.OnKeyListener, Surf
         path.mkdirs();
 
         // 根据当前时间生成图片名称
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyymmddHHmmss", Locale.CHINA);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss", Locale.CHINA);
         String name = sdf.format(new Date()) + ".png";
 
         path = new File(path, name);
@@ -545,36 +567,27 @@ public class EmuScreen implements View.OnTouchListener, View.OnKeyListener, Surf
         }
     }
 
-    @Override
-    public boolean onKey(View view, int keyCode, KeyEvent e) {
-        return handleKeyEvent(e, keyCode);
+
+}
+class DrawCallback implements Handler.Callback{
+
+    @Setter
+    private Handler drawHandler;
+
+    private final EmuScreen emuScreen;
+
+    DrawCallback(EmuScreen screen){
+        this.emuScreen = screen;
     }
 
     @Override
-    public boolean onTouch(View view, MotionEvent e) {
-        handleMotionEvent(e);
+    public boolean handleMessage(@NonNull Message msg) {
+        if (msg.what == 1)
+            emuScreen.flush();
+        else if (msg.what == 2) {
+            emuScreen.flush();
+            drawHandler.sendEmptyMessageDelayed(2, 10000); //5s自动刷屏玩玩看
+        }
         return true;
-    }
-
-    @Override
-    public void surfaceCreated(SurfaceHolder h) {
-        log.d("surfaceCreated " + h);
-        surfaceOk = true;
-        surfaceHolder = h;
-    }
-
-    @Override
-    public void surfaceChanged(SurfaceHolder surfaceHolder, int format, int w, int h) {
-        log.d("surfaceChanged " + w + " " + h);
-        setViewportSize(w, h);
-    }
-
-    //activity pause 也会调用
-    @Override
-    public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
-        log.d("surfaceDestroyed " + surfaceHolder);
-        surfaceOk = false;
-        //		this.surfaceHolder = null;
-        //		this.surfaceHolder.removeCallback(this);
     }
 }

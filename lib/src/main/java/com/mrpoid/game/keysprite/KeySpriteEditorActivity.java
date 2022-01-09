@@ -55,9 +55,9 @@ public class KeySpriteEditorActivity extends Activity implements OnItemSelectedL
 		mKeySprite = new SampleKeySprite();
 		mKeyTitles = getResources().getStringArray(R.array.key_titles);
 
-		Spinner spinner = (Spinner) findViewById(R.id.spinner1);
+		Spinner spinner = findViewById(R.id.spinner1);
 
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, 
+		ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
 				android.R.layout.simple_spinner_item, 
 				mKeyTitles);
 
@@ -65,12 +65,12 @@ public class KeySpriteEditorActivity extends Activity implements OnItemSelectedL
 		spinner.setAdapter(adapter);
 		spinner.setOnItemSelectedListener(this);
 
-		ListView listView = (ListView) findViewById(R.id.listView1);
+		ListView listView = findViewById(R.id.listView1);
 		mAdapter = new MyAdapter();
 		listView.setAdapter(mAdapter);
 
 		findViewById(R.id.ibtn_add).setOnClickListener(this);
-		mEditText = (EditText) findViewById(R.id.edit_time);
+		mEditText = findViewById(R.id.edit_time);
 	}
 
 	@Override
@@ -114,7 +114,7 @@ public class KeySpriteEditorActivity extends Activity implements OnItemSelectedL
 		if (id == 1001) {
 			LayoutInflater inflater = LayoutInflater.from(this);
 			View view = inflater.inflate(R.layout.dialog_single_edit, null);
-			final EditText editText = (EditText) view.findViewById(R.id.editText1);
+			final EditText editText = view.findViewById(R.id.editText1);
 
 			Dialog dialog = new AlertDialog.Builder(this)
 				.setTitle("请输入文件名：")
@@ -192,8 +192,8 @@ public class KeySpriteEditorActivity extends Activity implements OnItemSelectedL
 			if (convertView == null) {
 				convertView = mInflater.inflate(R.layout.key_sprite_item, null);
 				holder = new ViewHolder();
-				holder.mTextView = (TextView) convertView.findViewById(R.id.textView1);
-				holder.mButton = (ImageButton) convertView.findViewById(R.id.ibtn_remove);
+				holder.mTextView = convertView.findViewById(R.id.textView1);
+				holder.mButton = convertView.findViewById(R.id.ibtn_remove);
 				holder.mButton.setOnClickListener(this);
 
 				convertView.setTag(holder);
@@ -204,7 +204,7 @@ public class KeySpriteEditorActivity extends Activity implements OnItemSelectedL
 			Sprite sprite = mKeySprite.get(position);
 
 			holder.mButton.setTag(position);
-			holder.mTextView.setText(String.valueOf(position) + ". " + sprite.toString());
+			holder.mTextView.setText(position + ". " + sprite.toString());
 
 			return convertView;
 		}

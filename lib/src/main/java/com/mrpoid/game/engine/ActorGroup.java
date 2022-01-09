@@ -13,13 +13,13 @@ import android.graphics.Paint;
  *
  */
 public class ActorGroup extends Actor {
-	private ArrayList<Actor> actors;
+	private final ArrayList<Actor> actors;
 	
 
 	public ActorGroup(Director am) {
 		super(am);
 		
-		actors = new ArrayList<Actor>(10);
+		actors = new ArrayList<>(10);
 	}
 	
 	/**

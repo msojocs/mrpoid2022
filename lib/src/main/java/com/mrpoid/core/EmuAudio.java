@@ -17,7 +17,7 @@ import lombok.Getter;
  * <p>优化代码结构 2013-12-13 0:03:33
  *
  */
-public final class EmuAudio implements OnErrorListener, OnCompletionListener, MrDefines {
+public final class EmuAudio implements MrDefines {
 	private static final String TAG = "EmuAudio";
 	
 	//media 接口编号区
@@ -55,6 +55,17 @@ public final class EmuAudio implements OnErrorListener, OnCompletionListener, Mr
 	private boolean needCallback = false;
 	private int pausePosition;
 	private int stat = MrDefines.MR_MEDIA_IDLE;
+	OnCompletionListener onCompletionListener = new OnCompletionListener() {
+		@Override
+		public void onCompletion(MediaPlayer mp) {
+			EmuLog.i(TAG, "onCompletion");
+
+			stat = MR_MEDIA_LOADED; //播放完成后的状态
+			if(needCallback){
+				emulator.native_callback(0x1001, 0); //ACI_PLAY_COMPLETE   0  //播放结束
+			}
+		}
+	};
 	
 
 	public EmuAudio(Emulator emulator) {
@@ -129,26 +140,6 @@ public final class EmuAudio implements OnErrorListener, OnCompletionListener, Mr
 			mediaPlayer = null;
 		}
 	}
-	
-	@Override
-	public boolean onError(MediaPlayer mp, int what, int extra) {
-		EmuLog.e(TAG, String.format("onError(%d, %d)", what, extra));
-		if(needCallback){
-			emulator.native_callback(0x1001, 1); //ACI_PLAY_ERROR       1  //播放时遇到错误
-		}
-		
-		return false;
-	}
-	
-	@Override
-	public void onCompletion(MediaPlayer mp) {
-		EmuLog.i(TAG, "onCompletion");
-		
-		stat = MR_MEDIA_LOADED; //播放完成后的状态
-		if(needCallback){
-			emulator.native_callback(0x1001, 0); //ACI_PLAY_COMPLETE   0  //播放结束
-		}
-	}
 
 	public void N2J_playSound(String path, int loop) {
 		if(recycled) return;
@@ -213,8 +204,15 @@ public final class EmuAudio implements OnErrorListener, OnCompletionListener, Mr
 			}
 
 			mediaPlayer = new MediaPlayer();
-			mediaPlayer.setOnErrorListener(this);
-			mediaPlayer.setOnCompletionListener(this);
+			mediaPlayer.setOnErrorListener((mp, what, extra) -> {
+				EmuLog.e(TAG, String.format("onError(%d, %d)", what, extra));
+				if(needCallback){
+					emulator.native_callback(0x1001, 1); //ACI_PLAY_ERROR       1  //播放时遇到错误
+				}
+
+				return false;
+			});
+			mediaPlayer.setOnCompletionListener(onCompletionListener);
 			stat = MrDefines.MR_MEDIA_INITED;
 			
 			return 0;
@@ -243,7 +241,7 @@ public final class EmuAudio implements OnErrorListener, OnCompletionListener, Mr
 			}
 			
 			mediaPlayer.start();
-			mediaPlayer.setOnCompletionListener(this);
+			mediaPlayer.setOnCompletionListener(onCompletionListener);
 			
 			break;
 		}

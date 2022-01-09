@@ -29,7 +29,7 @@ import android.view.View;
  *
  */
 public class KeypadView extends View {
-	private Keypad keypad;
+	private final Keypad keypad;
 
 	public KeypadView(Context context, Keypad keypad) {
 		super(context);

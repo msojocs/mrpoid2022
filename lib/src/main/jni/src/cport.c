@@ -75,7 +75,7 @@ int mr_strcoll(const char* lhs, const char* rhs)
 int mr_strlen(const char* s)
 {
     if(!s || !isAddrValid(s)) {
-        LOGE("mr_strlen InvalidAddr %p %p", s, *(s+78));
+        LOGE("mr_strlen InvalidAddr %p %p (地址有误或不在分配的内存范围内)", s, *(s+78));
         return 0;
     }
 

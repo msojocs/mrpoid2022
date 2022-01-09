@@ -1,9 +1,5 @@
 package com.mrpoid.game.keypad;
 
-import android.graphics.Canvas;
-import android.graphics.Paint;
-
-import com.mrpoid.core.MrpoidSettings;
 import com.mrpoid.game.engine.Director;
 
 /**
@@ -13,8 +9,7 @@ import com.mrpoid.game.engine.Director;
  *
  */
 public class FloatMenuButton extends TextButton {
-	
-	
+
 	public FloatMenuButton(Director am, int id) {
 		super(am, null, id);
 		

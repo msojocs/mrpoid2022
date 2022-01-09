@@ -21,9 +21,9 @@ import com.edroid.common.utils.FileUtils;
  */
 public class ListViewPathAdapter extends BaseAdapter {
 	private Context context;// 运行上下文
-	private List<String> listItems;// 数据集合
-	private LayoutInflater listContainer;// 视图容器
-	private int itemViewResource;// 自定义项视图源
+	private final List<String> listItems;// 数据集合
+	private final LayoutInflater listContainer;// 视图容器
+	private final int itemViewResource;// 自定义项视图源
 
 	private OnPathOperateListener listener;
 

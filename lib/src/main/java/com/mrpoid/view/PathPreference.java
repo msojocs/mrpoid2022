@@ -35,14 +35,11 @@ public class PathPreference extends Preference {
 	
 	@Override
 	protected void onClick() {
-		PathChooseDialog.ChoosePath(getContext(), new PathChooseDialog.ChooseCompleteListener() {
-			@Override
-			public void onComplete(String fullPath, String relativePath) {
-				if(getKey().equals(MrpoidSettings.kMythroadPath))
-					setPath(relativePath);
-				else
-					setPath(fullPath);
-			}
+		PathChooseDialog.ChoosePath(getContext(), (fullPath, relativePath) -> {
+			if(getKey().equals(MrpoidSettings.kMythroadPath))
+				setPath(relativePath);
+			else
+				setPath(fullPath);
 		}, defRoot, defDir);
 	}
 	
