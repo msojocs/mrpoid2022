@@ -17,8 +17,6 @@ package com.mrpoid.app;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.edroid.common.utils.SdkUtils;
-
 /**
  * @author YYichou 2014-3-29
  *
@@ -31,8 +29,7 @@ class BaseActivity extends AppCompatActivity {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		
-		SdkUtils.onPause(this);
+
 	}
 	
 	/* (non-Javadoc)
@@ -41,7 +38,6 @@ class BaseActivity extends AppCompatActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		
-		SdkUtils.onResume(this);
+
 	}
 }

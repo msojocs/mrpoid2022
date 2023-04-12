@@ -12,7 +12,7 @@ import com.mrpoid.mrplist.R;
 
 public class BaseActivity extends AppCompatActivity {
 
-    private static String TAG = BaseActivity.class.getSimpleName();
+    private static final String TAG = BaseActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

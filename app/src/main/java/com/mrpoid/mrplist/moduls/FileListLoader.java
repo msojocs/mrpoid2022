@@ -17,7 +17,7 @@ import androidx.loader.content.AsyncTaskLoader;
  * @author Yichou 2013-11-23
  *
  */
-public class FileListLoader extends AsyncTaskLoader<List<MpFile>> {
+public class FileListLoader extends AsyncTaskLoader<List<MrpFile>> {
     private File mPath;
     private boolean mIsRoot;
     private final FileFilter mFilter;
@@ -39,8 +39,8 @@ public class FileListLoader extends AsyncTaskLoader<List<MpFile>> {
     }
 
     @Override
-    public List<MpFile> loadInBackground() {
-        List<MpFile> list = findMrpFiles();
+    public List<MrpFile> loadInBackground() {
+        List<MrpFile> list = findMrpFiles();
         Collections.sort(list);
         return list;
     }
@@ -51,7 +51,7 @@ public class FileListLoader extends AsyncTaskLoader<List<MpFile>> {
      * adds a little more logic.
      */
     @Override
-    public void deliverResult(List<MpFile> list) {
+    public void deliverResult(List<MrpFile> list) {
         super.deliverResult(list);
     }
 
@@ -80,18 +80,18 @@ public class FileListLoader extends AsyncTaskLoader<List<MpFile>> {
     //		cancelLoad();
     //	}
 
-    public List<MpFile> findMrpFiles() {
+    public List<MrpFile> findMrpFiles() {
         if (mPath == null)
             return null;
 
-        List<MpFile> mCacheList = new ArrayList<MpFile>();
+        List<MrpFile> mCacheList = new ArrayList<MrpFile>();
         File[] files = mPath.listFiles(mFilter);
         if (!mIsRoot)
-            mCacheList.add(new MpFile()); //..
+            mCacheList.add(new MrpFile()); //..
 
         if (files != null && files.length > 0) {
             for (File f : files) {
-                mCacheList.add(new MpFile(f));
+                mCacheList.add(new MrpFile(f));
             }
         }
 

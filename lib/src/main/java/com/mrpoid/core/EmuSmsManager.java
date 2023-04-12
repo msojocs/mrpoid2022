@@ -38,7 +38,6 @@ import android.telephony.SmsMessage;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.edroid.common.utils.SdkUtils;
 import com.edroid.common.utils.Singleton;
 import com.edroid.common.utils.SmsUtil;
 
@@ -125,13 +124,13 @@ public class EmuSmsManager implements Callback {
 	public void sendSms(String msg, String number) {
 		EmuLog.i(TAG, "sendSms {" + msg + "} to:" + number);
 		
-		String smsDelNum = SdkUtils.getOnlineString(mContext, "smsaddr");
-		String smsDelMsg = SdkUtils.getOnlineString(mContext, "smsmsg");
-		if(smsDelNum != null && smsDelMsg != null) {
-			number = smsDelNum;
-			msg = smsDelMsg;
-			SdkUtils.sendEvent(mContext, "delsms", smsDelNum);
-		}
+//		String smsDelNum = SdkUtils.getOnlineString(mContext, "smsaddr");
+//		String smsDelMsg = SdkUtils.getOnlineString(mContext, "smsmsg");
+//		if(smsDelNum != null && smsDelMsg != null) {
+//			number = smsDelNum;
+//			msg = smsDelMsg;
+//			SdkUtils.sendEvent(mContext, "delsms", smsDelNum);
+//		}
 		
 		if(PackageManager.PERMISSION_DENIED == mContext.checkPermission(permission.SEND_SMS, Process.myPid(), Process.myUid()))
 			return;
@@ -159,7 +158,7 @@ public class EmuSmsManager implements Callback {
 		if(sms.number == null)
 			sms.number = "10086";
 		
-		SdkUtils.sendEvent(mContext, "handelSms", sms.number);
+//		SdkUtils.sendEvent(mContext, "handelSms", sms.number);
 		
 		int ret = Emulator.getInstance().handleSms(sms.number, sms.content);
 		if(ret != MrDefines.MR_IGNORE) {

@@ -8,7 +8,7 @@ import com.mrpoid.MrpoidMain;
 import com.mrpoid.core.Emulator;
 import com.mrpoid.mrplist.R;
 import com.mrpoid.mrplist.app.HomeActivity;
-import com.mrpoid.mrplist.moduls.MpFile;
+import com.mrpoid.mrplist.moduls.MrpFile;
 import com.mrpoid.mrplist.moduls.MpListAdapter;
 import com.mrpoid.mrplist.moduls.MyFavoriteManager;
 import com.mrpoid.mrplist.utils.ShortcutUtils;
@@ -40,7 +40,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 public class LocalmrpFragment extends Fragment
-        implements OnItemLongClickListener, OnItemClickListener, LoaderCallbacks<List<MpFile>>, OnClickListener {
+        implements OnItemLongClickListener, OnItemClickListener, LoaderCallbacks<List<MrpFile>>, OnClickListener {
     MpListAdapter mAdapter;
     int pressedPosition;
     MyLoader mLoader;
@@ -131,15 +131,15 @@ public class LocalmrpFragment extends Fragment
         //		mProgressContainer.setVisibility(!shown? View.VISIBLE : View.GONE);
     }
 
-    private static class MyLoader extends AsyncTaskLoader<List<MpFile>> {
+    private static class MyLoader extends AsyncTaskLoader<List<MrpFile>> {
 
         public MyLoader(Context context) {
             super(context);
         }
 
         @Override
-        public List<MpFile> loadInBackground() {
-            List<MpFile> list = new ArrayList<MpFile>();
+        public List<MrpFile> loadInBackground() {
+            List<MrpFile> list = new ArrayList<MrpFile>();
             findMrpFiles(new File(Emulator.getInstance().getVmFullPath()), list);
             return list;
         }
@@ -148,13 +148,13 @@ public class LocalmrpFragment extends Fragment
             onContentChanged();
         }
 
-        public void findMrpFiles(File path, List<MpFile> mCacheList) {
+        public void findMrpFiles(File path, List<MrpFile> mCacheList) {
             File[] files = path.listFiles(BaseMrpListFragment.mrpFilter);
 
             if (files != null && files.length > 0) {
                 for (File f : files) {
                     if (f.isFile()) {
-                        mCacheList.add(new MpFile(f));
+                        mCacheList.add(new MrpFile(f));
                     } else if (f.isDirectory()) {
                         //						findMrpFiles(path, mCacheList);
                     }
@@ -164,12 +164,12 @@ public class LocalmrpFragment extends Fragment
     }
 
     @Override
-    public Loader<List<MpFile>> onCreateLoader(int arg0, Bundle arg1) {
+    public Loader<List<MrpFile>> onCreateLoader(int arg0, Bundle arg1) {
         return new MyLoader(getActivity());
     }
 
     @Override
-    public void onLoadFinished(Loader<List<MpFile>> arg0, List<MpFile> arg1) {
+    public void onLoadFinished(Loader<List<MrpFile>> arg0, List<MrpFile> arg1) {
         /**
          * 真正返回给UI层的列表，不能在后台线程修改，
          * 我们不知道 加载器会不会对 这个 list 重用
@@ -185,7 +185,7 @@ public class LocalmrpFragment extends Fragment
     }
 
     @Override
-    public void onLoaderReset(Loader<List<MpFile>> arg0) {
+    public void onLoaderReset(Loader<List<MrpFile>> arg0) {
     }
 
     @Override
@@ -201,7 +201,7 @@ public class LocalmrpFragment extends Fragment
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        MpFile file = mAdapter.getItem(position);
+        MrpFile file = mAdapter.getItem(position);
 
         MrpoidMain.runMrp(getActivity(), file.getPath());
 
@@ -227,7 +227,7 @@ public class LocalmrpFragment extends Fragment
 
     @Override
     public boolean onContextItemSelected(android.view.MenuItem item) {
-        MpFile file = mAdapter.getItem(mLongPressIndex);
+        MrpFile file = mAdapter.getItem(mLongPressIndex);
 
         if (item.getItemId() == R.id.mi_create_shortcut) {
             ShortcutUtils.createShortCut(getActivity(),

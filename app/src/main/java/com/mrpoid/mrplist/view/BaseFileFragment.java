@@ -19,7 +19,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -35,7 +34,7 @@ import android.widget.ListView;
 import com.edroid.common.utils.TextUtils;
 import com.edroid.common.utils.WorkThread;
 import com.mrpoid.mrplist.R;
-import com.mrpoid.mrplist.moduls.MpFile;
+import com.mrpoid.mrplist.moduls.MrpFile;
 import com.mrpoid.mrplist.moduls.MpListAdapter;
 
 import java.io.File;
@@ -63,7 +62,7 @@ public abstract class BaseFileFragment extends MyListFragment implements OnItemL
     String curPath;
     int curP, curY;
     boolean isRootPath;
-    ArrayList<MpFile> cacheList;
+    ArrayList<MrpFile> cacheList;
 
     private final Stack<String> mPathStack = new Stack<>();
 
@@ -163,17 +162,17 @@ public abstract class BaseFileFragment extends MyListFragment implements OnItemL
             else
                 cacheList.clear();
             if (!isRootPath)
-                cacheList.add(new MpFile()); //..
+                cacheList.add(new MrpFile()); //..
 
             File[] files = new File(curPath).listFiles(getFileFilter());
             if (files != null && files.length > 0) {
                 for (File f : files) {
-                    cacheList.add(new MpFile(f));
+                    cacheList.add(new MrpFile(f));
                 }
             }
             // 排序
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                cacheList.sort(Comparator.comparing(MpFile::getName));
+                cacheList.sort(Comparator.comparing(MrpFile::getName));
             }
             return cacheList;
         }
@@ -277,7 +276,7 @@ public abstract class BaseFileFragment extends MyListFragment implements OnItemL
 
     @Override
     public final void onListItemClick(ListView l, View v, int position, long id) {
-        MpFile file = mAdapter.getItem(position);
+        MrpFile file = mAdapter.getItem(position);
 
         if (file.isParent()) { //返回上级标记
             outDir();
@@ -288,5 +287,5 @@ public abstract class BaseFileFragment extends MyListFragment implements OnItemL
         }
     }
 
-    protected abstract boolean onItemClick(int position, MpFile file);
+    protected abstract boolean onItemClick(int position, MrpFile file);
 }

@@ -31,7 +31,6 @@ import com.mrpoid.core.MrpoidSettings;
 import com.mrpoid.Res;
 import com.mrpoid.game.keypad.KeypadEditActivity;
 import com.edroid.common.utils.FileUtils;
-import com.edroid.common.utils.SdkUtils;
 import com.mrpoid.view.PathPreference;
 
 /**
@@ -297,13 +296,11 @@ public class MrpoidSettingsActivity extends Activity {
     protected void onPause() {
         super.onPause();
 
-        SdkUtils.onPause(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        SdkUtils.onResume(this);
     }
 }

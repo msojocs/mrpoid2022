@@ -15,7 +15,6 @@
  */
 package com.mrpoid.core;
 
-import com.edroid.common.utils.SdkUtils;
 import com.edroid.common.utils.UIUtils;
 
 import android.content.Context;
@@ -232,13 +231,13 @@ public class MrpoidSettings implements OnSharedPreferenceChangeListener {
 		Emulator.native_setIntOptions("platform", 12); // linux
 		Emulator.native_setIntOptions("uselinuxTimer", 1);
 		Emulator.native_setIntOptions("memSize", Integer.valueOf(sp.getString(kVmMem, DEF_MEM_SIZE))); //虚拟机内存 单位 M
-		
-		String fact = SdkUtils.getOnlineString(context, "dsmFactory");
-		if(fact != null)
-			Emulator.native_setStringOptions("dsmFactory", fact);
-		String type = SdkUtils.getOnlineString(context, "dsmType");
-		if(fact != null)
-			Emulator.native_setStringOptions("dsmType", type);
+
+//		String fact = SdkUtils.getOnlineString(context, "dsmFactory");
+//		if(fact != null)
+//			Emulator.native_setStringOptions("dsmFactory", fact);
+//		String type = SdkUtils.getOnlineString(context, "dsmType");
+//		if(fact != null)
+//			Emulator.native_setStringOptions("dsmType", type);
 		
 		// api log
 		Emulator.native_setIntOptions("enableApilog", sp.getBoolean("enableApilog", false) ? 1 : 0);

@@ -29,7 +29,6 @@ import android.widget.Toast;
 
 import com.mrpoid.R;
 import com.mrpoid.core.MrpoidSettings;
-import com.edroid.common.utils.SdkUtils;
 
 /**
  * 虚拟键盘编辑
@@ -165,15 +164,12 @@ public class KeypadEditActivity extends AppCompatActivity implements
 		super.onResume();
 		
 		mKeypad.foceReDraw();
-		
-		SdkUtils.onResume(this);
+
 	}
 	
 	@Override
 	protected void onPause() {
 		super.onPause();
-		
-		SdkUtils.onPause(this);
 	}
 	
 	private void saveKeyboard() {

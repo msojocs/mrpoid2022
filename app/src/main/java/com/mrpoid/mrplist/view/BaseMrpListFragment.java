@@ -7,7 +7,7 @@ import com.mrpoid.MrpoidMain;
 import com.mrpoid.mrplist.R;
 import com.mrpoid.mrplist.app.HomeActivity;
 import com.mrpoid.mrplist.moduls.FileType;
-import com.mrpoid.mrplist.moduls.MpFile;
+import com.mrpoid.mrplist.moduls.MrpFile;
 import com.mrpoid.mrplist.moduls.MyFavoriteManager;
 import com.mrpoid.mrplist.utils.ShortcutUtils;
 
@@ -66,7 +66,7 @@ public abstract class BaseMrpListFragment extends BaseFileFragment {
 
     //	删除文件
     private void delete(int position) {
-        MpFile file = mAdapter.getItem(position);
+        MrpFile file = mAdapter.getItem(position);
 
         Log.d(TAG, "delete file = " + file.getName());
 
@@ -81,7 +81,7 @@ public abstract class BaseMrpListFragment extends BaseFileFragment {
     }
 
     @Override
-    protected boolean onItemClick(int position, MpFile file) {
+    protected boolean onItemClick(int position, MrpFile file) {
         Log.i(TAG, String.format("position: %d, path: %s", position, file.getPath()));
         if (file.getType() == FileType.MRP) {
             //			MrpRunner.runMrp(getActivity(), file.getPath());
@@ -98,7 +98,7 @@ public abstract class BaseMrpListFragment extends BaseFileFragment {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         if (v == getListView()) {
-            MpFile file = mAdapter.getItem(mLongPressIndex);
+            MrpFile file = mAdapter.getItem(mLongPressIndex);
 
             if (file.isFile()) {
                 menu.add(0, R.id.mi_run_mode, 0, R.string.run_mode);
@@ -113,7 +113,7 @@ public abstract class BaseMrpListFragment extends BaseFileFragment {
 
     @Override
     public boolean onContextItemSelected(android.view.MenuItem item) {
-        MpFile file = mAdapter.getItem(mLongPressIndex);
+        MrpFile file = mAdapter.getItem(mLongPressIndex);
 
         if (item.getItemId() == R.id.mi_remove) {
             delete(mLongPressIndex);

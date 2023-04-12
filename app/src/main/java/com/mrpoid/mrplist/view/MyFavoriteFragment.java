@@ -1,12 +1,11 @@
 package com.mrpoid.mrplist.view;
 
 import java.util.List;
-import java.util.Set;
 
 import com.mrpoid.MrpoidMain;
 import com.mrpoid.mrplist.R;
 import com.mrpoid.mrplist.app.HomeActivity;
-import com.mrpoid.mrplist.moduls.MpFile;
+import com.mrpoid.mrplist.moduls.MrpFile;
 import com.mrpoid.mrplist.moduls.MpListAdapter;
 import com.mrpoid.mrplist.moduls.MyFavoriteManager;
 
@@ -60,7 +59,7 @@ public class MyFavoriteFragment extends MyListFragment implements
     }
 
     void refreshList() {
-        List<MpFile> list = MyFavoriteManager.INSTANCE.getAll();
+        List<MrpFile> list = MyFavoriteManager.INSTANCE.getAll();
         mAdapter.setData(list);
     }
 
@@ -110,7 +109,7 @@ public class MyFavoriteFragment extends MyListFragment implements
     public boolean onContextItemSelected(MenuItem item) {
         if (item.getGroupId() == 5) {
             int id = item.getItemId();
-            MpFile file = mAdapter.getItem(pressedPosition);
+            MrpFile file = mAdapter.getItem(pressedPosition);
 
             if (id == R.id.mi_remove_from_list) {
                 mAdapter.remove(pressedPosition);

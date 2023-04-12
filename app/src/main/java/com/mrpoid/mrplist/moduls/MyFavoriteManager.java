@@ -15,30 +15,39 @@ import android.content.Context;
 public class MyFavoriteManager {
     public final static MyFavoriteManager INSTANCE = new MyFavoriteManager();
 
-    private final List<MpFile> list;
+    private final List<MrpFile> list;
 
     public MyFavoriteManager() {
         list = new ArrayList<>();
     }
 
-
+    /**
+     * 移除收藏
+     * @param ctx 上下文
+     * @param i 下标
+     */
     public void remove(Context ctx, int i) {
         list.remove(i);
         save(ctx);
     }
 
+    /**
+     * 添加收藏
+     * @param ctx 上下文
+     * @param path 路径
+     */
     public void add(Context ctx, String path) {
-        for (MpFile file : list) {
+        for (MrpFile file : list) {
             if (file.getPath().equals(path))
                 return;
         }
 
-        list.add(new MpFile(path));
+        list.add(new MrpFile(path));
 
         save(ctx);
     }
 
-    public List<MpFile> getAll() {
+    public List<MrpFile> getAll() {
         return list;
     }
 
@@ -48,7 +57,7 @@ public class MyFavoriteManager {
             JSONArray array = new JSONArray(
                     FileUtils.fileToString(ctx.getFileStreamPath("favorate.list")));
             for (int i = 0; i < array.length(); i++) {
-                list.add(new MpFile(array.getString(i)));
+                list.add(new MrpFile(array.getString(i)));
             }
         } catch (Exception e) {
             Common.log.e("read faorate.list fail!" + e.getMessage());
@@ -58,7 +67,7 @@ public class MyFavoriteManager {
     public void save(Context ctx) {
         try {
             JSONArray array = new JSONArray();
-            for (MpFile file : list) {
+            for (MrpFile file : list) {
                 array.put(file.getPath());
             }
 

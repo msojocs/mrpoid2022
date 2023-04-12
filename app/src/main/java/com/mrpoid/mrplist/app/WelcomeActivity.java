@@ -1,7 +1,6 @@
 package com.mrpoid.mrplist.app;
 
 import com.mrpoid.mrplist.R;
-import com.edroid.common.utils.UmengUtils;
 
 import android.Manifest;
 import android.content.Intent;
@@ -18,6 +17,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.WindowManager;
 
+/**
+ * 欢迎界面
+ */
 public class WelcomeActivity extends AppCompatActivity {
 
     void go() {
@@ -137,7 +139,6 @@ public class WelcomeActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        UmengUtils.onPause(this);
 
         super.onPause();
     }
@@ -145,7 +146,5 @@ public class WelcomeActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-        UmengUtils.onResume(this);
     }
 }

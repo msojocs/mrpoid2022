@@ -38,7 +38,7 @@ import com.mrpoid.mrplist.R;
  */
 public final class MpListAdapter extends BaseAdapter {
     private final LayoutInflater mInflater;
-    private final List<MpFile> mList = new ArrayList<>(32);
+    private final List<MrpFile> mList = new ArrayList<>(32);
 
 
     public MpListAdapter(Activity activity) {
@@ -48,7 +48,7 @@ public final class MpListAdapter extends BaseAdapter {
     public void setColors(int[] colors) {
     }
 
-    public void setData(List<MpFile> newData) {
+    public void setData(List<MrpFile> newData) {
         mList.clear();
         if (newData != null) {
             mList.addAll(newData);
@@ -56,12 +56,12 @@ public final class MpListAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    public void addData(MpFile file) {
+    public void addData(MrpFile file) {
         mList.add(file);
         notifyDataSetChanged();
     }
 
-    public List<MpFile> getData() {
+    public List<MrpFile> getData() {
         return mList;
     }
 
@@ -82,7 +82,7 @@ public final class MpListAdapter extends BaseAdapter {
     }
 
     @Override
-    public MpFile getItem(int position) {
+    public MrpFile getItem(int position) {
         return mList.get(position);
     }
 
@@ -95,7 +95,7 @@ public final class MpListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHoder hoder;
 
-        MpFile file = mList.get(position);
+        MrpFile file = mList.get(position);
 
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.file_list_item, null);

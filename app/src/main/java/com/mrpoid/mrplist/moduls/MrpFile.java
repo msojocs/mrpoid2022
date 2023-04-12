@@ -11,7 +11,7 @@ import com.edroid.common.utils.TimeUtils;
  * @author JianbinZhu
  *
  */
-public class MpFile implements Comparable<MpFile> {
+public class MrpFile implements Comparable<MrpFile> {
     private String path;
     private final String name;
 
@@ -26,21 +26,21 @@ public class MpFile implements Comparable<MpFile> {
     private String sizeStr;
 
 
-    public MpFile() {
+    public MrpFile() {
         this.name = "..";
         this.msg = "父目录";
         this.isDir = true;
         this.isParent = true;
     }
 
-    public MpFile(String path) {
+    public MrpFile(String path) {
         this(new File(path));
     }
 
     /**
-     * @param f 可为NULL
+     * @param f 文件
      */
-    public MpFile(File f) {
+    public MrpFile(File f) {
         this.path = f.getParent();
         this.name = f.getName();
         this.isDir = f.isDirectory();
@@ -114,7 +114,7 @@ public class MpFile implements Comparable<MpFile> {
     }
 
     @Override
-    public int compareTo(MpFile another) {
+    public int compareTo(MrpFile another) {
         if (this.isDir && !another.isDir)
             return -1;
         else if (!this.isDir && another.isDir)

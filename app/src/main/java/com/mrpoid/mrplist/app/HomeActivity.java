@@ -52,13 +52,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.edroid.common.utils.UmengUtils;
 import com.mrpoid.MrpoidMain;
 import com.mrpoid.app.HelpActivity;
 import com.mrpoid.app.MrpoidSettingsActivity;
 import com.mrpoid.mrplist.R;
 import com.mrpoid.mrplist.moduls.MrpInfo;
-import com.mrpoid.mrplist.moduls.MyFavoriteManager;
 import com.mrpoid.mrplist.moduls.PreferencesProvider;
 import com.mrpoid.mrplist.utils.MrpUtils;
 import com.mrpoid.mrplist.view.BaseFileFragment;
@@ -146,7 +144,7 @@ public class HomeActivity extends AppCompatActivity implements OnClickListener,
         favoriteFmg = new MyFavoriteFragment();
         listFmg = new ExplorerFragment();
 
-        //drawlayout
+        //draw layout
         initLeftDrawer();
         initBackground();
 
@@ -337,7 +335,6 @@ public class HomeActivity extends AppCompatActivity implements OnClickListener,
 
     @Override
     protected void onPause() {
-        UmengUtils.onPause(getActivity());
 
         super.onPause();
     }
@@ -346,8 +343,6 @@ public class HomeActivity extends AppCompatActivity implements OnClickListener,
     protected void onResume() {
         super.onResume();
         Log.i(TAG, "onResume");
-
-        UmengUtils.onResume(getActivity());
 
         againToExit = false;
 
