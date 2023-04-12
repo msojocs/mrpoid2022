@@ -16,11 +16,11 @@
 
 package com.mrpoid.mrplist.moduls;
 
-import java.util.Map;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+
+import java.util.Map;
 
 
 public final class PreferencesProvider {

@@ -3,10 +3,7 @@ package com.mrpoid.mrplist.app;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
-import android.view.SubMenu;
 
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.mrpoid.mrplist.R;

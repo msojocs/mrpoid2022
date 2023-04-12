@@ -1,7 +1,9 @@
 package com.mrpoid.mrplist.view;
 
-import java.io.File;
-import java.io.FileFilter;
+import android.util.Log;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.View;
 
 import com.mrpoid.MrpoidMain;
 import com.mrpoid.mrplist.R;
@@ -11,10 +13,8 @@ import com.mrpoid.mrplist.moduls.MrpFile;
 import com.mrpoid.mrplist.moduls.MyFavoriteManager;
 import com.mrpoid.mrplist.utils.ShortcutUtils;
 
-import android.util.Log;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
-import android.view.View;
+import java.io.File;
+import java.io.FileFilter;
 
 public abstract class BaseMrpListFragment extends BaseFileFragment {
 

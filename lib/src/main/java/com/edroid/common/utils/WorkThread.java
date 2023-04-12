@@ -122,13 +122,13 @@ public final class WorkThread implements Callback, UncaughtExceptionHandler {
         }
     }
 
-    private class DoRunable implements Runnable {
+    private class DoRunnable implements Runnable {
         private IDoCallback mDoCallback;
         private IFinishCallback mFinishCallback;
         private Object mDoData;
 
 
-        private DoRunable(IDoCallback cb, Object data, IFinishCallback cb2) {
+        private DoRunnable(IDoCallback cb, Object data, IFinishCallback cb2) {
             mDoCallback = cb;
             mDoData = data;
             mFinishCallback = cb2;
@@ -142,14 +142,14 @@ public final class WorkThread implements Callback, UncaughtExceptionHandler {
     }
 
     public void postCb(IDoCallback cb, Object doData, IFinishCallback cb2) {
-        mHandler.post(new DoRunable(cb, doData, cb2));
+        mHandler.post(new DoRunnable(cb, doData, cb2));
     }
 
-    private class IRunable implements Runnable {
+    private class IRunnable implements Runnable {
         Runnable taskRunnable;
         Runnable callbackRunnable;
 
-        public IRunable(Runnable task, Runnable callback) {
+        public IRunnable(Runnable task, Runnable callback) {
             this.taskRunnable = task;
             this.callbackRunnable = callback;
         }
@@ -172,7 +172,7 @@ public final class WorkThread implements Callback, UncaughtExceptionHandler {
      * @param callback 回调器，主任务在 sdk 线程执行完毕后，在UI线程调此回调
      */
     public void postEx(Runnable task, Runnable callback) {
-        mHandler.post(new IRunable(task, callback));
+        mHandler.post(new IRunnable(task, callback));
     }
 
     public interface ITask {
@@ -216,12 +216,12 @@ public final class WorkThread implements Callback, UncaughtExceptionHandler {
 //		
 //	}
 
-    private class ITaskRunable implements Runnable {
+    private class ITaskRunnable implements Runnable {
         private ITask mTask;
         private Object[] mArgs;
         private Object mRet;
 
-        private ITaskRunable(ITask task, Object... args) {
+        private ITaskRunnable(ITask task, Object... args) {
             this.mTask = task;
             this.mArgs = args;
         }
@@ -255,15 +255,15 @@ public final class WorkThread implements Callback, UncaughtExceptionHandler {
      * @param args 参数
      */
     public void postTask(ITask task, Object... args) {
-        mHandler.post(new ITaskRunable(task, args));
+        mHandler.post(new ITaskRunnable(task, args));
     }
 
     public void postTask(ITask task) {
-        mHandler.post(new ITaskRunable(task, (Object[]) null));
+        mHandler.post(new ITaskRunnable(task, (Object[]) null));
     }
 
     public void postTaskDelay(int t, ITask task) {
-        mHandler.postDelayed(new ITaskRunable(task, (Object[]) null), t);
+        mHandler.postDelayed(new ITaskRunnable(task, (Object[]) null), t);
     }
 
     public void post(Runnable r) {
@@ -303,6 +303,7 @@ public final class WorkThread implements Callback, UncaughtExceptionHandler {
         try {
             mThread.join(3000);
         } catch (InterruptedException e) {
+            e.printStackTrace();
         }
         log.i("join finish!");
         log.d("exited");

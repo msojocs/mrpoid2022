@@ -1,7 +1,6 @@
 package com.mrpoid.mrplist.app;
 
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;

@@ -1,13 +1,13 @@
 package com.mrpoid.mrplist.moduls;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.json.JSONArray;
+import android.content.Context;
 
 import com.edroid.common.utils.FileUtils;
 
-import android.content.Context;
+import org.json.JSONArray;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 我的收藏管理

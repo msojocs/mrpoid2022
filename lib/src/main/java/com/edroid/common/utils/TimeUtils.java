@@ -25,7 +25,7 @@ public final class TimeUtils {
 	static final String DEF_TIME_TEMPLATE = "HH:mm:ss";
 	
 	/**
-	 * @return 形式  {@code#DEF_DATE_TIME_TEMPLATE}
+	 * @return 格式  {@code#DEF_DATE_TIME_TEMPLATE}
 	 */
 	public static String getDateTimeNow() {
 		return getDateTimeNow(DEF_DATE_TIME_TEMPLATE);
@@ -40,7 +40,7 @@ public final class TimeUtils {
 	}
 	
 	/**
-	 * @return 形式  yyyy-MM-dd HH:mm:ss
+	 * @return 格式  yyyy-MM-dd HH:mm:ss
 	 */
 	public static String formatDate(long ms) {
 		return formatDate(ms, DEF_DATE_TIME_TEMPLATE);
@@ -64,7 +64,7 @@ public final class TimeUtils {
 	}
 	
 	/**
-	 * @return 形式  12:23:32
+	 * @return 格式  12:23:32
 	 */
 	public static String getTimeNow() {
 		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", getLocale());

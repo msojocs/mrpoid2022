@@ -1,28 +1,9 @@
 package com.mrpoid.mrplist.view;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.mrpoid.MrpoidMain;
-import com.mrpoid.core.Emulator;
-import com.mrpoid.mrplist.R;
-import com.mrpoid.mrplist.app.HomeActivity;
-import com.mrpoid.mrplist.moduls.MrpFile;
-import com.mrpoid.mrplist.moduls.MpListAdapter;
-import com.mrpoid.mrplist.moduls.MyFavoriteManager;
-import com.mrpoid.mrplist.utils.ShortcutUtils;
-
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.loader.app.LoaderManager.LoaderCallbacks;
-import androidx.loader.content.AsyncTaskLoader;
-import androidx.loader.content.Loader;
-
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -38,6 +19,24 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
+import androidx.loader.app.LoaderManager.LoaderCallbacks;
+import androidx.loader.content.AsyncTaskLoader;
+import androidx.loader.content.Loader;
+
+import com.mrpoid.MrpoidMain;
+import com.mrpoid.core.Emulator;
+import com.mrpoid.mrplist.R;
+import com.mrpoid.mrplist.app.HomeActivity;
+import com.mrpoid.mrplist.moduls.MpListAdapter;
+import com.mrpoid.mrplist.moduls.MrpFile;
+import com.mrpoid.mrplist.moduls.MyFavoriteManager;
+import com.mrpoid.mrplist.utils.ShortcutUtils;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LocalmrpFragment extends Fragment
         implements OnItemLongClickListener, OnItemClickListener, LoaderCallbacks<List<MrpFile>>, OnClickListener {

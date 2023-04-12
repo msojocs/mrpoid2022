@@ -18,10 +18,6 @@ package com.mrpoid.mrplist.view;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -31,11 +27,14 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.edroid.common.utils.TextUtils;
 import com.edroid.common.utils.WorkThread;
 import com.mrpoid.mrplist.R;
-import com.mrpoid.mrplist.moduls.MrpFile;
 import com.mrpoid.mrplist.moduls.MpListAdapter;
+import com.mrpoid.mrplist.moduls.MrpFile;
 
 import java.io.File;
 import java.io.FileFilter;

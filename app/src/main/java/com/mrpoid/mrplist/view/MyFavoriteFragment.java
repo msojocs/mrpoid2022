@@ -1,14 +1,5 @@
 package com.mrpoid.mrplist.view;
 
-import java.util.List;
-
-import com.mrpoid.MrpoidMain;
-import com.mrpoid.mrplist.R;
-import com.mrpoid.mrplist.app.HomeActivity;
-import com.mrpoid.mrplist.moduls.MrpFile;
-import com.mrpoid.mrplist.moduls.MpListAdapter;
-import com.mrpoid.mrplist.moduls.MyFavoriteManager;
-
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,6 +13,15 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
+
+import com.mrpoid.MrpoidMain;
+import com.mrpoid.mrplist.R;
+import com.mrpoid.mrplist.app.HomeActivity;
+import com.mrpoid.mrplist.moduls.MpListAdapter;
+import com.mrpoid.mrplist.moduls.MrpFile;
+import com.mrpoid.mrplist.moduls.MyFavoriteManager;
+
+import java.util.List;
 
 
 /**

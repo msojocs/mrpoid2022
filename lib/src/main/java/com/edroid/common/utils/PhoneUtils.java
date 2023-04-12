@@ -1,24 +1,16 @@
 package com.edroid.common.utils;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.List;
 import java.util.Locale;
 
 import android.Manifest.permission;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Criteria;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
-import android.os.Build;
 import android.provider.Settings.Secure;
 import android.telephony.TelephonyManager;
 
@@ -48,8 +40,8 @@ public final class PhoneUtils {
 	/**
 	 * 获取手机当前网络
 	 * 
-	 * @param context
-	 * @return
+	 * @param context 上下文
+	 * @return 网络信息
 	 */
 	public static NetworkInfo getActiveNetworkInfo(Context context) {
 		ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -98,7 +90,7 @@ public final class PhoneUtils {
 		if (info != null) {
 			if (info.getType() == ConnectivityManager.TYPE_MOBILE) {
 				TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-				
+
 				switch (tm.getNetworkType()) {
 				case TelephonyManager.NETWORK_TYPE_GPRS:
 				case TelephonyManager.NETWORK_TYPE_EDGE:
@@ -264,17 +256,17 @@ public final class PhoneUtils {
 	 * @param context
 	 * @return
 	 */
-	public static String getPhoneNumber(Context context) {
-		try {
-			TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-			String ret = tm.getLine1Number();
-			if (ret != null && ret.length() > 0)
-				return ret;
-		} catch (Exception e) {
-		}
-
-		return null;
-	}
+//	public static String getPhoneNumber(Context context) {
+//		try {
+//			TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+//			String ret = tm.getLine1Number();
+//			if (ret != null && ret.length() > 0)
+//				return ret;
+//		} catch (Exception e) {
+//		}
+//
+//		return null;
+//	}
 	
 
 	/**
@@ -386,37 +378,37 @@ public final class PhoneUtils {
 	}
 
 	
-	public static Address getAddress(Context context) {
-		LocationManager manager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-		
-		Criteria criteria = new Criteria();
-		criteria.setAccuracy(Criteria.ACCURACY_FINE);
-		criteria.setAltitudeRequired(false);
-		criteria.setBearingRequired(false);
-		criteria.setCostAllowed(false);
-		criteria.setPowerRequirement(Criteria.POWER_LOW);
-		
-		// 取得效果最好的criteria
-		String provider = manager.getBestProvider(criteria, true);
-		if (provider == null) return null;
-		
-		// 得到坐标相关的信息
-		Location location = manager.getLastKnownLocation(provider);
-		if (location == null) return null;
-
-		// 更具地理环境来确定编码
-		Geocoder gc = new Geocoder(context, Locale.getDefault());
-		try {
-			double latitude = location.getLatitude();
-			double longitude = location.getLongitude();
-			// 取得地址相关的一些信息\经度、纬度
-			List<Address> addresses = gc.getFromLocation(latitude, longitude, 1);
-			if (addresses.size() > 0) {
-				return addresses.get(0);
-			}
-		} catch (IOException e) {
-		}
-		
-		return null;
-	}
+//	public static Address getAddress(Context context) {
+//		LocationManager manager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+//
+//		Criteria criteria = new Criteria();
+//		criteria.setAccuracy(Criteria.ACCURACY_FINE);
+//		criteria.setAltitudeRequired(false);
+//		criteria.setBearingRequired(false);
+//		criteria.setCostAllowed(false);
+//		criteria.setPowerRequirement(Criteria.POWER_LOW);
+//
+//		// 取得效果最好的criteria
+//		String provider = manager.getBestProvider(criteria, true);
+//		if (provider == null) return null;
+//
+//		// 得到坐标相关的信息
+//		Location location = manager.getLastKnownLocation(provider);
+//		if (location == null) return null;
+//
+//		// 更具地理环境来确定编码
+//		Geocoder gc = new Geocoder(context, Locale.getDefault());
+//		try {
+//			double latitude = location.getLatitude();
+//			double longitude = location.getLongitude();
+//			// 取得地址相关的一些信息\经度、纬度
+//			List<Address> addresses = gc.getFromLocation(latitude, longitude, 1);
+//			if (addresses.size() > 0) {
+//				return addresses.get(0);
+//			}
+//		} catch (IOException e) {
+//		}
+//
+//		return null;
+//	}
 }

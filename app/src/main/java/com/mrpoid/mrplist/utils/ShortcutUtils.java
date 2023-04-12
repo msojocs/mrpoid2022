@@ -1,7 +1,5 @@
 package com.mrpoid.mrplist.utils;
 
-import java.io.File;
-
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.ContentResolver;
@@ -12,6 +10,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.Cursor;
 import android.net.Uri;
+
+import java.io.File;
 
 /**
  * 快捷方式工具类

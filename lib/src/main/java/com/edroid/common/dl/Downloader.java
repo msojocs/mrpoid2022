@@ -17,7 +17,6 @@ import android.os.Handler;
 
 import com.edroid.common.utils.FileUtils;
 import com.edroid.common.utils.FileUtils.MyFileLock;
-import com.edroid.common.utils.HttpUtils;
 import com.edroid.common.utils.Logger;
 import com.edroid.common.utils.PhoneUtils;
 

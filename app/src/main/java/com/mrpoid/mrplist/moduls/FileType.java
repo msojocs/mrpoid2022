@@ -1,12 +1,12 @@
 package com.mrpoid.mrplist.moduls;
 
-import java.lang.ref.WeakReference;
-
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import com.mrpoid.mrplist.R;
+
+import java.lang.ref.WeakReference;
 
 /**
  *

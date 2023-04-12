@@ -1,10 +1,10 @@
 package com.mrpoid.mrplist.moduls;
 
+import com.edroid.common.utils.TimeUtils;
+import com.mrpoid.mrplist.utils.MrpUtils;
+
 import java.io.File;
 import java.util.Locale;
-
-import com.mrpoid.mrplist.utils.MrpUtils;
-import com.edroid.common.utils.TimeUtils;
 
 /**
  * 2012/10/9

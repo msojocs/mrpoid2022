@@ -15,9 +15,6 @@
  */
 package com.mrpoid.mrplist.moduls;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -28,6 +25,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mrpoid.mrplist.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**

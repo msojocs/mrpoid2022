@@ -3,11 +3,10 @@ package com.mrpoid.mrplist.view;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-
-import androidx.fragment.app.ListFragment;
-
 import android.view.View;
 import android.widget.ListView;
+
+import androidx.fragment.app.ListFragment;
 
 import com.mrpoid.mrplist.R;
 

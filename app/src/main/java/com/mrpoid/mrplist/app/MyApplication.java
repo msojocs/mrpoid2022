@@ -19,7 +19,6 @@ import android.util.Log;
 
 import com.mrpoid.app.EmulatorApplication;
 import com.mrpoid.mrplist.moduls.FileType;
-import com.mrpoid.mrplist.moduls.MyFavoriteManager;
 import com.mrpoid.mrplist.moduls.PreferencesProvider;
 
 /**

@@ -1,11 +1,9 @@
 package com.mrpoid.mrplist.utils;
 
+import com.mrpoid.mrplist.moduls.MrpInfo;
+
 import java.io.RandomAccessFile;
 import java.nio.charset.Charset;
-
-import com.edroid.common.utils.UIUtils;
-import com.mrpoid.mrplist.app.MyApplication;
-import com.mrpoid.mrplist.moduls.MrpInfo;
 
 /**
  * MRP相关工具类
