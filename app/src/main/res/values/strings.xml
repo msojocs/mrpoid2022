@@ -47,8 +47,8 @@
     <string name="drawer_title">Navigation</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
-    <string name="user_photo_desc">TODO</string>
-    <string name="welcome_img_desc">TODO</string>
+    <string name="user_photo_desc" translatable="false">TODO</string>
+    <string name="welcome_img_desc" translatable="false">TODO</string>
 
     <string-array name="bg_imgs">
         <item>无</item>
@@ -92,8 +92,8 @@
         <item>320x240</item>
         <item>480x800</item>
     </string-array>
-    <string name="title_activity_store">StoreActivity</string>
-    <string name="tab_text_1">Tab 1</string>
-    <string name="tab_text_2">Tab 2</string>
+    <string name="title_activity_store" translatable="false">StoreActivity</string>
+    <string name="tab_text_1" translatable="false">Tab 1</string>
+    <string name="tab_text_2" translatable="false">Tab 2</string>
 
 </resources>

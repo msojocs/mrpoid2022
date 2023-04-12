@@ -164,10 +164,14 @@ public class HomeActivity extends AppCompatActivity implements OnClickListener,
 
         mStartDrawer = findViewById(R.id.start_drawer);
 
+        // 左侧抽屉的菜单
         ListView mMenuListView = findViewById(R.id.listView1);
         mMenuListView.setAdapter(new ArrayAdapter<>(this,
                 R.layout.drawer_list_item, R.id.title,
-                getResources().getStringArray(R.array.main_menu_items)));
+                // 菜单列表资源 [设置, 关于...]
+                getResources().getStringArray(R.array.main_menu_items)
+        ));
+        // 监听器
         mMenuListView.setOnItemClickListener(new DrawerItemClickListener());
         mActionBarHelper = createActionBarHelper();
         mActionBarHelper.init();
@@ -197,10 +201,10 @@ public class HomeActivity extends AppCompatActivity implements OnClickListener,
         setBackground(img, false);
     }
 
-    private void setBackground(int img, boolean foce) {
-        if (!foce) {
-            int oldimg = PreferencesProvider.Interface.General.getThemeImage(DEFAULT_BACKGROUND_INDEX);
-            if (oldimg == img)
+    private void setBackground(int img, boolean force) {
+        if (!force) {
+            int oldImg = PreferencesProvider.Interface.General.getThemeImage(DEFAULT_BACKGROUND_INDEX);
+            if (oldImg == img)
                 return;
         }
 
@@ -292,32 +296,48 @@ public class HomeActivity extends AppCompatActivity implements OnClickListener,
         startActivity(Intent.createChooser(intent, getTitle()));
     }
 
+    private void showToast(String msg) {
+        Toast.makeText(this.getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * 抽屉按钮监听
+     */
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Log.i(TAG, "点击位置：" + position);
             switch (position) {
+                // 设置
                 case 0: {
                     startActivity(new Intent(getActivity(), MrpoidSettingsActivity.class));
                     break;
                 }
+                // 关于
                 case 1: {
-                    HelpActivity.show(getActivity(), Uri.parse("https://github.com/Yichou/mrpoid2018"));
+                    HelpActivity.show(getActivity(), Uri.parse("https://github.com/msojocs/mrpoid2022"));
                     break;
                 }
+                // 分享
                 case 2: {
+                    showToast("分享...");
                     showShare();
                     break;
                 }
+//                更新
                 case 3:
+                    // 反馈
                 case 4: {
+                    showToast("开发中...");
                     break;
                 }
+                // 浏览
                 case 5: {
                     startActivity(new Intent(getActivity(), BrowserActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                     break;
                 }
+                // 文件管理
                 case 6: {
                     Log.i(TAG, "文件管理");
                     startActivity(new Intent(getActivity(), FileManagerActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
