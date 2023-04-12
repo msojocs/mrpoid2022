@@ -38,7 +38,6 @@ android {
         }
         customDebug {
             minifyEnabled false
-            debuggable true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
             // 添加编译宏，在C 或者 C++源码中添加 LOG_DEBUG 的编译宏
             externalNativeBuild {
@@ -73,6 +72,7 @@ android {
             path 'src/main/jni/Android.mk'
         }
     }
+    namespace 'com.mrpoid'
 }
 
 dependencies {
