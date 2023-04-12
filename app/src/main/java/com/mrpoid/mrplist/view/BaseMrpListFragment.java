@@ -117,7 +117,7 @@ public abstract class BaseMrpListFragment extends BaseFileFragment {
             delete(mLongPressIndex);
         } else if (item.getItemId() == R.id.mi_create_shortcut) {
             ShortcutUtils.createShortCut(getActivity(),
-                    file.getTtile(),
+                    file.getTitle(),
                     ShortcutUtils.getAppIcon(getActivity()),
                     file.toFile());
         } else if (item.getItemId() == R.id.mi_add_favorite) {

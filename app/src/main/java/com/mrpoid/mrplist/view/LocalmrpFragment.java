@@ -3,8 +3,6 @@ package com.mrpoid.mrplist.view;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 import com.mrpoid.MrpoidMain;
 import com.mrpoid.core.Emulator;
@@ -233,7 +231,7 @@ public class LocalmrpFragment extends Fragment
 
         if (item.getItemId() == R.id.mi_create_shortcut) {
             ShortcutUtils.createShortCut(getActivity(),
-                    file.getTtile(),
+                    file.getTitle(),
                     ShortcutUtils.getAppIcon(getActivity()),
                     file.toFile());
         } else if (item.getItemId() == R.id.mi_add_favorite) {

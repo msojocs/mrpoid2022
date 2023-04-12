@@ -98,9 +98,10 @@ public class MpFile implements Comparable<MpFile> {
         return sizeStr;
     }
 
-    public String getTtile() {
+    public String getTitle() {
         if (title == null) {
             if (getType() == FileType.MRP) {
+                // MRP文件，读取真实应用名称
                 title = MrpUtils.readMrpAppName(path + File.separatorChar + name);
                 if (title == null)
                     title = name;

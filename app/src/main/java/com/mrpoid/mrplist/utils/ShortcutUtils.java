@@ -13,9 +13,16 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.Cursor;
 import android.net.Uri;
 
+/**
+ * 快捷方式工具类
+ */
 public class ShortcutUtils {
 
-    // 应用名称
+    /**
+     * 获取应用名称
+     * @param context
+     * @return 应用名称
+     */
     public static String getAppName(Context context) {
         String appName = "";
         try {
@@ -28,7 +35,11 @@ public class ShortcutUtils {
         return appName;
     }
 
-    // 应用图标
+    /**
+     * 获取应用图标
+     * @param context 上下文
+     * @return 图标int
+     */
     public static int getAppIcon(Context context) {
         int appIcon = 0;
         try {
@@ -41,7 +52,12 @@ public class ShortcutUtils {
         return appIcon;
     }
 
-    // 是否有快捷方式
+    /**
+     * 是否有快捷方式
+     * @param context 上下文
+     * @param title 标题
+     * @return 有无
+     */
     public static boolean hasShortcut(Context context, String title) {
         final ContentResolver cr = context.getContentResolver();
         final String AUTHORITY = "com.android.launcher.settings";
@@ -55,7 +71,12 @@ public class ShortcutUtils {
         return ret;
     }
 
-    // 检查快捷方式是否已存在
+    /**
+     * 检查快捷方式是否已存在
+     * @param context 上下文
+     * @param title 标题
+     * @return 是否存在
+     */
     public boolean shortCutExist(Context context, String title) {
         boolean isInstallShortcut;
         final ContentResolver cr = context.getContentResolver();
@@ -80,7 +101,13 @@ public class ShortcutUtils {
         return isInstallShortcut;
     }
 
-    // 创建快捷方式
+    /**
+     * 创建快捷方式
+     * @param app 应用
+     * @param title 标题
+     * @param icon 图标
+     * @param path 路径
+     */
     public static void createShortCut(Activity app, String title, int icon, File path) {
         String componentName = "com.mrpoid.app.ExternActivity";
         // ComponentName comp = new ComponentName(this.getPackageName(),

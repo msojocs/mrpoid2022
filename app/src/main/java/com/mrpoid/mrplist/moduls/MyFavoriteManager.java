@@ -2,8 +2,6 @@ package com.mrpoid.mrplist.moduls;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 import org.json.JSONArray;
 
@@ -11,9 +9,11 @@ import com.edroid.common.utils.FileUtils;
 
 import android.content.Context;
 
+/**
+ * 我的收藏管理
+ */
 public class MyFavoriteManager {
-    static MyFavoriteManager instance = new MyFavoriteManager();
-
+    private final static MyFavoriteManager instance = new MyFavoriteManager();
 
     public static MyFavoriteManager getInstance() {
         return instance;
@@ -76,4 +76,17 @@ public class MyFavoriteManager {
             Common.log.e("save faorate.list fail!" + e.getMessage());
         }
     }
+//    public void save(Context ctx) {
+//        try {
+//            JSONArray array = new JSONArray();
+//            for (MpFile file : list) {
+//                array.put(file.getPath());
+//            }
+//
+//            FileUtils.stringToFile(ctx.getFileStreamPath("favorate.list"),
+//                    array.toString());
+//        } catch (Exception e) {
+//            Common.log.e("save faorate.list fail!" + e.getMessage());
+//        }
+//    }
 }

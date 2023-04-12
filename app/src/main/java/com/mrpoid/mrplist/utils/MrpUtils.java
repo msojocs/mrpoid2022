@@ -7,7 +7,15 @@ import com.edroid.common.utils.UIUtils;
 import com.mrpoid.mrplist.app.MyApplication;
 import com.mrpoid.mrplist.moduls.MrpInfo;
 
+/**
+ * MRP相关工具类
+ */
 public class MrpUtils {
+    /**
+     * 获取指定MRP文件的名称
+     * @param path 文件路径
+     * @return 名称
+     */
     public static String readMrpAppName(String path) {
         RandomAccessFile raf = null;
         try {
@@ -43,6 +51,11 @@ public class MrpUtils {
         return value;
     }
 
+    /**
+     * 读取MRP文件的信息
+     * @param path MRP文件路径
+     * @return 信息
+     */
     public static MrpInfo readMrpInfo(String path) {
         MrpInfo mrpInfo = new MrpInfo();
 
@@ -53,6 +66,7 @@ public class MrpUtils {
 
             final Charset charset = Charset.forName("GB2312");
 
+            // 标签
             raf.seek(28);
             raf.read(buf, 0, 22);
             mrpInfo.label = new String(buf, 0, 22, charset);

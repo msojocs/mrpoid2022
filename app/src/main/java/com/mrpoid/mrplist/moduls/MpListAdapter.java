@@ -113,7 +113,7 @@ public final class MpListAdapter extends BaseAdapter {
             hoder = (ViewHoder) convertView.getTag();
         }
 
-        hoder.tv_title.setText(file.getTtile());
+        hoder.tv_title.setText(file.getTitle());
         hoder.tv_msg.setText(file.getMsg());
         hoder.tv_size.setText(file.getSizeString());
         hoder.icon.setImageResource(file.getType().getIconRes());
