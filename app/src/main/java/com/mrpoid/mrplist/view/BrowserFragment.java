@@ -498,7 +498,7 @@ public class BrowserFragment extends Fragment implements DownloadListener, OnCli
 
                     case 2: {
                         MrpoidMain.runMrp(getActivity(), path);
-                        MyFavoriteManager.getInstance().add(path);
+                        MyFavoriteManager.INSTANCE.add(this.getContext(), path);
                         break;
                     }
                 }

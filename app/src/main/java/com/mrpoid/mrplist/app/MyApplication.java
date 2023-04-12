@@ -32,6 +32,7 @@ public class MyApplication extends EmulatorApplication {
 
     private static String TAG = MyApplication.class.getSimpleName();
 
+
     //	void runPlugin(PluginInfo info) {
     //		try {
     //			Class<?> cls = info.classLoader.loadClass("com.mrpoid.mrpliset.DemoPlugin");
@@ -84,8 +85,6 @@ public class MyApplication extends EmulatorApplication {
         PreferencesProvider.load(this);
 
         FileType.loadIcons(getResources());
-
-        MyFavoriteManager.getInstance().init(this);
 
         //		MobclickAgent.setDebugMode(true);
     }

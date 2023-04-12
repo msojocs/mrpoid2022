@@ -13,29 +13,21 @@ import android.content.Context;
  * 我的收藏管理
  */
 public class MyFavoriteManager {
-    private final static MyFavoriteManager instance = new MyFavoriteManager();
+    public final static MyFavoriteManager INSTANCE = new MyFavoriteManager();
 
-    public static MyFavoriteManager getInstance() {
-        return instance;
-    }
-
-    private Context mContext;
     private final List<MpFile> list;
 
     public MyFavoriteManager() {
         list = new ArrayList<>();
     }
 
-    public void init(Context context) {
-        this.mContext = context.getApplicationContext();
-    }
 
-    public void remove(int i) {
+    public void remove(Context ctx, int i) {
         list.remove(i);
-        save();
+        save(ctx);
     }
 
-    public void add(String path) {
+    public void add(Context ctx, String path) {
         for (MpFile file : list) {
             if (file.getPath().equals(path))
                 return;
@@ -43,18 +35,18 @@ public class MyFavoriteManager {
 
         list.add(new MpFile(path));
 
-        save();
+        save(ctx);
     }
 
     public List<MpFile> getAll() {
         return list;
     }
 
-    public void read() {
+    public void read(Context ctx) {
         list.clear();
         try {
             JSONArray array = new JSONArray(
-                    FileUtils.fileToString(mContext.getFileStreamPath("favorate.list")));
+                    FileUtils.fileToString(ctx.getFileStreamPath("favorate.list")));
             for (int i = 0; i < array.length(); i++) {
                 list.add(new MpFile(array.getString(i)));
             }
@@ -63,30 +55,17 @@ public class MyFavoriteManager {
         }
     }
 
-    public void save() {
+    public void save(Context ctx) {
         try {
             JSONArray array = new JSONArray();
             for (MpFile file : list) {
                 array.put(file.getPath());
             }
 
-            FileUtils.stringToFile(mContext.getFileStreamPath("favorate.list"),
+            FileUtils.stringToFile(ctx.getFileStreamPath("favorate.list"),
                     array.toString());
         } catch (Exception e) {
             Common.log.e("save faorate.list fail!" + e.getMessage());
         }
     }
-//    public void save(Context ctx) {
-//        try {
-//            JSONArray array = new JSONArray();
-//            for (MpFile file : list) {
-//                array.put(file.getPath());
-//            }
-//
-//            FileUtils.stringToFile(ctx.getFileStreamPath("favorate.list"),
-//                    array.toString());
-//        } catch (Exception e) {
-//            Common.log.e("save faorate.list fail!" + e.getMessage());
-//        }
-//    }
 }

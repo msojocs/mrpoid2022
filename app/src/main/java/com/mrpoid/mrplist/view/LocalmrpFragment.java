@@ -205,7 +205,7 @@ public class LocalmrpFragment extends Fragment
 
         MrpoidMain.runMrp(getActivity(), file.getPath());
 
-        MyFavoriteManager.getInstance().add(file.getPath());
+        MyFavoriteManager.INSTANCE.add(this.getContext(), file.getPath());
     }
 
     @Override
@@ -235,7 +235,7 @@ public class LocalmrpFragment extends Fragment
                     ShortcutUtils.getAppIcon(getActivity()),
                     file.toFile());
         } else if (item.getItemId() == R.id.mi_add_favorite) {
-            MyFavoriteManager.getInstance().add(file.getPath());
+            MyFavoriteManager.INSTANCE.add(this.getContext(), file.getPath());
         } else if (item.getItemId() == R.id.mi_run_mode) {
             HomeActivity.showRunMrpModeDialogFragment(getFragmentManager(), file.getPath());
         } else {

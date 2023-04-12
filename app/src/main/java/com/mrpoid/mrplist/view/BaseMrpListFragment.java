@@ -8,6 +8,7 @@ import com.mrpoid.mrplist.R;
 import com.mrpoid.mrplist.app.HomeActivity;
 import com.mrpoid.mrplist.moduls.FileType;
 import com.mrpoid.mrplist.moduls.MpFile;
+import com.mrpoid.mrplist.moduls.MyFavoriteManager;
 import com.mrpoid.mrplist.utils.ShortcutUtils;
 
 import android.util.Log;
@@ -87,7 +88,8 @@ public abstract class BaseMrpListFragment extends BaseFileFragment {
 
             MrpoidMain.runMrp(getActivity(), file.getPath());
 
-            HomeActivity.addToFavorate(file.getPath());
+//            HomeActivity.addToFavorate(file.getPath());
+            MyFavoriteManager.INSTANCE.add(this.getContext(), file.getPath());
         }
 
         return true;
@@ -121,7 +123,8 @@ public abstract class BaseMrpListFragment extends BaseFileFragment {
                     ShortcutUtils.getAppIcon(getActivity()),
                     file.toFile());
         } else if (item.getItemId() == R.id.mi_add_favorite) {
-            HomeActivity.addToFavorate(file.getPath());
+//            HomeActivity.addToFavorate(file.getPath());
+            MyFavoriteManager.INSTANCE.add(this.getContext(), file.getPath());
         } else if (item.getItemId() == R.id.mi_run_mode) {
             HomeActivity.showRunMrpModeDialogFragment(getFragmentManager(), file.getPath());
         } else {

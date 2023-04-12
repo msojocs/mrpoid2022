@@ -380,9 +380,9 @@ public class HomeActivity extends AppCompatActivity implements OnClickListener,
         return false;
     }
 
-    public static void addToFavorate(String path) {
-        MyFavoriteManager.getInstance().add(path);
-    }
+//    public void addToFavorate(String path) {
+//        MyFavoriteManager.INSTANCE.add(this.getApplicationContext(), path);
+//    }
 
     //	public void runMrp(String path) {
     //		MrpoidMain.runMrp(this, path);

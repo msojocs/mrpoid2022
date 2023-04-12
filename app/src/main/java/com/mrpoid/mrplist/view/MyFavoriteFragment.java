@@ -47,7 +47,7 @@ public class MyFavoriteFragment extends MyListFragment implements
         mAdapter = new MpListAdapter(getActivity());
         setListAdapter(mAdapter);
 
-        MyFavoriteManager.getInstance().read();
+        MyFavoriteManager.INSTANCE.read(this.getContext());
 
         setHasOptionsMenu(true);
     }
@@ -60,7 +60,7 @@ public class MyFavoriteFragment extends MyListFragment implements
     }
 
     void refreshList() {
-        List<MpFile> list = MyFavoriteManager.getInstance().getAll();
+        List<MpFile> list = MyFavoriteManager.INSTANCE.getAll();
         mAdapter.setData(list);
     }
 
@@ -114,7 +114,7 @@ public class MyFavoriteFragment extends MyListFragment implements
 
             if (id == R.id.mi_remove_from_list) {
                 mAdapter.remove(pressedPosition);
-                MyFavoriteManager.getInstance().remove(pressedPosition);
+                MyFavoriteManager.INSTANCE.remove(this.getContext(), pressedPosition);
             } else if (id == R.id.mi_run_mode) {
                 HomeActivity.showRunMrpModeDialogFragment(getFragmentManager(), file.getPath());
             } else if (id == R.id.mi_show_mrpinfo) {
